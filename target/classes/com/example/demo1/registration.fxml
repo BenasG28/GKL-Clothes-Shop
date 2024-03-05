@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.fxControllers.RegistrationController">
+   <children>
+      <CheckBox fx:id="wantDiscountCard" layoutX="249.0" layoutY="69.0" mnemonicParsing="false" text="Register a discount card" />
+      <TextField fx:id="loginField" layoutX="35.0" layoutY="32.0" promptText="Enter login" />
+      <PasswordField fx:id="passwordField" layoutX="35.0" layoutY="65.0" promptText="Enter password" />
+      <TextField fx:id="nameField" layoutX="35.0" layoutY="132.0" promptText="Enter name" />
+      <DatePicker fx:id="birthDatePicker" layoutX="27.0" layoutY="268.0" promptText="Enter birth date" />
+      <RadioButton fx:id="customerRadio" layoutX="28.0" layoutY="304.0" mnemonicParsing="false" text="Customer">
+         <toggleGroup>
+            <ToggleGroup fx:id="userType" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="managerRadio" layoutX="115.0" layoutY="304.0" mnemonicParsing="false" text="Manager" toggleGroup="$userType" />
+      <Button fx:id="createUserButton" layoutX="262.0" layoutY="346.0" mnemonicParsing="false" onAction="#createUser" text="Create user" />
+      <TextField fx:id="lastNameField" layoutX="35.0" layoutY="165.0" promptText="Enter surname" />
+      <TextField fx:id="addressField" layoutX="249.0" layoutY="32.0" promptText="Enter home address" />
+      <TextField fx:id="uniqueIdField" layoutX="249.0" layoutY="165.0" promptText="Enter unique ID" />
+      <TextField fx:id="medCertField" layoutX="246.0" layoutY="202.0" prefHeight="26.0" prefWidth="156.0" promptText="Enter medical certificate ID" />
+      <CheckBox fx:id="isAdminCheck" layoutX="272.0" layoutY="238.0" mnemonicParsing="false" text="IsAdministrator" />
+      <DatePicker fx:id="employDatePicker" layoutX="240.0" layoutY="268.0" promptText="Enter employment date" />
+      <Button fx:id="backButton" layoutX="24.0" layoutY="346.0" mnemonicParsing="false" text="Back" />
+      <PasswordField fx:id="repeatPasswordField" layoutX="35.0" layoutY="98.0" promptText="Repeat password" />
+      <TextField fx:id="phoneNumberField" layoutX="35.0" layoutY="234.0" promptText="Enter phone number" />
+      <TextField fx:id="contactMailField" layoutX="35.0" layoutY="202.0" promptText="Enter email address" />
+   </children>
+</AnchorPane>
