@@ -24,17 +24,18 @@ public class Product implements Serializable {
     int id;
     double price;
     String title;
-    LocalDate releaseDate;
-    ProductGenre genre;
     String description;
-    int length;
-    String label;
+    private String sizeEn;
+    private String sizeUk;
+    private String sizeUs;
+    private String sizeSML;
+    private String productCode;
+    private String color;
+    private String productType;
+    private String productSex;
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     Warehouse warehouse;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    List<Track> trackList = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "cart_id")
     Cart cart;
@@ -45,49 +46,10 @@ public class Product implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Comment> commentList = new ArrayList<>();
 
-    public void addTrack(Track track) {
-        trackList.add(track);
-        track.setProduct(this);
-    }
-
-    public void removeTrack(Track track) {
-        trackList.remove(track);
-        track.setProduct(null);
-    }
-
-    public void removeTracks() {
-        for (Track t : trackList) {
-            t.setProduct(null);
-        }
-        trackList.clear();
-    }
 
     public Product(String title, String description) {
         this.title = title;
         this.description = description;
-    }
-
-    public Product(double price, String title, LocalDate releaseDate, ProductGenre genre, String description, int length, String label, Warehouse warehouse) {
-        this.price = price;
-        this.title = title;
-        this.releaseDate = releaseDate;
-        this.genre = genre;
-        this.description = description;
-        this.length = length;
-        this.label = label;
-        this.warehouse = warehouse;
-    }
-
-    public Product(double price, String title, LocalDate releaseDate, ProductGenre genre, String description, int length, String label, Warehouse warehouse, List<Track> trackList) {
-        this.price = price;
-        this.title = title;
-        this.releaseDate = releaseDate;
-        this.genre = genre;
-        this.description = description;
-        this.length = length;
-        this.label = label;
-        this.warehouse = warehouse;
-        this.trackList = trackList;
     }
 
 

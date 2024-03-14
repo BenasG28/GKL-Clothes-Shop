@@ -26,23 +26,7 @@ public class Customer extends User {
         this.discountCard = discountCard;
     }
 
-    //    public static Customer fromCustomerTable(CustomerTableParameters parameters){
-//        Customer customer = new Customer();
-//        customer.setFirstName(parameters.getFirstName());
-//        customer.setLastName(parameters.getLastName());
-//        customer.setLogin(parameters.getLogin());
-//        customer.setPassword(parameters.getPassword());
-//        customer.setContactMail(parameters.getContactMail());
-//        customer.setBirthDate(parameters.getBirthDate());
-//        customer.setAddress(parameters.getAddress());
-//        customer.setPhoneNumber(parameters.getPhoneNumber());
-//        customer.setDiscountCard(parameters.isDiscountCard());
-//        return customer;
-//    }
 
-//    public void setPasswordHashed(String password) {
-//        super.setPassword(password);
-//    }
     @Override
     public String toString() {
         return "Customer{" +
