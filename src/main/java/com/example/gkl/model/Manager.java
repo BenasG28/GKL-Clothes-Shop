@@ -19,8 +19,7 @@ public class Manager extends User {
     String employeeId;
     String medCertificate;
     LocalDate employmentDate;
-//    @ManyToMany
-//    private List<Warehouse> worksAtWarehouse;
+
 
     public Manager(String login, String password, String contactMail, LocalDate birthDate, String firstName, String lastName, String phoneNumber, String address, boolean isAdmin, String employeeId, String medCertificate, LocalDate employmentDate) {
         super(login, password, contactMail, birthDate, firstName, lastName, phoneNumber, address);

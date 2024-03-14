@@ -31,6 +31,15 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
+                        <BorderPane fx:id="imageBorderPane" layoutX="29.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+                           <bottom>
+                              <ImageView fx:id="imageView" fitHeight="197.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@../../../../../../../../Desktop/626999e320e97d079f2f91c371b1dde3.jpg" />
+                                 </image>
+                              </ImageView>
+                           </bottom>
+                        </BorderPane>
                                 <ListView fx:id="productList" layoutX="14.0" layoutY="14.0" onMouseClicked="#loadTreeComments" prefHeight="326.0" prefWidth="386.0" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="14.0" />
                                 <Button fx:id="addToCartButton" layoutX="494.0" layoutY="218.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="23.0" prefWidth="90.0" text="Add to cart" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="494.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="218.0" />
                                 <ListView fx:id="currentOrderList" layoutX="411.0" layoutY="31.0" prefHeight="149.0" prefWidth="175.0" AnchorPane.bottomAnchor="189.0" AnchorPane.leftAnchor="411.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="31.0" />
@@ -49,15 +58,6 @@
                                     </contextMenu>
                                 </TreeView>
                                 <Button fx:id="rateProductButton" layoutX="411.0" layoutY="216.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="Rate" />
-                        <BorderPane fx:id="imageBorderPane" layoutX="29.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
-                           <bottom>
-                              <ImageView fx:id="imageView" fitHeight="197.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                                 <image>
-                                    <Image url="@../../../../../../../../Desktop/626999e320e97d079f2f91c371b1dde3.jpg" />
-                                 </image>
-                              </ImageView>
-                           </bottom>
-                        </BorderPane>
                             </children>
                         </AnchorPane>
                     </content>
