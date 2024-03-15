@@ -37,6 +37,8 @@ public class MainShopController implements Initializable {
     @FXML
     public Tab usersTab;
     @FXML
+    public  Tab testbyDo;
+    @FXML
     public Tab warehouseTab;
     @FXML
     public ListView<Warehouse> warehouseList;
