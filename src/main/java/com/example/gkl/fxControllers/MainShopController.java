@@ -353,18 +353,18 @@ public class MainShopController implements Initializable {
         //productGenreComboBox.getItems().addAll(ProductGenre.values());
         //productType.getItems().addAll(ProductType.values());
         customerTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
+           /* if (event.getClickCount() == 2) {
                 if (checkAdmin(currentUser)) {
                     getSelectedUser();
                 } else {
                     JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Permission denied", "You do not have the permission to edit users.", "Please contact your superior.");
                 }
-            }
+            }*/
         });
         managerTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
+          /*  if (event.getClickCount() == 2) {
                 getSelectedUser();
-            }
+            }*/
         });
         rateProductButton.setOnAction(event -> {
             try {
