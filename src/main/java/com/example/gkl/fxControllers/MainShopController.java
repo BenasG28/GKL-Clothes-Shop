@@ -69,23 +69,7 @@ public class MainShopController implements Initializable {
     public Button dateFilterButton;
     public TextField customerIdField;
     public Button customerFilterButton;
-    public Tab orderStatsTab;
-    public BarChart<String, Number> ordersChart;
-    public CategoryAxis xAxis;
-    public DatePicker statsDateStart;
-    public DatePicker statsDateEnd;
-    public ComboBox<PurchaseStatus> statsOrderCombo;
-    public Button statsDateFilter;
-    public Button statsStatusFilter;
-    public TextField statsCustomerIdTextField;
-    public Button statsCustomerFilterButton;
-    public TableColumn<StatsTableParameters, Integer> statsIdColumn;
-    public TableColumn<StatsTableParameters, Double> statsAmountColumn;
-    public TableColumn<StatsTableParameters, String> statsDateColumn;
-    public TableView<StatsTableParameters> statsTable;
     public MenuItem replyContext;
-    public BorderPane imageBorderPane;
-    public ImageView imageView;
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
     private GenericHib genericHib;
@@ -93,9 +77,6 @@ public class MainShopController implements Initializable {
     private Cart userCart;
     private ProductHib productHib;
     private PurchaseHib purchaseHib;
-    private final ObservableList<StatsTableParameters> statsData = FXCollections.observableArrayList();
-
-
 
     public void setData(EntityManagerFactory entityManagerFactory, User currentUser) {
         this.entityManagerFactory = entityManagerFactory;
@@ -133,74 +114,7 @@ public class MainShopController implements Initializable {
         } else if (usersTab.isSelected()) {
 
         }
-        else if(orderStatsTab.isSelected()) {
-            statsOrderCombo.getItems().clear();
-            statsOrderCombo.getItems().addAll(PurchaseStatus.values());
-            ordersChart.getData().clear();
-            populateChart(genericHib.getAllRecords(Purchase.class));
-            loadStatsTable(genericHib.getAllRecords(Purchase.class));
-        }
-
     }
-    public void filterStatsByDate(){
-        statsTable.getItems().clear();
-        LocalDate startDate = statsDateStart.getValue();
-        LocalDate endDate = statsDateEnd.getValue();
-        loadStatsTable(purchaseHib.filterByDate(startDate,endDate));
-        populateChart(purchaseHib.filterByDate(startDate,endDate));
-    }
-    public void filterStatsByStatus(){
-        statsTable.getItems().clear();
-        PurchaseStatus status = statsOrderCombo.getValue();
-        loadStatsTable(purchaseHib.filterByStatus(status));
-        populateChart(purchaseHib.filterByStatus(status));
-    }
-
-    public void filterStatsByCustomer() {
-        statsTable.getItems().clear();
-        int customerId = Integer.parseInt(statsCustomerIdTextField.getText());
-        loadStatsTable(purchaseHib.filterByCustomer(customerId));
-        populateChart(purchaseHib.filterByCustomer(customerId));
-    }
-    private void loadStatsTable(List<Purchase> purchaseList){
-        statsTable.getItems().clear();
-        statsIdColumn.setCellValueFactory(new PropertyValueFactory<StatsTableParameters, Integer>("id"));
-        statsAmountColumn.setCellValueFactory(new PropertyValueFactory<StatsTableParameters, Double>("salesAmount"));
-        statsDateColumn.setCellValueFactory(new PropertyValueFactory<StatsTableParameters, String>("date"));
-        for(Purchase purchase : purchaseList){
-            StatsTableParameters statsTableParameters = new StatsTableParameters();
-            statsTableParameters.setId(purchase.getId());
-            statsTableParameters.setSalesAmount(purchase.getPurchaseAmount());
-            statsTableParameters.setDate(String.valueOf(purchase.getDateCreated()));
-            statsData.add(statsTableParameters);
-            statsTable.setItems(statsData);
-        }
-    }
-    public void populateChart(List<Purchase> purchaseList){
-        ordersChart.getData().clear();
-        Map<LocalDate, Double> summedValuesByDate = new HashMap<>();
-        for (Purchase purchase : purchaseList) {
-            LocalDate date = purchase.getDateCreated();
-            Double totalPrice = purchase.getPurchaseAmount();
-            if (summedValuesByDate.containsKey(date)) {
-                summedValuesByDate.put(date, summedValuesByDate.get(date) + totalPrice);
-            } else {
-                summedValuesByDate.put(date, totalPrice);
-            }
-        }
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        summedValuesByDate.forEach((date, sum) -> {
-            series.getData().add(new XYChart.Data<>(date.toString(), sum));
-        });
-        series.setName("Orders by date and sum");
-        ordersChart.getData().add(series);
-        ordersChart.getXAxis().setLabel("Date");
-        ordersChart.getYAxis().setLabel("Total Amount");
-
-    }
-
-
-
     private void limitAccess() {
         if (currentUser.getClass() == Manager.class) {
             Manager manager = (Manager) currentUser;
@@ -211,7 +125,6 @@ public class MainShopController implements Initializable {
             tabPane.getTabs().remove(usersTab);
             tabPane.getTabs().remove(warehouseTab);
             tabPane.getTabs().remove(productsTab);
-            tabPane.getTabs().remove(orderStatsTab);
         } else {
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "WTF", "WTF", "WTF");
         }
