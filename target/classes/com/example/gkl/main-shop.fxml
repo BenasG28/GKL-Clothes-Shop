@@ -63,36 +63,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="usersTab" onSelectionChanged="#loadTabValues" text="Users">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <TableView fx:id="customerTable" layoutX="14.0" layoutY="58.0" prefHeight="146.0" prefWidth="578.0">
-                                    <columns>
-                                        <TableColumn fx:id="customerIdCol" prefWidth="42.0" text="ID" />
-                                        <TableColumn fx:id="customerLoginCol" prefWidth="85.0" text="Login" />
-                                        <TableColumn fx:id="customerPasswordCol" prefWidth="85.0" text="Password" />
-                                        <TableColumn fx:id="customerContactMailCol" prefWidth="85.0" text="Contact Mail" />
-                                        <TableColumn fx:id="customerBirthDateCol" prefWidth="85.0" text="Birth Date" />
-                                        <TableColumn fx:id="customerFirstNameCol" prefWidth="85.0" text="First Name" />
-                                        <TableColumn fx:id="customerLastNameCol" prefWidth="85.0" text="Last Name" />
-                                    </columns>
-                                </TableView>
-                                <TableView fx:id="managerTable" layoutX="14.0" layoutY="213.0" prefHeight="144.0" prefWidth="578.0">
-                                    <columns>
-                                        <TableColumn fx:id="managerIdCol" prefWidth="42.0" text="ID" />
-                                        <TableColumn fx:id="managerLoginCol" prefWidth="108.0" text="Login" />
-                                        <TableColumn fx:id="managerPasswordCol" prefWidth="75.0" text="Password" />
-                                        <TableColumn fx:id="managerContactMailCol" text="Contact Mail" />
-                                        <TableColumn fx:id="managerBirthDateCol" prefWidth="79.0" text="Birth Date" />
-                                        <TableColumn fx:id="managerFirstNameCol" prefWidth="83.0" text="First Name" />
-                                        <TableColumn fx:id="managerLastNameCol" prefWidth="88.0" text="Last Name" />
-                                    </columns>
-                                </TableView>
-                                <Button fx:id="addUserButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#createUser" text="Add" />
-                                <Button fx:id="deleteUserButton" layoutX="82.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteUser" text="Delete" />
-                            </children></AnchorPane>
-                    </content>
+                <Tab fx:id="usersTab" onSelectionChanged="#loadUserTab" text="Users">
                 </Tab>
                 <Tab fx:id="warehouseTab" onSelectionChanged="#loadWarehouseTab" text="Warehouse">
                 </Tab>

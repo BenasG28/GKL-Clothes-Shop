@@ -149,25 +149,8 @@ public class MainShopController implements Initializable {
     private ProductHib productHib;
     private PurchaseHib purchaseHib;
     private CommentHib commentHib;
-    public TableView<CustomerTableParameters> customerTable;
-    public TableColumn<CustomerTableParameters, Integer> customerIdCol;
-    public TableColumn<CustomerTableParameters, String> customerLoginCol;
-    public TableColumn<CustomerTableParameters, String> customerPasswordCol;
-    public TableColumn<CustomerTableParameters, String> customerContactMailCol;
-    public TableColumn<CustomerTableParameters, String> customerBirthDateCol;
-    public TableColumn<CustomerTableParameters, String> customerFirstNameCol;
-    public TableColumn<CustomerTableParameters, String> customerLastNameCol;
-    public TableView<ManagerTableParameters> managerTable;
-    public TableColumn<ManagerTableParameters, Integer> managerIdCol;
-    public TableColumn<ManagerTableParameters, String> managerLoginCol;
-    public TableColumn<ManagerTableParameters, String> managerPasswordCol;
-    public TableColumn<ManagerTableParameters, String> managerContactMailCol;
-    public TableColumn<ManagerTableParameters, String> managerBirthDateCol;
-    public TableColumn<ManagerTableParameters, String> managerFirstNameCol;
-    public TableColumn<ManagerTableParameters, String> managerLastNameCol;
-    private final ObservableList<CustomerTableParameters> customerData = FXCollections.observableArrayList();
-    private final ObservableList<ManagerTableParameters> managerData = FXCollections.observableArrayList();
     private final ObservableList<StatsTableParameters> statsData = FXCollections.observableArrayList();
+
 
 
     public void setData(EntityManagerFactory entityManagerFactory, User currentUser) {
@@ -206,8 +189,7 @@ public class MainShopController implements Initializable {
             statusComboBox.getItems().clear();
             statusComboBox.getItems().addAll(PurchaseStatus.values());
         } else if (usersTab.isSelected()) {
-            loadCustomerTable();
-            loadManagerTable();
+
         }
         else if(orderStatsTab.isSelected()) {
             statsOrderCombo.getItems().clear();
@@ -275,51 +257,7 @@ public class MainShopController implements Initializable {
 
     }
 
-    private void loadCustomerTable() {
-        customerTable.getItems().clear();
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<CustomerTableParameters, Integer>("id"));
-        customerLoginCol.setCellValueFactory(new PropertyValueFactory<CustomerTableParameters, String>("login"));
-        customerPasswordCol.setCellValueFactory(new PropertyValueFactory<CustomerTableParameters, String>("password"));
-        customerFirstNameCol.setCellValueFactory(new PropertyValueFactory<CustomerTableParameters, String>("firstName"));
-        customerLastNameCol.setCellValueFactory(new PropertyValueFactory<CustomerTableParameters, String>("lastName"));
-        customerContactMailCol.setCellValueFactory(new PropertyValueFactory<CustomerTableParameters, String>("contactMail"));
-        customerBirthDateCol.setCellValueFactory(new PropertyValueFactory<CustomerTableParameters, String>("birthDate"));
-        for (Customer customer : genericHib.getAllRecords(Customer.class)) {
-            CustomerTableParameters customerTableParameters = new CustomerTableParameters();
-            customerTableParameters.setId(customer.getId());
-            customerTableParameters.setLogin(customer.getLogin());
-            customerTableParameters.setPassword(customer.getPassword());
-            customerTableParameters.setContactMail(customer.getContactMail());
-            customerTableParameters.setBirthDate(String.valueOf(customer.getBirthDate()));
-            customerTableParameters.setFirstName(customer.getFirstName());
-            customerTableParameters.setLastName(customer.getLastName());
-            customerData.add(customerTableParameters);
-            customerTable.setItems(customerData);
-        }
-    }
 
-    private void loadManagerTable() {
-        managerTable.getItems().clear();
-        managerIdCol.setCellValueFactory(new PropertyValueFactory<ManagerTableParameters, Integer>("id"));
-        managerLoginCol.setCellValueFactory(new PropertyValueFactory<ManagerTableParameters, String>("login"));
-        managerPasswordCol.setCellValueFactory(new PropertyValueFactory<ManagerTableParameters, String>("password"));
-        managerFirstNameCol.setCellValueFactory(new PropertyValueFactory<ManagerTableParameters, String>("firstName"));
-        managerLastNameCol.setCellValueFactory(new PropertyValueFactory<ManagerTableParameters, String>("lastName"));
-        managerContactMailCol.setCellValueFactory(new PropertyValueFactory<ManagerTableParameters, String>("contactMail"));
-        managerBirthDateCol.setCellValueFactory(new PropertyValueFactory<ManagerTableParameters, String>("birthDate"));
-        for (Manager manager : genericHib.getAllRecords(Manager.class)) {
-            ManagerTableParameters managerTableParameters = new ManagerTableParameters();
-            managerTableParameters.setId(manager.getId());
-            managerTableParameters.setLogin(manager.getLogin());
-            managerTableParameters.setPassword(manager.getPassword());
-            managerTableParameters.setContactMail(manager.getContactMail());
-            managerTableParameters.setBirthDate(String.valueOf(manager.getBirthDate()));
-            managerTableParameters.setFirstName(manager.getFirstName());
-            managerTableParameters.setLastName(manager.getLastName());
-            managerData.add(managerTableParameters);
-            managerTable.setItems(managerData);
-        }
-    }
 
     private void limitAccess() {
         if (currentUser.getClass() == Manager.class) {
@@ -352,7 +290,20 @@ public class MainShopController implements Initializable {
         }catch (IOException e){
             e.printStackTrace();
         }
-        System.out.println("hey");
+    }
+    @FXML
+    private void loadUserTab(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/userTab.fxml"));
+        try{
+            Parent userRoot = loader.load();
+            UserController userController = loader.getController();
+            userController.setData(entityManagerFactory, currentUser);
+            usersTab.setContent(userRoot);
+            userController.loadCustomerTable();
+            userController.loadManagerTable();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -361,20 +312,7 @@ public class MainShopController implements Initializable {
         //initializeWarehouseController();
 //        productGenreComboBox.getItems().addAll(ProductGenre.values());
 //        productType.getItems().addAll(ProductType.values());
-        customerTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                if (checkAdmin(currentUser)) {
-                    getSelectedUser();
-                } else {
-                    JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Permission denied", "You do not have the permission to edit users.", "Please contact your superior.");
-                }
-            }
-        });
-        managerTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                getSelectedUser();
-            }
-        });
+
         rateProductButton.setOnAction(event -> {
             try {
                 leaveRating(productList.getSelectionModel().getSelectedItem());

@@ -63,10 +63,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="usersTab" onSelectionChanged="#loadTabValues" text="Users">
-                    <content>
-
-                    </content>
+                <Tab fx:id="usersTab" onSelectionChanged="#loadUserTab" text="Users">
                 </Tab>
                 <Tab fx:id="warehouseTab" onSelectionChanged="#loadWarehouseTab" text="Warehouse">
                 </Tab>
