@@ -183,7 +183,7 @@ public class MainShopController implements Initializable {
         } else if (warehouseTab.isSelected()) {
 
         } else if (commentTab.isSelected()) {
-            loadCommentList();
+
         } else if (ordersTab.isSelected()) {
             getAllOrders();
             statusComboBox.getItems().clear();
@@ -305,10 +305,23 @@ public class MainShopController implements Initializable {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void loadCommentTab(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/commentTab.fxml"));
+        try{
+            Parent commentRoot = loader.load();
+            CommentController commentController = loader.getController();
+            commentController.setData(entityManagerFactory, currentUser);
+            commentTab.setContent(commentRoot);
+            commentController.loadCommentList();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        trackEditor.setVisible(false);
+
         //initializeWarehouseController();
 //        productGenreComboBox.getItems().addAll(ProductGenre.values());
 //        productType.getItems().addAll(ProductType.values());
@@ -461,13 +474,6 @@ public class MainShopController implements Initializable {
         productListManager.getItems().addAll(genericHib.getAllRecords(Product.class));
     }
 
-    public void openTrackEditor() {
-        trackEditor.setVisible(true);
-    }
-
-    public void closeTrackEditor() {
-        trackEditor.setVisible(false);
-    }
 
     /*public void addTrack() {
         Track track = new Track(trackTitleField.getText(), Integer.parseInt(trackLengthField.getText()));
@@ -638,71 +644,22 @@ public class MainShopController implements Initializable {
         soldoutCheckBox.setSelected(false);
     }
 */
-    //----------------------Warehouse functionality-----------------------------//
-
-    //----------------------Comment functionality-----------------------------//
-    public void selectProduct() {
-        Product selectedProduct = productListForComments.getSelectionModel().getSelectedItem();
-        if (selectedProduct != null) commentProductTitleField.setText(selectedProduct.getTitle());
+   public void filterByDate() {
+       orderListManager.getItems().clear();
+       LocalDate startDate = filterDateStart.getValue();
+       LocalDate endDate = filterDateEnd.getValue();
+       orderListManager.getItems().addAll(purchaseHib.filterByDate(startDate,endDate));
+   }
+    public void filterByStatus(){
+        orderListManager.getItems().clear();
+        PurchaseStatus status = statusComboBox.getValue();
+        orderListManager.getItems().addAll(purchaseHib.filterByStatus(status));
     }
 
-    public void addComment() {
-        Comment comment = new Comment(commentTitleField.getText(), commentBodyField.getText(), commentDateField.getValue(), currentUser);
-        Product selectedProduct = productListForComments.getSelectionModel().getSelectedItem();
-        if (selectedProduct != null) {
-            comment.setProduct(selectedProduct);
-        } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Missing Product", "No product selected", "Please select a product");
-        }
-        genericHib.create(comment);
-        clearCommentFields();
-        loadCommentList();
-    }
-
-    public void updateComment() {
-        Comment selectedComment = commentList.getSelectionModel().getSelectedItem();
-        Comment comment = genericHib.getEntityById(Comment.class, selectedComment.getId());
-        comment.setCommentTitle(commentTitleField.getText());
-        comment.setCommentBody(commentBodyField.getText());
-        comment.setDateCreated(commentDateField.getValue());
-        genericHib.update(comment);
-        loadCommentList();
-    }
-
-    public void removeComment() {
-        Comment selectedComment = commentList.getSelectionModel().getSelectedItem();
-        commentHib.deleteComment(selectedComment.getId());
-        loadCommentList();
-    }
-
-    private void clearCommentFields() {
-        commentTitleField.setText(null);
-        commentBodyField.setText(null);
-        commentDateField.setValue(null);
-        commentProductTitleField.setText(null);
-    }
-
-    public void loadCommentData() {
-        Comment selectedComment = commentList.getSelectionModel().getSelectedItem();
-        commentTitleField.setText(selectedComment.getCommentTitle());
-        commentBodyField.setText(selectedComment.getCommentBody());
-        commentDateField.setDisable(false);
-        commentDateField.setValue(selectedComment.getDateCreated());
-        commentProductTitleField.setText(selectedComment.getProduct().getTitle());
-    }
-
-    private void loadCommentList() {
-        commentList.getItems().clear();
-        if (currentUser.getClass() == Customer.class) {
-            commentList.getItems().addAll(commentHib.getAllCommentsByUser(currentUser));
-        } else {
-            commentList.getItems().addAll(genericHib.getAllRecords(Comment.class));
-
-        }
-        productListForComments.getItems().clear();
-        productListForComments.getItems().addAll(genericHib.getAllRecords(Product.class));
-        commentDateField.setDisable(true);
-        commentDateField.setValue(LocalDate.now());
+    public void filterByCustomer() {
+        orderListManager.getItems().clear();
+        int customerId = Integer.parseInt(customerIdField.getText());
+        orderListManager.getItems().addAll(purchaseHib.filterByCustomer(customerId));
     }
 
     public void leaveRating(Product product) throws IOException {
@@ -743,22 +700,6 @@ public class MainShopController implements Initializable {
         parentComment.getChildren().add(treeItem);
         comment.getReplies().forEach(sub -> addTreeItem(sub, treeItem));
     }
-
-    public void filterByDate() {
-        orderListManager.getItems().clear();
-        LocalDate startDate = filterDateStart.getValue();
-        LocalDate endDate = filterDateEnd.getValue();
-        orderListManager.getItems().addAll(purchaseHib.filterByDate(startDate,endDate));
-    }
-    public void filterByStatus(){
-        orderListManager.getItems().clear();
-        PurchaseStatus status = statusComboBox.getValue();
-        orderListManager.getItems().addAll(purchaseHib.filterByStatus(status));
-    }
-
-    public void filterByCustomer() {
-        orderListManager.getItems().clear();
-        int customerId = Integer.parseInt(customerIdField.getText());
-        orderListManager.getItems().addAll(purchaseHib.filterByCustomer(customerId));
-    }
 }
+
+

@@ -105,44 +105,14 @@
                                 <TextField fx:id="productPriceField" layoutX="514.0" layoutY="87.0" prefHeight="25.0" prefWidth="61.0" promptText="Price" />
                                 <TextField fx:id="productLengthField" layoutX="416.0" layoutY="87.0" prefHeight="26.0" prefWidth="86.0" promptText="Length" />
                                 <ListView fx:id="productTrackListManager" layoutX="316.0" layoutY="173.0"  prefHeight="133.0" prefWidth="196.0" /> <!--onMouseClicked="#loadTrackData"-->
-                                <Button fx:id="openTrackEditorButton" layoutX="514.0" layoutY="209.0" mnemonicParsing="false" onAction="#openTrackEditor" text="Edit Tracks" />
                                 <TextField fx:id="productUniqueAttributeField" layoutX="516.0" layoutY="51.0" prefHeight="26.0" prefWidth="74.0" />
                                 <ComboBox fx:id="productGenreComboBox" layoutX="317.0" layoutY="86.0" prefHeight="26.0" prefWidth="85.0" promptText="Genre" />
                                 <Button fx:id="clearButton" layoutX="536.0" layoutY="320.0" mnemonicParsing="false"  text="Clear" /> <!--onAction="#clearFields"-->
-                                <SplitPane fx:id="trackEditor" layoutX="61.0" layoutY="15.0" prefHeight="253.0" prefWidth="140.0">
-                                    <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="231.0">
-                                            <children>
-                                                <TextField fx:id="trackTitleField" layoutY="20.0" prefHeight="26.0" prefWidth="135.0" promptText="Track Title" />
-                                                <TextField fx:id="trackLengthField" layoutY="73.0" prefHeight="26.0" prefWidth="136.0" promptText="Track length" />
-                                                <Button fx:id="addTrackButton" layoutX="47.0" layoutY="112.0" mnemonicParsing="false" text="Add" />  <!--onMouseClicked="#addTrack"-->
-                                                <Button fx:id="updateTrackButton" layoutX="39.0" layoutY="145.0" mnemonicParsing="false"  text="Update" /> <!--onAction="#updateTrack"-->
-                                                <Button fx:id="deleteTrackButton" layoutX="43.0" layoutY="177.0" mnemonicParsing="false" text="Delete" /> <!-- onAction="#removeTrack"-->
-                                                <Button fx:id="closeTrackEditorButton" layoutX="44.0" layoutY="209.0" mnemonicParsing="false" onAction="#closeTrackEditor" text="Close " />
-                                            </children>
-                                        </AnchorPane>
-                                    </items>
-                                </SplitPane>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="commentTab" onSelectionChanged="#loadTabValues" text="Comments">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <ListView fx:id="commentList" layoutX="382.0" layoutY="185.0" onMouseClicked="#loadCommentData" prefHeight="178.0" prefWidth="200.0" />
-                                <TextField fx:id="commentTitleField" layoutX="107.0" layoutY="45.0" promptText="Comment Title" />
-                                <TextArea fx:id="commentBodyField" layoutX="87.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" promptText="Comment body" />
-                                <Button fx:id="addCommentButton" layoutX="47.0" layoutY="319.0" mnemonicParsing="false" onAction="#addComment" text="Add" />
-                                <Button fx:id="updateCommentButton" layoutX="152.0" layoutY="319.0" mnemonicParsing="false" onAction="#updateComment" text="Update" />
-                                <Button fx:id="removeCommentButton" layoutX="261.0" layoutY="319.0" mnemonicParsing="false" onAction="#removeComment" text="Remove" />
-                                <DatePicker fx:id="commentDateField" disable="true" layoutX="94.0" layoutY="78.0" promptText="Comment Creation Date" />
-                                <ListView fx:id="productListForComments" layoutX="382.0" layoutY="15.0" onMousePressed="#selectProduct" prefHeight="152.0" prefWidth="200.0" />
-                                <TextField fx:id="commentProductTitleField" layoutX="107.0" layoutY="14.0" promptText="Product Title" />
-                            </children>
-                        </AnchorPane>
-                    </content>
+                <Tab fx:id="commentTab" onSelectionChanged="#loadCommentTab" text="Comments">
                 </Tab>
                 <Tab fx:id="orderStatsTab" onSelectionChanged="#loadTabValues" text="Order Stats">
                     <content>
