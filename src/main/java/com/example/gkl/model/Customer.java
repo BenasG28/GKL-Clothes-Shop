@@ -14,6 +14,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 public class Customer extends User {
+    private double customerWaistMeas;
+    private double customerHipMeas;
+    private double customerInseamMeas;
+    private double customerLegLengthMeas;
+    private double customerShoulderMeas;
+    private double customerChestMeas;
+    private double customerBackMeas;
+    private double customerSleeveMeas;
     private boolean discountCard;
 
     public Customer(String login, String password, String contactMail, LocalDate birthDate, String firstName, String lastName, String phoneNumber, String address, boolean discountCard) {
