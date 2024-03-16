@@ -88,29 +88,7 @@
                             </children></AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="productsTab" onSelectionChanged="#loadTabValues" text="Products">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="404.0" prefWidth="600.0">
-                            <children>
-                                <ListView fx:id="productListManager" layoutX="13.0" layoutY="14.0"  prefHeight="140.0" prefWidth="236.0" /> <!--onMouseClicked="#loadProductData"-->
-                                <TextField fx:id="productTitleField" layoutX="316.0" layoutY="50.0" prefHeight="26.0" prefWidth="86.0" promptText="Title" />
-                                <TextField fx:id="productDescriptionField" alignment="TOP_LEFT" layoutX="14.0" layoutY="171.0" prefHeight="111.0" prefWidth="234.0" promptText="Description" />
-                                <TextField fx:id="productLabelField" layoutX="416.0" layoutY="51.0" prefHeight="26.0" prefWidth="86.0" promptText="Label" />
-                                <ComboBox fx:id="warehouseComboBox" layoutX="14.0" layoutY="320.0" prefHeight="25.0" prefWidth="234.0" />
-                                <ComboBox fx:id="productType" layoutX="315.0" layoutY="14.0"  prefHeight="25.0" prefWidth="276.0" promptText="Product" /> <!--onAction="#changeProductField"-->
-                                <DatePicker fx:id="productReleaseDateField" layoutX="316.0" layoutY="128.0" prefHeight="25.0" prefWidth="275.0" promptText="Release Date" />
-                                <Button fx:id="addNewProductButton" layoutX="315.0" layoutY="320.0" mnemonicParsing="false"  text="Add" /> <!--onAction="#addNewProduct"-->
-                                <Button fx:id="updateProductButton" layoutX="379.0" layoutY="320.0" mnemonicParsing="false"  text="Update" /> <!--onAction="#updateProduct"-->
-                                <Button fx:id="deleteProductButton" layoutX="459.0" layoutY="320.0" mnemonicParsing="false" onAction="#deleteProduct" text="Delete" />
-                                <TextField fx:id="productPriceField" layoutX="514.0" layoutY="87.0" prefHeight="25.0" prefWidth="61.0" promptText="Price" />
-                                <TextField fx:id="productLengthField" layoutX="416.0" layoutY="87.0" prefHeight="26.0" prefWidth="86.0" promptText="Length" />
-                                <ListView fx:id="productTrackListManager" layoutX="316.0" layoutY="173.0"  prefHeight="133.0" prefWidth="196.0" /> <!--onMouseClicked="#loadTrackData"-->
-                                <TextField fx:id="productUniqueAttributeField" layoutX="516.0" layoutY="51.0" prefHeight="26.0" prefWidth="74.0" />
-                                <ComboBox fx:id="productGenreComboBox" layoutX="317.0" layoutY="86.0" prefHeight="26.0" prefWidth="85.0" promptText="Genre" />
-                                <Button fx:id="clearButton" layoutX="536.0" layoutY="320.0" mnemonicParsing="false"  text="Clear" /> <!--onAction="#clearFields"-->
-                            </children>
-                        </AnchorPane>
-                    </content>
+                <Tab fx:id="productsTab" onSelectionChanged="#loadProductTab" text="Products">
                 </Tab>
                 <Tab fx:id="commentTab" onSelectionChanged="#loadCommentTab" text="Comments">
                 </Tab>
