@@ -37,9 +37,7 @@
                         <BorderPane fx:id="imageBorderPane" layoutX="29.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
                            <bottom>
                               <ImageView fx:id="imageView" fitHeight="197.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                                 <image>
-                                    <Image url="@../../../../../../../../Desktop/626999e320e97d079f2f91c371b1dde3.jpg" />
-                                 </image>
+
                               </ImageView>
                            </bottom>
                         </BorderPane>
@@ -67,48 +65,10 @@
                 </Tab>
                 <Tab fx:id="usersTab" onSelectionChanged="#loadTabValues" text="Users">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <TableView fx:id="customerTable" layoutX="14.0" layoutY="58.0" prefHeight="146.0" prefWidth="578.0">
-                                    <columns>
-                                        <TableColumn fx:id="customerIdCol" prefWidth="42.0" text="ID" />
-                                        <TableColumn fx:id="customerLoginCol" prefWidth="85.0" text="Login" />
-                                        <TableColumn fx:id="customerPasswordCol" prefWidth="85.0" text="Password" />
-                                        <TableColumn fx:id="customerContactMailCol" prefWidth="85.0" text="Contact Mail" />
-                                        <TableColumn fx:id="customerBirthDateCol" prefWidth="85.0" text="Birth Date" />
-                                        <TableColumn fx:id="customerFirstNameCol" prefWidth="85.0" text="First Name" />
-                                        <TableColumn fx:id="customerLastNameCol" prefWidth="85.0" text="Last Name" />
-                                    </columns>
-                                </TableView>
-                                <TableView fx:id="managerTable" layoutX="14.0" layoutY="213.0" prefHeight="144.0" prefWidth="578.0">
-                                    <columns>
-                                        <TableColumn fx:id="managerIdCol" prefWidth="42.0" text="ID" />
-                                        <TableColumn fx:id="managerLoginCol" prefWidth="108.0" text="Login" />
-                                        <TableColumn fx:id="managerPasswordCol" prefWidth="75.0" text="Password" />
-                                        <TableColumn fx:id="managerContactMailCol" text="Contact Mail" />
-                                        <TableColumn fx:id="managerBirthDateCol" prefWidth="79.0" text="Birth Date" />
-                                        <TableColumn fx:id="managerFirstNameCol" prefWidth="83.0" text="First Name" />
-                                        <TableColumn fx:id="managerLastNameCol" prefWidth="88.0" text="Last Name" />
-                                    </columns>
-                                </TableView>
-                                <Button fx:id="addUserButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#createUser" text="Add" />
-                                <Button fx:id="deleteUserButton" layoutX="82.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteUser" text="Delete" />
-                            </children></AnchorPane>
+
                     </content>
                 </Tab>
-                <Tab fx:id="warehouseTab" onSelectionChanged="#loadTabValues" text="Warehouse">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <ListView fx:id="warehouseList" layoutX="20.0" layoutY="14.0" onMouseClicked="#loadWarehouseData" prefHeight="344.0" prefWidth="210.0" />
-                                <Button fx:id="addWarehouseButton" layoutX="248.0" layoutY="332.0" mnemonicParsing="false" onAction="#addNewWarehouse" prefHeight="26.0" prefWidth="86.0" text="Add new" />
-                                <Button fx:id="updateWarehouseButton" layoutX="351.0" layoutY="332.0" mnemonicParsing="false" onAction="#updateWarehouse" prefHeight="26.0" prefWidth="83.0" text="Update" />
-                                <Button fx:id="removeWarehouseButton" layoutX="452.0" layoutY="332.0" mnemonicParsing="false" onAction="#removeWarehouse" prefHeight="26.0" prefWidth="97.0" text="Remove" />
-                                <TextField fx:id="addressWarehouseField" layoutX="260.0" layoutY="62.0" promptText="Address" />
-                                <TextField fx:id="titleWarehouseField" layoutX="260.0" layoutY="27.0" promptText="Title" />
-                            </children>
-                        </AnchorPane>
-                    </content>
+                <Tab fx:id="warehouseTab" onSelectionChanged="#loadWarehouseTab" text="Warehouse">
                 </Tab>
                 <Tab fx:id="ordersTab" onSelectionChanged="#loadTabValues" text="Orders">
                     <content>
@@ -135,32 +95,32 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="404.0" prefWidth="600.0">
                             <children>
-                                <ListView fx:id="productListManager" layoutX="13.0" layoutY="14.0" onMouseClicked="#loadProductData" prefHeight="140.0" prefWidth="236.0" />
+                                <ListView fx:id="productListManager" layoutX="13.0" layoutY="14.0"  prefHeight="140.0" prefWidth="236.0" /> <!--onMouseClicked="#loadProductData"-->
                                 <TextField fx:id="productTitleField" layoutX="316.0" layoutY="50.0" prefHeight="26.0" prefWidth="86.0" promptText="Title" />
                                 <TextField fx:id="productDescriptionField" alignment="TOP_LEFT" layoutX="14.0" layoutY="171.0" prefHeight="111.0" prefWidth="234.0" promptText="Description" />
                                 <TextField fx:id="productLabelField" layoutX="416.0" layoutY="51.0" prefHeight="26.0" prefWidth="86.0" promptText="Label" />
                                 <ComboBox fx:id="warehouseComboBox" layoutX="14.0" layoutY="320.0" prefHeight="25.0" prefWidth="234.0" />
-                                <ComboBox fx:id="productType" layoutX="315.0" layoutY="14.0" onAction="#changeProductField" prefHeight="25.0" prefWidth="276.0" promptText="Product" />
+                                <ComboBox fx:id="productType" layoutX="315.0" layoutY="14.0"  prefHeight="25.0" prefWidth="276.0" promptText="Product" /> <!--onAction="#changeProductField"-->
                                 <DatePicker fx:id="productReleaseDateField" layoutX="316.0" layoutY="128.0" prefHeight="25.0" prefWidth="275.0" promptText="Release Date" />
-                                <Button fx:id="addNewProductButton" layoutX="315.0" layoutY="320.0" mnemonicParsing="false" onAction="#addNewProduct" text="Add" />
-                                <Button fx:id="updateProductButton" layoutX="379.0" layoutY="320.0" mnemonicParsing="false" onAction="#updateProduct" text="Update" />
+                                <Button fx:id="addNewProductButton" layoutX="315.0" layoutY="320.0" mnemonicParsing="false"  text="Add" /> <!--onAction="#addNewProduct"-->
+                                <Button fx:id="updateProductButton" layoutX="379.0" layoutY="320.0" mnemonicParsing="false"  text="Update" /> <!--onAction="#updateProduct"-->
                                 <Button fx:id="deleteProductButton" layoutX="459.0" layoutY="320.0" mnemonicParsing="false" onAction="#deleteProduct" text="Delete" />
                                 <TextField fx:id="productPriceField" layoutX="514.0" layoutY="87.0" prefHeight="25.0" prefWidth="61.0" promptText="Price" />
                                 <TextField fx:id="productLengthField" layoutX="416.0" layoutY="87.0" prefHeight="26.0" prefWidth="86.0" promptText="Length" />
-                                <ListView fx:id="productTrackListManager" layoutX="316.0" layoutY="173.0" onMouseClicked="#loadTrackData" prefHeight="133.0" prefWidth="196.0" />
+                                <ListView fx:id="productTrackListManager" layoutX="316.0" layoutY="173.0"  prefHeight="133.0" prefWidth="196.0" /> <!--onMouseClicked="#loadTrackData"-->
                                 <Button fx:id="openTrackEditorButton" layoutX="514.0" layoutY="209.0" mnemonicParsing="false" onAction="#openTrackEditor" text="Edit Tracks" />
                                 <TextField fx:id="productUniqueAttributeField" layoutX="516.0" layoutY="51.0" prefHeight="26.0" prefWidth="74.0" />
                                 <ComboBox fx:id="productGenreComboBox" layoutX="317.0" layoutY="86.0" prefHeight="26.0" prefWidth="85.0" promptText="Genre" />
-                                <Button fx:id="clearButton" layoutX="536.0" layoutY="320.0" mnemonicParsing="false" onAction="#clearFields" text="Clear" />
+                                <Button fx:id="clearButton" layoutX="536.0" layoutY="320.0" mnemonicParsing="false"  text="Clear" /> <!--onAction="#clearFields"-->
                                 <SplitPane fx:id="trackEditor" layoutX="61.0" layoutY="15.0" prefHeight="253.0" prefWidth="140.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="231.0">
                                             <children>
                                                 <TextField fx:id="trackTitleField" layoutY="20.0" prefHeight="26.0" prefWidth="135.0" promptText="Track Title" />
                                                 <TextField fx:id="trackLengthField" layoutY="73.0" prefHeight="26.0" prefWidth="136.0" promptText="Track length" />
-                                                <Button fx:id="addTrackButton" layoutX="47.0" layoutY="112.0" mnemonicParsing="false" onMouseClicked="#addTrack" text="Add" />
-                                                <Button fx:id="updateTrackButton" layoutX="39.0" layoutY="145.0" mnemonicParsing="false" onAction="#updateTrack" text="Update" />
-                                                <Button fx:id="deleteTrackButton" layoutX="43.0" layoutY="177.0" mnemonicParsing="false" onAction="#removeTrack" text="Delete" />
+                                                <Button fx:id="addTrackButton" layoutX="47.0" layoutY="112.0" mnemonicParsing="false" text="Add" />  <!--onMouseClicked="#addTrack"-->
+                                                <Button fx:id="updateTrackButton" layoutX="39.0" layoutY="145.0" mnemonicParsing="false"  text="Update" /> <!--onAction="#updateTrack"-->
+                                                <Button fx:id="deleteTrackButton" layoutX="43.0" layoutY="177.0" mnemonicParsing="false" text="Delete" /> <!-- onAction="#removeTrack"-->
                                                 <Button fx:id="closeTrackEditorButton" layoutX="44.0" layoutY="209.0" mnemonicParsing="false" onAction="#closeTrackEditor" text="Close " />
                                             </children>
                                         </AnchorPane>

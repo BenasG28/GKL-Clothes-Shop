@@ -61,8 +61,6 @@ public class MainShopController implements Initializable {
     @FXML
     public TextField productDescriptionField;
     @FXML
-    public ComboBox<ProductType> productType;
-    @FXML
     public ComboBox<Warehouse> warehouseComboBox;
     @FXML
     public Label totalAmountLabel;
@@ -75,7 +73,7 @@ public class MainShopController implements Initializable {
     public TextField productLabelField;
     public DatePicker productReleaseDateField;
     public TextField productLengthField;
-    public ListView<Track> productTrackListManager;
+
     public Button openTrackEditorButton;
     public SplitPane trackEditor;
     public TextField trackTitleField;
@@ -86,7 +84,6 @@ public class MainShopController implements Initializable {
     public Button closeTrackEditorButton;
     public TextField productUniqueAttributeField;
     public Button addNewProductButton;
-    public ComboBox<ProductGenre> productGenreComboBox;
     public Tab commentTab;
     public ListView<Comment> commentList;
     public TextField commentTitleField;
@@ -147,7 +144,6 @@ public class MainShopController implements Initializable {
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
     private GenericHib genericHib;
-    private List<Track> tempTrackList = new ArrayList<>();
     private CartHib cartHib;
     private Cart userCart;
     private ProductHib productHib;
@@ -202,7 +198,7 @@ public class MainShopController implements Initializable {
             warehouseComboBox.getItems().clear();
             warehouseComboBox.getItems().addAll(genericHib.getAllRecords(Warehouse.class));
         } else if (warehouseTab.isSelected()) {
-            loadWarehouseList();
+
         } else if (commentTab.isSelected()) {
             loadCommentList();
         } else if (ordersTab.isSelected()) {
@@ -344,12 +340,27 @@ public class MainShopController implements Initializable {
     public void leaveComment() {
         tabPane.getSelectionModel().select(commentTab);
     }
+    @FXML
+    private void loadWarehouseTab(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/warehouseTab.fxml"));
+        try{
+            Parent warehouseRoot = loader.load();
+            WarehouseController warehouseController = loader.getController();
+            warehouseController.setData(entityManagerFactory);
+            warehouseTab.setContent(warehouseRoot);
+            warehouseController.loadWarehouseList();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        System.out.println("hey");
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         trackEditor.setVisible(false);
-        productGenreComboBox.getItems().addAll(ProductGenre.values());
-        productType.getItems().addAll(ProductType.values());
+        //initializeWarehouseController();
+//        productGenreComboBox.getItems().addAll(ProductGenre.values());
+//        productType.getItems().addAll(ProductType.values());
         customerTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 if (checkAdmin(currentUser)) {
@@ -380,158 +391,6 @@ public class MainShopController implements Initializable {
         });
     }
 
-    //----------------------User functionality-------------------------------//
-    public void getSelectedUser() {
-        if (customerTable.getSelectionModel().getSelectedItem() != null) {
-            var selectedItem = customerTable.getSelectionModel().getSelectedItem();
-            editUser(selectedItem);
-            customerTable.getSelectionModel().clearSelection();
-        }
-        if (managerTable.getSelectionModel().getSelectedItem() != null) {
-            var selectedItem = managerTable.getSelectionModel().getSelectedItem();
-            Manager manager = (Manager) currentUser;
-            if (selectedItem.getId() == manager.getId() || manager.isAdmin()) {
-                editUser(selectedItem);
-                managerTable.getSelectionModel().clearSelection();
-            } else {
-                JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Permission denied", "You do not have the permission to edit users.", "Please contact your superior.");
-            }
-        }
-    }
-
-    public boolean checkAdmin(User currentUser) {
-        if (currentUser.getClass() == Manager.class) {
-            Manager manager = (Manager) currentUser;
-            return manager.isAdmin();
-        }
-        return false;
-    }
-
-    @FXML
-    private void createUser() throws IOException {
-        if (checkAdmin(currentUser)) {
-            FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration.fxml"));
-            Parent parent = fxmlLoader.load();
-            RegistrationController registrationController = fxmlLoader.getController();
-            registrationController.setData(entityManagerFactory, true, "main-shop.fxml", currentUser);
-            Stage stage = (Stage) tabPane.getScene().getWindow();
-            Scene scene = new Scene(parent);
-            stage.setTitle("Create User");
-            stage.setScene(scene);
-            stage.show();
-        } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Permission denied", "You do not have the permission to edit users.", "Please contact your superior.");
-        }
-    }
-
-    public void deleteUser() {
-        if (checkAdmin(currentUser)) {
-            if (customerTable.getSelectionModel().getSelectedItem() != null) {
-                var selectedItem = customerTable.getSelectionModel().getSelectedItem();
-                int selectedId = selectedItem.getId();
-                genericHib.delete(User.class, selectedId);
-                loadCustomerTable();
-            }
-            if (managerTable.getSelectionModel().getSelectedItem() != null) {
-                var selectedItem = managerTable.getSelectionModel().getSelectedItem();
-                int selectedId = selectedItem.getId();
-                genericHib.delete(User.class, selectedId);
-                loadManagerTable();
-            }
-        } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Permission denied", "You do not have the permission to edit users.", "Please contact your superior.");
-        }
-
-    }
-
-    private void editUser(TableParameters selectedUser) {
-        int selectedId = selectedUser.getId();
-        User user = genericHib.getEntityById(User.class, selectedId);
-        var userType = user.getClass();
-        Stage editCustomerStage = new Stage();
-        VBox root = new VBox();
-        TextField loginField = new TextField(user.getLogin());
-        TextField passwordField = new TextField(user.getPassword());
-        TextField firstNameField = new TextField(user.getFirstName());
-        TextField lastNameField = new TextField(user.getLastName());
-        TextField contactMailField = new TextField(user.getContactMail());
-        TextField phoneNumberField = new TextField(user.getPhoneNumber());
-        DatePicker birthDatePicker = new DatePicker(user.getBirthDate());
-        CheckBox discountCardCheck = new CheckBox("Discount card");
-        discountCardCheck.setDisable(true);
-        TextField addressField = new TextField(user.getAddress());
-        CheckBox adminCheck = new CheckBox("Admin");
-        adminCheck.setDisable(true);
-        TextField employeeIdField = new TextField();
-        employeeIdField.setDisable(true);
-        TextField medCertificateField = new TextField();
-        medCertificateField.setDisable(true);
-        DatePicker employmentDatePicker = new DatePicker();
-        employmentDatePicker.setDisable(true);
-        if (userType.equals(Customer.class)) {
-            Customer customer = (Customer) user;
-            discountCardCheck.setDisable(false);
-            discountCardCheck.setSelected(customer.isDiscountCard());
-        } else if (userType.equals(Manager.class)) {
-            Manager manager = (Manager) user;
-            employeeIdField.setDisable(false);
-            employeeIdField.setText(manager.getEmployeeId());
-            medCertificateField.setDisable(false);
-            medCertificateField.setText(manager.getMedCertificate());
-            employmentDatePicker.setDisable(false);
-            employmentDatePicker.setValue(manager.getEmploymentDate());
-            if (checkAdmin(currentUser)) {
-                adminCheck.setDisable(false);
-                adminCheck.setSelected(manager.isAdmin());
-            }
-        }
-        Label firstNameLabel = new Label("First Name:");
-        Label lastNameLabel = new Label("Last Name:");
-        Label loginLabel = new Label("Login:");
-        Label passwordLabel = new Label("Password:");
-        Label contactMailLabel = new Label("Contact mail:");
-        Label phoneNumberLabel = new Label("Phone number:");
-        Label birthDateLabel = new Label("Birth Date:");
-        Label addressLabel = new Label("Address:");
-        Label employeeIdLabel = new Label("Employee ID:");
-        Label medCertLabel = new Label("Medical Certificate:");
-        Label employeeDateLabel = new Label("Employee Date Of Employ:");
-        Button updateUserButton = new Button("Update");
-        updateUserButton.setOnAction(event -> {
-            user.setFirstName(firstNameField.getText());
-            user.setLastName(lastNameField.getText());
-            user.setLogin(loginField.getText());
-            user.setPasswordHashed(passwordField.getText());
-            user.setContactMail(contactMailField.getText());
-            user.setPhoneNumber(phoneNumberField.getText());
-            user.setBirthDate(birthDatePicker.getValue());
-            user.setAddress(addressField.getText());
-            if (user instanceof Customer customer) {
-                customer.setDiscountCard(discountCardCheck.isSelected());
-            } else if (user instanceof Manager manager) {
-                manager.setEmployeeId(employeeIdField.getText());
-                manager.setAdmin(adminCheck.isSelected());
-                manager.setMedCertificate(medCertificateField.getText());
-                manager.setEmploymentDate(employmentDatePicker.getValue());
-            }
-            try {
-                genericHib.update(user);
-                if (user instanceof Customer) {
-                    loadCustomerTable();
-                } else if (user instanceof Manager) {
-                    loadManagerTable();
-                }
-                editCustomerStage.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        root.getChildren().addAll(loginLabel, loginField, passwordLabel, passwordField, firstNameLabel, firstNameField, lastNameLabel, lastNameField, contactMailLabel, contactMailField, phoneNumberLabel, phoneNumberField, birthDateLabel, birthDatePicker, addressLabel, addressField, discountCardCheck, employeeIdLabel, employeeIdField, medCertLabel, medCertificateField, employeeDateLabel, employmentDatePicker, adminCheck, updateUserButton);
-        Scene scene = new Scene(root, 500, 650);
-        editCustomerStage.setTitle("Edit User");
-        editCustomerStage.setScene(scene);
-        editCustomerStage.show();
-    }
 
     //----------------------Cart functionality-------------------------------//
     private void createOrGetCart() {
@@ -649,7 +508,7 @@ public class MainShopController implements Initializable {
     }
 
     //----------------------Product functionality-------------------------------//
-    public void changeProductField() {
+   /* public void changeProductField() {
         if (productType.getSelectionModel().getSelectedItem() == ProductType.VINYL) {
             productUniqueAttributeField.setPromptText("RPM");
         } else if (productType.getSelectionModel().getSelectedItem() == ProductType.COMPACT_DISC) {
@@ -657,7 +516,7 @@ public class MainShopController implements Initializable {
         } else if (productType.getSelectionModel().getSelectedItem() == ProductType.CASSETTE) {
             productUniqueAttributeField.setPromptText("Type");
         }
-    }
+    }*/
 
     private void loadProductListManager() {
         productListManager.getItems().clear();
@@ -672,7 +531,7 @@ public class MainShopController implements Initializable {
         trackEditor.setVisible(false);
     }
 
-    public void addTrack() {
+    /*public void addTrack() {
         Track track = new Track(trackTitleField.getText(), Integer.parseInt(trackLengthField.getText()));
         tempTrackList.add(track);
         loadTrackList();
@@ -703,8 +562,8 @@ public class MainShopController implements Initializable {
             productTrackListManager.getItems().add(t);
         }
     }
-
-    public void addNewProduct() {
+*/
+   /* public void addNewProduct() {
         //  try {
         Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
         ProductGenre selectedProductGenre = productGenreComboBox.getSelectionModel().getSelectedItem();
@@ -739,9 +598,9 @@ public class MainShopController implements Initializable {
 //        } catch (Exception e) {
 //            JavaFxCustomUtils.generateAlert(Alert.AlertType.ERROR, "Product creation error", "Error during create", "Product not created, check entered data");
 //        }
-    }
+    }*/
 
-    public void loadProductData() {
+    /*public void loadProductData() {
         Product product = productListManager.getSelectionModel().getSelectedItem();
         if (product != null) {
             if (product.getClass() == Vinyl.class) {
@@ -769,9 +628,9 @@ public class MainShopController implements Initializable {
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid product", "Product is not chosen", "Choose a product from the list");
         }
 
-    }
+    }*/
 
-    public void updateProduct() {
+    /*public void updateProduct() {
         try {
             Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
             if (selectedProduct != null) {
@@ -805,7 +664,7 @@ public class MainShopController implements Initializable {
         } catch (Exception e) {
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Update error", "Product was not updated", "Please get help.");
         }
-    }
+    }*/
 
     public void deleteProduct() {
         Product product = productListManager.getSelectionModel().getSelectedItem();
@@ -813,7 +672,7 @@ public class MainShopController implements Initializable {
             if (product != null) {
                 genericHib.deleteProduct(product.getId());
                 loadProductListManager();
-                clearFields();
+                //clearFields();
                 JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Deletion successful", "Product was deleted successfully", "Delete more!");
             } else {
                 JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Deletion error", "Product is not selected", "Please select a product.");
@@ -824,7 +683,7 @@ public class MainShopController implements Initializable {
         }
     }
 
-    public void clearFields() {
+   /* public void clearFields() {
         productType.getSelectionModel().clearSelection();
         productTitleField.setText(null);
         productLabelField.setText(null);
@@ -840,45 +699,8 @@ public class MainShopController implements Initializable {
         soldoutCheckBox.setDisable(true);
         soldoutCheckBox.setSelected(false);
     }
-
+*/
     //----------------------Warehouse functionality-----------------------------//
-
-    private void loadWarehouseList() {
-        warehouseList.getItems().clear();
-        warehouseList.getItems().addAll(genericHib.getAllRecords(Warehouse.class));
-    }
-
-    public void addNewWarehouse() {
-        genericHib.create(new Warehouse(titleWarehouseField.getText(), addressWarehouseField.getText()));
-        clearWarehouseFields();
-        loadWarehouseList();
-    }
-
-    public void clearWarehouseFields() {
-        titleWarehouseField.setText(null);
-        addressWarehouseField.setText(null);
-    }
-
-    public void updateWarehouse() {
-        Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
-        Warehouse warehouse = genericHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
-        warehouse.setTitle(titleWarehouseField.getText());
-        warehouse.setAddress(addressWarehouseField.getText());
-        genericHib.update(warehouse);
-        loadWarehouseList();
-    }
-
-    public void removeWarehouse() {
-        Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
-        genericHib.delete(Warehouse.class, selectedWarehouse.getId());
-        loadWarehouseList();
-    }
-
-    public void loadWarehouseData() {
-        Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
-        titleWarehouseField.setText(selectedWarehouse.getTitle());
-        addressWarehouseField.setText(selectedWarehouse.getAddress());
-    }
 
     //----------------------Comment functionality-----------------------------//
     public void selectProduct() {
