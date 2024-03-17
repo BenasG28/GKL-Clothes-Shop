@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.gkl.fxControllers.CommentController"
+            minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <children>
+            <ListView fx:id="commentList" layoutX="382.0" layoutY="185.0" onMouseClicked="#loadCommentData" prefHeight="178.0" prefWidth="200.0" />
+            <TextField fx:id="commentTitleField" layoutX="107.0" layoutY="45.0" promptText="Comment Title" />
+            <TextArea fx:id="commentBodyField" layoutX="87.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" promptText="Comment body" />
+            <Button fx:id="addCommentButton" layoutX="47.0" layoutY="319.0" mnemonicParsing="false" onAction="#addComment" text="Add" />
+            <Button fx:id="updateCommentButton" layoutX="152.0" layoutY="319.0" mnemonicParsing="false" onAction="#updateComment" text="Update" />
+            <Button fx:id="removeCommentButton" layoutX="261.0" layoutY="319.0" mnemonicParsing="false" onAction="#removeComment" text="Remove" />
+            <DatePicker fx:id="commentDateField" disable="true" layoutX="94.0" layoutY="78.0" promptText="Comment Creation Date" />
+            <ListView fx:id="productListForComments" layoutX="382.0" layoutY="15.0" onMousePressed="#selectProduct" prefHeight="152.0" prefWidth="200.0" />
+            <TextField fx:id="commentProductTitleField" layoutX="107.0" layoutY="14.0" promptText="Product Title" />
+        </children>
+    </AnchorPane>
