@@ -2,6 +2,8 @@ package com.example.gkl.fxControllers;
 
 import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
+import com.example.gkl.model.Customer;
+import com.example.gkl.model.Manager;
 import com.example.gkl.model.User;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
@@ -17,6 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static java.lang.Double.parseDouble;
 
 public class LoginController implements Initializable {
     @FXML
@@ -46,7 +50,31 @@ public class LoginController implements Initializable {
         try{
             userHib = new UserHib(entityManagerFactory);
             User user = userHib.getUserByCredentials(loginField.getText(),passwordField.getText());
-            if(user!=null){
+            Customer customer = userHib.getCustomerByCredentials(loginField.getText(), passwordField.getText());
+            System.out.println(customer.getCustomerBackMeas());
+            //if()
+            var userType = user.getClass();
+            if(userType.equals(Customer.class)
+                    && customer.getCustomerBackMeas() == null
+                    && customer.getCustomerHipMeas() == null
+                    && customer.getCustomerChestMeas() == null
+                    && customer.getCustomerInseamMeas() == null
+                    && customer.getCustomerLegLengthMeas() == null
+                    && customer.getCustomerSleeveMeas() == null
+                    && customer.getCustomerWaistMeas() == null
+                    && customer.getCustomerShoulderMeas() == null){
+                JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "User information", "Measurements", "You haven't provided your measurement information, please do it now.");
+                FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("measurements.fxml"));
+                Parent parent = fxmlLoader.load();
+                Stage stage = (Stage) loginField.getScene().getWindow();
+                Scene scene = new Scene(parent);
+                MeasuramentsController measuramentsController = fxmlLoader.getController();
+                measuramentsController.setData(entityManagerFactory, customer);
+                stage.setTitle("Shop");
+                stage.setScene(scene);
+                stage.show();
+            }
+            else if(user != null){
                 FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));
                 Parent parent = fxmlLoader.load();
                 MainShopController mainShopController = fxmlLoader.getController();
@@ -56,8 +84,17 @@ public class LoginController implements Initializable {
                 stage.setTitle("Music shop");
                 stage.setScene(scene);
                 stage.show();
-            }
-            else{
+            /* else if (userType.equals(Manager.class)) {
+                FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));
+                Parent parent = fxmlLoader.load();
+                MainShopController mainShopController = fxmlLoader.getController();
+                mainShopController.setData(entityManagerFactory, user);
+                Scene scene = new Scene(parent);
+                Stage stage = (Stage) loginField.getScene().getWindow();
+                stage.setTitle("Music shop");
+                stage.setScene(scene);
+                stage.show();*/
+            } else{
                 JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Login information", "Login", "Login failed.");
             }
         }catch(Exception e){
