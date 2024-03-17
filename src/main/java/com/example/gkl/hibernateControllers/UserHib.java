@@ -1,6 +1,7 @@
 package com.example.gkl.hibernateControllers;
 
 import com.example.gkl.model.Customer;
+import com.example.gkl.model.Manager;
 import com.example.gkl.model.User;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -75,30 +76,6 @@ public class UserHib {
             User user = (User) q.getSingleResult();
             if(user!=null /*&& BCrypt.checkpw(password, user.getPassword())*/){
                 return user;
-            }
-            else{
-                return null;
-            }
-        }
-        catch(NoResultException e){
-            return null;
-        }finally{
-            if(em!=null) em.close();
-        }
-    }
-    public Customer getCustomerByCredentials(String login, String password){
-        EntityManager em = null;
-        try{
-            em = getEntityManager();
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<User> query = cb.createQuery(User.class);
-            Root<User> root = query.from(User.class);
-            query.select(root).where(cb.equal(root.get("login"), login));
-            Query q;
-            q = em.createQuery(query);
-            Customer customer = (Customer) q.getSingleResult();
-            if(customer!=null /*&& BCrypt.checkpw(password, user.getPassword())*/){
-                return customer;
             }
             else{
                 return null;
