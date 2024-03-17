@@ -53,9 +53,8 @@ public class RegistrationController implements Initializable {
     private User user;
 
 
-    public void setData(EntityManagerFactory entityManagerFactory, boolean showManagerFields, String location, User user) {
+    public void setData(EntityManagerFactory entityManagerFactory, User user) {
         this.user = user;
-        this.locationOfFile = location;
         this.entityManagerFactory = entityManagerFactory;
     }
     private boolean checkIfFieldsEmpty(TextField loginField, TextField passwordField, TextField contactMailField, TextField nameField, TextField lastNameField, TextField phoneNumberField, TextField addressField){
@@ -82,15 +81,15 @@ public class RegistrationController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         backButton.setOnAction(event -> {
             try {
-                goBack(String.valueOf(locationOfFile), user);
+                goBack(user);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
-    public void goBack(String filename, User user) throws IOException {
-          FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource(filename));
+    public void goBack(User user) throws IOException {
+          FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("login.fxml"));
           Parent parent = fxmlLoader.load();
           Scene scene = new Scene(parent);
           Stage stage = (Stage) loginField.getScene().getWindow();
@@ -108,7 +107,7 @@ public class RegistrationController implements Initializable {
         Stage stage = (Stage) loginField.getScene().getWindow();
         Scene scene = new Scene(parent);
         MeasuramentsController measuramentsController = fxmlLoader.getController();
-        measuramentsController.setData(entityManagerFactory, "registration.fxml", null);
+        measuramentsController.setData(entityManagerFactory, null);
         stage.setTitle("Shop");
         stage.setScene(scene);
         stage.show();
