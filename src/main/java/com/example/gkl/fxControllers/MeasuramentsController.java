@@ -1,14 +1,18 @@
 package com.example.gkl.fxControllers;
 
 import com.example.gkl.StartGui;
+import com.example.gkl.hibernateControllers.UserHib;
+import com.example.gkl.model.Customer;
 import com.example.gkl.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -37,10 +41,11 @@ public class MeasuramentsController implements Initializable {
     public Button saveButton;
     public Button backButton;
     private EntityManagerFactory entityManagerFactory;
-    private User user;
+    private Customer currentCustomer;
+    private UserHib userHib;
 
-    public void setData(EntityManagerFactory entityManagerFactory, User user) {
-        this.user = user;
+    public void setData(EntityManagerFactory entityManagerFactory, Customer currentCustomer) {
+        this.currentCustomer = currentCustomer;
         this.entityManagerFactory = entityManagerFactory;
     }
 
@@ -51,6 +56,22 @@ public class MeasuramentsController implements Initializable {
         Stage stage = (Stage) shouldermeasure.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void editUserMeasurements() {
+        userHib = new UserHib(entityManagerFactory);
+        Customer existingCustomer = currentCustomer;
+
+        existingCustomer.setCustomerWaistMeas(Double.parseDouble(waistmeasure.getText()));
+        existingCustomer.setCustomerHipMeas(Double.parseDouble(hipmeasure.getText()));
+        existingCustomer.setCustomerInseamMeas(Double.parseDouble(inseammeasure.getText()));
+        existingCustomer.setCustomerLegLengthMeas(Double.parseDouble(outseammeasure.getText()));
+        existingCustomer.setCustomerShoulderMeas(Double.parseDouble(shouldermeasure.getText()));
+        existingCustomer.setCustomerChestMeas(Double.parseDouble(chestmeasure.getText()));
+        existingCustomer.setCustomerBackMeas(Double.parseDouble(backmeasure.getText()));
+        existingCustomer.setCustomerSleeveMeas(Double.parseDouble(sleevemeasure.getText()));
+
+        userHib.updateCustomer(existingCustomer);
     }
 
     @Override

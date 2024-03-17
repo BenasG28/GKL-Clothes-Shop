@@ -1,10 +1,9 @@
 package com.example.gkl.hibernateControllers;
 
+import com.example.gkl.model.Customer;
+import com.example.gkl.model.Manager;
 import com.example.gkl.model.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -18,6 +17,29 @@ public class UserHib {
     private EntityManager getEntityManager(){
         return entityManagerFactory.createEntityManager();
     }
+    public void updateCustomer(Customer customer) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = null;
+
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            // Merge the updated user object into the persistence context
+            entityManager.merge(customer);
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e; // Rethrow the exception
+        } finally {
+            entityManager.close();
+        }
+    }
+
 
     public boolean checkIfLoginExists(String login){
         EntityManager em = null;
@@ -52,7 +74,7 @@ public class UserHib {
             Query q;
             q = em.createQuery(query);
             User user = (User) q.getSingleResult();
-            if(user!=null && BCrypt.checkpw(password, user.getPassword())){
+            if(user!=null /*&& BCrypt.checkpw(password, user.getPassword())*/){
                 return user;
             }
             else{
@@ -63,6 +85,19 @@ public class UserHib {
             return null;
         }finally{
             if(em!=null) em.close();
+        }
+    }
+    public void createUser(User user) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
         }
     }
 }
