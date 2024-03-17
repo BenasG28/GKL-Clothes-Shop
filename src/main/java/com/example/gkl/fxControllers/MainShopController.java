@@ -56,6 +56,7 @@ public class MainShopController implements Initializable {
     public TreeView<Comment> commentsTree;
     public Button rateProductButton;
     public MenuItem replyContext;
+    public Tab accountTab;
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
     private GenericHib genericHib;
@@ -181,6 +182,17 @@ public class MainShopController implements Initializable {
             ordersTab.setContent(orderRoot);
             orderController.getAllOrders();
             orderController.setupStatusComboBox();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void loadAccountTab(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/accountTab.fxml"));
+        try{
+            Parent accountRoot = loader.load();
+            AccountController accountController = loader.getController();
+            accountTab.setContent(accountRoot);
         }catch (IOException e){
             e.printStackTrace();
         }
