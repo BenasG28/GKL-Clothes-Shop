@@ -143,7 +143,7 @@ public class UserController {
             FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration.fxml"));
             Parent parent = fxmlLoader.load();
             RegistrationController registrationController = fxmlLoader.getController();
-            registrationController.setData(entityManagerFactory, true, "main-shop.fxml", currentUser);
+            registrationController.setData(entityManagerFactory, currentUser);
             Stage stage = (Stage) customerTable.getScene().getWindow();
             Scene scene = new Scene(parent);
             stage.setTitle("Create User");

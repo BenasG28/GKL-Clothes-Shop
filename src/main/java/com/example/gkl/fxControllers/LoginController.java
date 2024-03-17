@@ -36,7 +36,7 @@ public class LoginController implements Initializable {
         Stage stage = (Stage) loginField.getScene().getWindow();
         Scene scene = new Scene(parent);
         RegistrationController registrationController = fxmlLoader.getController();
-        registrationController.setData(entityManagerFactory, true, "login.fxml", null);
+        registrationController.setData(entityManagerFactory, null);
         stage.setTitle("MusicShop");
         stage.setScene(scene);
         stage.show();
