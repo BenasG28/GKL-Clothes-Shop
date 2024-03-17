@@ -67,59 +67,11 @@
                 </Tab>
                 <Tab fx:id="warehouseTab" onSelectionChanged="#loadWarehouseTab" text="Warehouse">
                 </Tab>
-                <Tab fx:id="ordersTab" onSelectionChanged="#loadTabValues" text="Orders">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <ListView fx:id="orderListManager" layoutX="263.0" layoutY="165.0" onMousePressed="#loadOrderData" prefHeight="182.0" prefWidth="323.0" />
-                                <Button fx:id="removeOrderButton" layoutX="89.0" layoutY="321.0" mnemonicParsing="false" onAction="#deleteOrder" text="Remove" />
-                                <ListView fx:id="orderProductsListManager" layoutX="27.0" layoutY="14.0" prefHeight="110.0" prefWidth="200.0" />
-                                <TextField fx:id="orderClientField" layoutX="40.0" layoutY="218.0" promptText="Order User" />
-                                <TextField fx:id="orderAmountField" layoutX="40.0" layoutY="253.0" promptText="Order Amount" />
-                                <DatePicker fx:id="orderDatePicker" layoutX="27.0" layoutY="288.0" promptText="Order Creation Date" />
-                                <Button fx:id="leaveRatingButton" layoutX="60.0" layoutY="138.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="121.0" text="Leave a rating" />
-                                <DatePicker fx:id="filterDateStart" layoutX="242.0" layoutY="56.0" prefHeight="26.0" prefWidth="145.0" visible="false" />
-                                <DatePicker fx:id="filterDateEnd" layoutX="242.0" layoutY="89.0" prefHeight="26.0" prefWidth="145.0" visible="false" />
-                                <Button fx:id="dateFilterButton" layoutX="278.0" layoutY="125.0" mnemonicParsing="false" onAction="#filterByDate" text="Date Filter" visible="false" />
-                                <ComboBox fx:id="statusComboBox" layoutX="242.0" layoutY="13.0" prefHeight="26.0" prefWidth="117.0" visible="false" />
-                                <Button fx:id="statusFilterButton" layoutX="367.0" layoutY="13.0" mnemonicParsing="false" onAction="#filterByStatus" text="Status filter" visible="false" />
-                                <TextField fx:id="customerIdField" layoutX="406.0" layoutY="56.0" promptText="Customer ID" visible="false" />
-                                <Button fx:id="customerFilterButton" layoutX="425.0" layoutY="102.0" mnemonicParsing="false" onAction="#filterByCustomer" text="Customer Filter" visible="false" />
-                            </children></AnchorPane>
-                    </content>
+                <Tab fx:id="ordersTab" onSelectionChanged="#loadOrderTab" text="Orders">
                 </Tab>
                 <Tab fx:id="productsTab" onSelectionChanged="#loadProductTab" text="Products">
                 </Tab>
                 <Tab fx:id="commentTab" onSelectionChanged="#loadCommentTab" text="Comments">
-                </Tab>
-                <Tab fx:id="orderStatsTab" onSelectionChanged="#loadTabValues" text="Order Stats">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <BarChart fx:id="ordersChart" layoutX="26.0" layoutY="37.0" prefHeight="309.0" prefWidth="282.0">
-                                    <xAxis>
-                                        <CategoryAxis side="BOTTOM" fx:id="xAxis" />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis side="LEFT" />
-                                    </yAxis>
-                                </BarChart>
-                                <DatePicker fx:id="statsDateStart" layoutX="312.0" layoutY="13.0" prefHeight="26.0" prefWidth="183.0" promptText="Start Date" />
-                                <DatePicker fx:id="statsDateEnd" layoutX="314.0" layoutY="43.0" promptText="End Date" />
-                                <Button fx:id="statsDateFilter" layoutX="519.0" layoutY="14.0" mnemonicParsing="false" onAction="#filterStatsByDate" text="Date Filter" />
-                                <ComboBox fx:id="statsOrderCombo" layoutX="318.0" layoutY="79.0" prefWidth="150.0" promptText="Order Status" />
-                                <Button fx:id="statsStatusFilter" layoutX="483.0" layoutY="79.0" mnemonicParsing="false" onAction="#filterStatsByStatus" text="Status Filter" />
-                                <TextField fx:id="statsCustomerIdTextField" layoutX="313.0" layoutY="118.0" promptText="Customer ID" />
-                                <Button fx:id="statsCustomerFilterButton" layoutX="483.0" layoutY="119.0" mnemonicParsing="false" onAction="#filterStatsByCustomer" text="Customer Filter" />
-                                <TableView fx:id="statsTable" layoutX="328.0" layoutY="155.0" prefHeight="200.0" prefWidth="262.0">
-                                    <columns>
-                                        <TableColumn fx:id="statsIdColumn" prefWidth="86.92703247070312" text="ORDER ID" />
-                                        <TableColumn fx:id="statsAmountColumn" prefWidth="85.51901245117188" text="AMOUNT" />
-                                        <TableColumn fx:id="statsDateColumn" prefWidth="85.51901245117188" text="DATE" />
-                                    </columns>
-                                </TableView>
-                            </children></AnchorPane>
-                    </content>
                 </Tab>
             <Tab fx:id="accountTab" text="My Account">
               <content>

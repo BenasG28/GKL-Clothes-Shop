@@ -51,24 +51,10 @@ public class MainShopController implements Initializable {
     @FXML
     public Button addToCartButton;
     public Tab commentTab;
-    public ListView<Purchase> orderListManager;
-    public Button removeOrderButton;
-    public ListView<Product> orderProductsListManager;
     public Button placeOrderButton;
     public Button deleteCartButton;
-    public TextField orderClientField;
-    public TextField orderAmountField;
-    public DatePicker orderDatePicker;
     public TreeView<Comment> commentsTree;
     public Button rateProductButton;
-    public Button leaveRatingButton;
-    public DatePicker filterDateStart;
-    public DatePicker filterDateEnd;
-    public Button statusFilterButton;
-    public ComboBox<PurchaseStatus> statusComboBox;
-    public Button dateFilterButton;
-    public TextField customerIdField;
-    public Button customerFilterButton;
     public MenuItem replyContext;
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
@@ -108,9 +94,7 @@ public class MainShopController implements Initializable {
         } else if (commentTab.isSelected()) {
 
         } else if (ordersTab.isSelected()) {
-            getAllOrders();
-            statusComboBox.getItems().clear();
-            statusComboBox.getItems().addAll(PurchaseStatus.values());
+
         } else if (usersTab.isSelected()) {
 
         }
@@ -187,7 +171,20 @@ public class MainShopController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    private void loadOrderTab(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/orderTab.fxml"));
+        try{
+            Parent orderRoot = loader.load();
+            OrderController orderController = loader.getController();
+            orderController.setData(entityManagerFactory, currentUser);
+            ordersTab.setContent(orderRoot);
+            orderController.getAllOrders();
+            orderController.setupStatusComboBox();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -202,16 +199,8 @@ public class MainShopController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-        leaveRatingButton.setOnAction(event -> {
-            try {
-                leaveRating(orderProductsListManager.getSelectionModel().getSelectedItem());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+
     }
-
-
     //----------------------Cart functionality-------------------------------//
     private void createOrGetCart() {
         if (cartHib.getCartByUser(currentUser) == null) {
@@ -285,66 +274,7 @@ public class MainShopController implements Initializable {
         loadCatalogue();
     }
 
-    //----------------------Order functionality-------------------------------//
-    public void loadOrderData() {
-        Purchase purchase = orderListManager.getSelectionModel().getSelectedItem();
-        orderProductsListManager.getItems().clear();
-        orderProductsListManager.getItems().addAll(purchase.getItemsInPurchase());
-        User orderUser = purchase.getUser();
-        orderClientField.setText(orderUser.getLogin());
-        orderAmountField.setText(String.valueOf(purchase.getPurchaseAmount()));
-        orderDatePicker.setValue(purchase.getDateCreated());
-    }
 
-    public void getAllOrders() {
-        orderListManager.getItems().clear();
-        if (currentUser.getClass() == Customer.class) {
-            orderListManager.getItems().addAll(purchaseHib.getAllPurchaseByUser(currentUser));
-        } else {
-            orderListManager.getItems().addAll(genericHib.getAllRecords(Purchase.class));
-        }
-    }
-    public void clearPurchaseFields(){
-        orderProductsListManager.getItems().clear();
-        orderClientField.clear();
-        orderAmountField.clear();
-        orderDatePicker.setValue(null);
-    }
-
-    public void deleteOrder() {
-        Purchase selectedOrder = orderListManager.getSelectionModel().getSelectedItem();
-        if (selectedOrder != null) {
-            try {
-                purchaseHib.deletePurchase(selectedOrder.getId());
-                clearPurchaseFields();
-                getAllOrders();
-            } catch (Exception e) {
-                e.printStackTrace();
-                JavaFxCustomUtils.generateAlert(Alert.AlertType.ERROR, "Deletion error", "Could not delete", e.getMessage());
-            }
-        } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.ERROR, "No Order", "You have not chosen an order", "Choose an order");
-        }
-    }
-
-
-   public void filterByDate() {
-       orderListManager.getItems().clear();
-       LocalDate startDate = filterDateStart.getValue();
-       LocalDate endDate = filterDateEnd.getValue();
-       orderListManager.getItems().addAll(purchaseHib.filterByDate(startDate,endDate));
-   }
-    public void filterByStatus(){
-        orderListManager.getItems().clear();
-        PurchaseStatus status = statusComboBox.getValue();
-        orderListManager.getItems().addAll(purchaseHib.filterByStatus(status));
-    }
-
-    public void filterByCustomer() {
-        orderListManager.getItems().clear();
-        int customerId = Integer.parseInt(customerIdField.getText());
-        orderListManager.getItems().addAll(purchaseHib.filterByCustomer(customerId));
-    }
 
     public void leaveRating(Product product) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("commentForm.fxml"));
