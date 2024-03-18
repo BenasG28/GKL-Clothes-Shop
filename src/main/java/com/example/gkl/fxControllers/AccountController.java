@@ -208,14 +208,34 @@ public class AccountController implements PasswordChangedCallback{
             e.printStackTrace();
         }
     }
-
-    @FXML
-    private void handleEditInfo(){
-        if(currentUser.getClass() == Customer.class){
+    private void makeFieldsViewOnly() {
+        nameTextfield.setDisable(true);
+        surnameTextField.setDisable(true);
+        loginTextfield.setDisable(true);
+        emailTextfield.setDisable(true);
+        editInfoButton.setVisible(true);
+        saveInfoButton.setVisible(false);
+        saveInfoButton.setDisable(false);
+        if (currentUser.getClass() == Customer.class) {
+            chestTextfield.setDisable(true);
+            shoulderTextfield.setDisable(true);
+            backTextfield.setDisable(true);
+            sleeveTextfield.setDisable(true);
+            hipTextfield.setDisable(true);
+            legLengthTextfield.setDisable(true);
+            inseamTextfield.setDisable(true);
+            waistTextfield.setDisable(true);
+        }
+    }
+    private void makeFieldsEditable(){
             nameTextfield.setDisable(false);
             surnameTextField.setDisable(false);
             loginTextfield.setDisable(false);
             emailTextfield.setDisable(false);
+            editInfoButton.setVisible(false);
+            saveInfoButton.setVisible(true);
+            saveInfoButton.setDisable(true);
+        if(currentUser.getClass() == Customer.class){
             chestTextfield.setDisable(false);
             shoulderTextfield.setDisable(false);
             backTextfield.setDisable(false);
@@ -228,15 +248,11 @@ public class AccountController implements PasswordChangedCallback{
             saveInfoButton.setVisible(true);
             saveInfoButton.setDisable(true);
         }
-        else{
-            nameTextfield.setDisable(false);
-            surnameTextField.setDisable(false);
-            loginTextfield.setDisable(false);
-            emailTextfield.setDisable(false);
-            editInfoButton.setVisible(false);
-            saveInfoButton.setVisible(true);
-            saveInfoButton.setDisable(true);
-        }
+    }
+
+    @FXML
+    private void handleEditInfo(){
+        makeFieldsEditable();
     }
     @FXML
     private void handleSaveInfo() {
@@ -258,7 +274,7 @@ public class AccountController implements PasswordChangedCallback{
         try{
             genericHib.update(currentUser);
             loadUserInfo();
-
+            makeFieldsViewOnly();
         }catch (Exception e){
             e.printStackTrace();
         }
