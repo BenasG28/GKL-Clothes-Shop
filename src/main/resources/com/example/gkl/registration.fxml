@@ -12,10 +12,10 @@
       <TextField fx:id="loginField" layoutX="64.0" layoutY="72.0" promptText="Enter username" />
       <PasswordField fx:id="passwordField" layoutX="64.0" layoutY="151.0" promptText="Enter password" />
       <TextField fx:id="nameField" layoutX="266.0" layoutY="151.0" promptText="Enter name" />
-      <Button fx:id="createUserButton" layoutX="346.0" layoutY="237.0" mnemonicParsing="false" onAction="#createUser" text="Create user" />
+      <Button fx:id="createUserButton" layoutX="306.0" layoutY="237.0" mnemonicParsing="false" onAction="#createUser" text="Create user" />
       <TextField fx:id="lastNameField" layoutX="266.0" layoutY="192.0" promptText="Enter surname" />
       <TextField fx:id="addressField" layoutX="266.0" layoutY="72.0" promptText="Enter home address" />
-      <Button fx:id="backButton" layoutX="64.0" layoutY="237.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Back" />
+      <Button fx:id="backButton" layoutX="104.0" layoutY="237.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Back" />
       <PasswordField fx:id="repeatPasswordField" layoutX="64.0" layoutY="192.0" promptText="Repeat password" />
       <TextField fx:id="phoneNumberField" layoutX="266.0" layoutY="110.0" promptText="Enter phone number" />
       <TextField fx:id="contactMailField" layoutX="64.0" layoutY="110.0" promptText="Enter email address" />
@@ -29,6 +29,5 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Button fx:id="measurementsButton" layoutX="167.0" layoutY="237.0" mnemonicParsing="false" onAction="#setMeasurementsButton" text="Enter your measurements" />
    </children>
 </AnchorPane>

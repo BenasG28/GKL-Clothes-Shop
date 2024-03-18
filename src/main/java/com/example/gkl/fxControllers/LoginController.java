@@ -31,7 +31,6 @@ public class LoginController implements Initializable {
     public Button registerButton = new Button();
     private EntityManagerFactory entityManagerFactory;
     private UserHib userHib;
-    private boolean isManager;
 
 
     public void registerNewUser() throws IOException {
@@ -49,8 +48,18 @@ public class LoginController implements Initializable {
     public void validateAndConnect() {
         try{
             userHib = new UserHib(entityManagerFactory);
+            String login = loginField.getText();
+            String password = passwordField.getText();
+            if (login.isEmpty() || password.isEmpty()) {
+                JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Empty Fields", "The fields are empty", "Please fill in both login and password fields.");
+                return;
+            }
+            boolean loginExists = userHib.checkIfLoginExists(login);
+            if (!loginExists) {
+                JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Login not found", "The provided login does not exist.", "Please provide existing user credentials");
+                return;
+            }
             User user = userHib.getUserByCredentials(loginField.getText(),passwordField.getText());
-
             if (user != null) {
                 if (user instanceof Manager) {
                     Manager manager = (Manager) user;
@@ -95,6 +104,8 @@ public class LoginController implements Initializable {
                         stage.show();
                     }
                 }
+            }else {
+                JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "Invalid Credentials", "The provided login or password is incorrect.", "Please provide a correct password or login information");
             }
         } catch (Exception e) {
             e.printStackTrace();
