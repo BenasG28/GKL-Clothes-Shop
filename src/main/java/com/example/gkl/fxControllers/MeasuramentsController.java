@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -76,6 +77,7 @@ public class MeasuramentsController implements Initializable {
         stage.setTitle("GKL");
         stage.setScene(scene);
         stage.show();
+
     }
 
     public void editUserMeasurements() {
