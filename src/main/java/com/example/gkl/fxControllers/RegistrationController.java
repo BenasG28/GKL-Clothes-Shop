@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,12 +45,8 @@ public class RegistrationController implements Initializable {
     @FXML
     public TextField phoneNumberField;
     public Button measurementsButton;
-
-
     private EntityManagerFactory entityManagerFactory;
     private UserHib userHib;
-    private GenericHib genericHib;
-    private String locationOfFile;
     private User user;
 
 
@@ -64,18 +61,18 @@ public class RegistrationController implements Initializable {
         return passwordField.getText().equals(repeatPasswordField.getText());
     }
     public void createUser(){
-        genericHib = new GenericHib(entityManagerFactory);
         userHib = new UserHib(entityManagerFactory);
-        boolean isEmpty = checkIfFieldsEmpty(loginField, passwordField,contactMailField,nameField,lastNameField,phoneNumberField,addressField);
-        if(isEmpty){
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration Error", "Missing fields", "Please fill all the fields and check all the checks.");
-        }
-        else if(userHib.checkIfLoginExists(loginField.getText())){
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration error", "Login already in use", "Please choose another login");
-        }
-        else if(!isPasswordMatch(passwordField, repeatPasswordField)){
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration error", "Passwords do not match", "Please match passwords");
-        }
+        User user = Customer.builder()
+                .login(loginField.getText())
+                //.password(BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt()))
+                .password(passwordField.getText())
+                .phoneNumber(phoneNumberField.getText())
+                .firstName(nameField.getText())
+                .lastName(lastNameField.getText())
+                .address(addressField.getText())
+                .contactMail(contactMailField.getText())
+                .build();
+        userHib.createUser(user);
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,6 +80,29 @@ public class RegistrationController implements Initializable {
             try {
                 goBack(user);
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        createUserButton.setOnAction(event -> {
+            try {
+                userHib = new UserHib(entityManagerFactory);
+                boolean isEmpty = checkIfFieldsEmpty(loginField, passwordField,contactMailField,nameField,lastNameField,phoneNumberField,addressField);
+                if(isEmpty){
+                    JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration Error", "Missing fields", "Please fill all the fields and check all the checks.");
+                }
+                else if(userHib.checkIfLoginExists(loginField.getText())){
+                    JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration error", "Login already in use", "Please choose another login");
+                }
+                else if(!isPasswordMatch(passwordField, repeatPasswordField)){
+                    JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration error", "Passwords do not match", "Please match passwords");
+                }
+                else{
+                    createUser();
+                    JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "User information", "Registration", "The user has been created successfully");
+                    goBack(user);
+                }
+
+            } catch (IOException e){
                 throw new RuntimeException(e);
             }
         });
@@ -101,7 +121,7 @@ public class RegistrationController implements Initializable {
           stage.show();
     }
 
-    public void setMeasurementsButton() throws IOException{
+ /*   public void setMeasurementsButton() throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("measurements.fxml"));
         Parent parent = fxmlLoader.load();
         Stage stage = (Stage) loginField.getScene().getWindow();
@@ -111,6 +131,6 @@ public class RegistrationController implements Initializable {
         stage.setTitle("Shop");
         stage.setScene(scene);
         stage.show();
-    }
+    }*/
 
 }
