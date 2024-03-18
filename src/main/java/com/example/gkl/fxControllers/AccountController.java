@@ -262,10 +262,7 @@ public class AccountController implements PasswordChangedCallback{
         currentUser.setContactMail(emailTextfield.getText());
         if(currentUser instanceof Customer customer){
             customer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
-            System.out.println("DEBUG TRY: " +Double.valueOf(backTextfield.getText()));
-
             customer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
-
             customer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
             customer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
             customer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
