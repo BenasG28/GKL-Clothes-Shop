@@ -3,6 +3,7 @@ package com.example.gkl.fxControllers;
 import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
+import com.example.gkl.model.Regions;
 import com.example.gkl.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -14,12 +15,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.SocketHandler;
 
 public class MeasuramentsController implements Initializable {
     @FXML
@@ -40,9 +44,19 @@ public class MeasuramentsController implements Initializable {
     public TextField waistmeasure;
     public Button saveButton;
     public Button backButton;
+    public ComboBox regionSelect;
+    public Text shoulderText;
+    public Text chestText;
+    public Text backText;
+    public Text sleeveText;
+    public Text hipText;
+    public Text outseamText;
+    public Text inseamText;
+    public Text waistText;
     private EntityManagerFactory entityManagerFactory;
     private Customer currentCustomer;
     private UserHib userHib;
+
 
     public void setData(EntityManagerFactory entityManagerFactory, Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
@@ -76,6 +90,7 @@ public class MeasuramentsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        regionSelect.getItems().addAll(Regions.values());
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kursinis-parduotuve");
         backButton.setOnAction(event -> {
             try {
@@ -84,5 +99,31 @@ public class MeasuramentsController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+
+    public void enableRegionSelect() {
+        if (regionSelect.getSelectionModel().getSelectedItem() == Regions.US || regionSelect.getSelectionModel().getSelectedItem() == Regions.UK)
+        {
+            shoulderText.setText("Shoulder (inch)");
+            chestText.setText("Chest (inch)");
+            sleeveText.setText("Sleeve (inch)");
+            backText.setText("Back (inch)");
+            hipText.setText("Hip (inch)");
+            outseamText.setText("Outseam (inch)");
+            inseamText.setText("Inseam (inch)");
+            waistText.setText("Waist (inch)");
+        }
+        else
+        {
+            shoulderText.setText("Shoulder (cm)");
+            chestText.setText("Chest (cm)");
+            sleeveText.setText("Sleeve (cm)");
+            backText.setText("Back (cm)");
+            hipText.setText("Hip (cm)");
+            outseamText.setText("Outseam (cm)");
+            inseamText.setText("Inseam (cm)");
+            waistText.setText("Waist (cm)");
+        }
     }
 }
