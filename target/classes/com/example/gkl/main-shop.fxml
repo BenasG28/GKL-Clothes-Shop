@@ -73,52 +73,7 @@
                 </Tab>
                 <Tab fx:id="commentTab" onSelectionChanged="#loadCommentTab" text="Comments">
                 </Tab>
-            <Tab fx:id="accountTab" text="My Account">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Text fx:id="personalInfoText" layoutX="79.0" layoutY="31.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Information">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Text>
-                        <TextField fx:id="nameTextfield" layoutX="55.0" layoutY="63.0" />
-                        <Text fx:id="nameText" layoutX="58.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
-                        <Text fx:id="surnameText" layoutX="58.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Surname" />
-                        <TextField fx:id="surnameTextField" layoutX="55.0" layoutY="109.0" />
-                        <Text fx:id="loginText" layoutX="58.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" />
-                        <TextField fx:id="loginTextfield" layoutX="55.0" layoutY="155.0" />
-                        <Text fx:id="emailText" layoutX="58.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-Mail" />
-                        <TextField fx:id="emailTextfield" layoutX="55.0" layoutY="201.0" />
-                        <Text fx:id="passwordText" layoutX="58.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-                        <TextField fx:id="passwordTextfield" layoutX="55.0" layoutY="247.0" />
-                        <Text fx:id="confPasswordText" layoutX="58.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm Password" />
-                        <TextField fx:id="confPasswordTextfield" layoutX="55.0" layoutY="293.0" />
-                        <TextField fx:id="waistTextfield" layoutX="484.0" layoutY="272.0" prefHeight="26.0" prefWidth="65.0" />
-                        <Text fx:id="waistText" layoutX="487.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waist(cm)" />
-                        <Text fx:id="hipText" layoutX="373.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hip(cm)" />
-                        <TextField fx:id="hipTextfield" layoutX="370.0" layoutY="219.0" prefHeight="26.0" prefWidth="65.0" />
-                        <Text fx:id="inseamText" layoutX="373.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inseam(cm)" />
-                        <TextField fx:id="inseamTextfield" layoutX="370.0" layoutY="272.0" prefHeight="26.0" prefWidth="65.0" />
-                        <Text fx:id="legLengthText" layoutX="487.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leg Length(cm)" />
-                        <TextField fx:id="legLengthTextfield" layoutX="484.0" layoutY="219.0" prefWidth="65.0" />
-                        <Text fx:id="shoulderText" layoutX="487.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shoulder(cm)" />
-                        <TextField fx:id="shoulderTextfield" layoutX="484.0" layoutY="63.0" prefWidth="65.0" />
-                        <Text fx:id="chestText" layoutX="373.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chest(cm)" />
-                        <TextField fx:id="chestTextfield" layoutX="370.0" layoutY="63.0" prefWidth="65.0" />
-                        <Text fx:id="upperBodyText" layoutX="434.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upper Body" />
-                        <Line endX="100.0" layoutX="472.0" layoutY="39.0" startX="-100.0" />
-                        <Text fx:id="backText" layoutX="373.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Back(cm)" />
-                        <TextField fx:id="backTextfield" layoutX="370.0" layoutY="131.0" prefWidth="65.0" />
-                        <Text fx:id="sleeveText" layoutX="487.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sleeve(cm)" />
-                        <TextField fx:id="sleeveTextfield" layoutX="484.0" layoutY="131.0" prefWidth="65.0" />
-                        <Text layoutX="434.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lower Body" />
-                        <Line endX="100.0" layoutX="471.0" layoutY="190.0" startX="-100.0" />
-                        <Button fx:id="sizeHelpButton" layoutX="426.0" layoutY="319.0" mnemonicParsing="false" text="How to size" />
-                        <Button fx:id="editInfoButton" layoutX="228.0" layoutY="319.0" mnemonicParsing="false" text="Edit information" />
-                     </children>
-                  </AnchorPane>
-              </content>
+            <Tab fx:id="accountTab" onSelectionChanged="#loadAccountTab" text="My Account">
             </Tab>
             </tabs>
         </TabPane>

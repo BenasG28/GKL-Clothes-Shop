@@ -193,6 +193,8 @@ public class MainShopController implements Initializable {
             Parent accountRoot = loader.load();
             AccountController accountController = loader.getController();
             accountTab.setContent(accountRoot);
+            accountController.setData(entityManagerFactory, currentUser);
+            accountController.loadUserInfo();
         }catch (IOException e){
             e.printStackTrace();
         }
