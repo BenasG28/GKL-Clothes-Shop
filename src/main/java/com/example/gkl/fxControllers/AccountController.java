@@ -260,16 +260,18 @@ public class AccountController implements PasswordChangedCallback{
         currentUser.setLastName(surnameTextField.getText());
         currentUser.setLogin(loginTextfield.getText());
         currentUser.setContactMail(emailTextfield.getText());
-        if(currentUser.getClass() == Customer.class){
-            Customer editedCustomer = (Customer) currentUser;
-            editedCustomer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
-            editedCustomer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
-            editedCustomer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
-            editedCustomer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
-            editedCustomer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
-            editedCustomer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
-            editedCustomer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
-            editedCustomer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
+        if(currentUser instanceof Customer customer){
+            customer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
+            System.out.println("DEBUG TRY: " +Double.valueOf(backTextfield.getText()));
+
+            customer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
+
+            customer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
+            customer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
+            customer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
+            customer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
+            customer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
+            customer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
         }
         try{
             genericHib.update(currentUser);
@@ -296,7 +298,7 @@ public class AccountController implements PasswordChangedCallback{
         loginTextfield.setText(currentCustomer.getLogin());
         emailTextfield.setText(currentCustomer.getContactMail());
         passwordField.setText(currentCustomer.getPassword());
-        chestTextfield.setText(currentCustomer.getCustomerWaistMeas().toString());
+        chestTextfield.setText(currentCustomer.getCustomerChestMeas().toString());
         shoulderTextfield.setText(currentCustomer.getCustomerShoulderMeas().toString());
         backTextfield.setText(currentCustomer.getCustomerBackMeas().toString());
         sleeveTextfield.setText(currentCustomer.getCustomerSleeveMeas().toString());

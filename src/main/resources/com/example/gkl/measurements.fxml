@@ -17,7 +17,7 @@
       </Text>
       <ImageView fitHeight="384.0" fitWidth="325.0" layoutX="138.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@/Pictures/foto_1.png" />
+            <Image url="/Pictures/foto_1.png" />
          </image></ImageView>
       <TextField fx:id="chestmeasure" layoutX="80.0" layoutY="182.0" prefHeight="26.0" prefWidth="92.0" />
       <TextField fx:id="shouldermeasure" layoutX="79.0" layoutY="124.0" prefHeight="26.0" prefWidth="92.0" />
