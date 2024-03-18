@@ -77,7 +77,6 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="saveButton" layoutX="442.0" layoutY="347.0" mnemonicParsing="false" onAction="#editUserMeasurements" text="Save" />
-      <Button fx:id="backButton" layoutX="104.0" layoutY="347.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="saveButton" layoutX="255.0" layoutY="390.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Save" />
    </children>
 </AnchorPane>

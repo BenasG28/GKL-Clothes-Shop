@@ -40,7 +40,7 @@ public class LoginController implements Initializable {
         Scene scene = new Scene(parent);
         RegistrationController registrationController = fxmlLoader.getController();
         registrationController.setData(entityManagerFactory, null);
-        stage.setTitle("MusicShop");
+        stage.setTitle("GKL");
         stage.setScene(scene);
         stage.show();
     }
@@ -69,7 +69,7 @@ public class LoginController implements Initializable {
                     mainShopController.setData(entityManagerFactory, manager);
                     Scene scene = new Scene(parent);
                     Stage stage = (Stage) loginField.getScene().getWindow();
-                    stage.setTitle("Music shop");
+                    stage.setTitle("GKL");
                     stage.setScene(scene);
                     stage.show();
                 } else if (user instanceof Customer) {
@@ -89,7 +89,7 @@ public class LoginController implements Initializable {
                         Scene scene = new Scene(parent);
                         MeasuramentsController measuramentsController = fxmlLoader.getController();
                         measuramentsController.setData(entityManagerFactory, customer);
-                        stage.setTitle("Shop");
+                        stage.setTitle("GKL");
                         stage.setScene(scene);
                         stage.show();
                     } else {
@@ -99,7 +99,7 @@ public class LoginController implements Initializable {
                         mainShopController.setData(entityManagerFactory, customer);
                         Scene scene = new Scene(parent);
                         Stage stage = (Stage) loginField.getScene().getWindow();
-                        stage.setTitle("Music shop");
+                        stage.setTitle("GKL");
                         stage.setScene(scene);
                         stage.show();
                     }
