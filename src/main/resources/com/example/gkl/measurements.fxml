@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gkl.fxControllers.MeasuramentsController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gkl.fxControllers.MeasuramentsController">
    <children>
       <Text layoutX="199.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your measurements">
          <font>
@@ -33,22 +33,22 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="91.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chest (cm)">
+      <Text fx:id="chestText" layoutX="91.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chest (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Text layoutX="85.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shoulder (cm)">
+      <Text fx:id="shoulderText" layoutX="85.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shoulder (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Text layoutX="96.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Back (cm)">
+      <Text fx:id="backText" layoutX="96.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Back (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Text layoutX="91.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sleeve (cm)">
+      <Text fx:id="sleeveText" layoutX="91.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sleeve (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -57,26 +57,29 @@
       <TextField fx:id="outseammeasure" layoutX="419.0" layoutY="178.0" prefHeight="26.0" prefWidth="92.0" />
       <TextField fx:id="inseammeasure" layoutX="418.0" layoutY="240.0" prefHeight="26.0" prefWidth="92.0" />
       <TextField fx:id="waistmeasure" layoutX="417.0" layoutY="296.0" prefHeight="26.0" prefWidth="92.0" />
-      <Text layoutX="440.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hip (cm)">
+      <Text fx:id="hipText" layoutX="440.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hip (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Text layoutX="423.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Outseam (cm)">
+      <Text fx:id="outseamText" layoutX="423.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Outseam (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Text layoutX="427.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inseam (cm)">
+      <Text fx:id="inseamText" layoutX="427.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inseam (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Text layoutX="432.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waist (cm)">
+      <Text fx:id="waistText" layoutX="432.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waist (cm)">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="saveButton" layoutX="255.0" layoutY="390.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Save" />
+      <Button fx:id="saveButton" layoutX="442.0" layoutY="347.0" mnemonicParsing="false" onAction="#editUserMeasurements" text="Save" />
+      <!--Button fx:id="backButton" layoutX="104.0" layoutY="347.0" mnemonicParsing="false" text="Back" /-->
+      <ComboBox fx:id="regionSelect" layoutX="443.0" layoutY="15.0" onAction="#enableRegionSelect" prefWidth="150.0" promptText="Region" />
+
    </children>
 </AnchorPane>
