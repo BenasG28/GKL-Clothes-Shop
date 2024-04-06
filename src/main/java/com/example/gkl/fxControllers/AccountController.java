@@ -254,29 +254,66 @@ public class AccountController implements PasswordChangedCallback{
     private void handleEditInfo(){
         makeFieldsEditable();
     }
+    private boolean checkIfPersonalFieldsAreEmpty(){
+        if(nameTextfield.getText().isEmpty() ||
+                surnameTextField.getText().isEmpty() ||
+                loginTextfield.getText().isEmpty() ||
+                emailTextfield.getText().isEmpty()){
+            return true;
+        }
+
+        return false;
+    }
+    private boolean checkIfMeasurementsFieldsAreEmpty(){
+        if(backTextfield.getText().isEmpty() ||
+                chestTextfield.getText().isEmpty() ||
+                shoulderTextfield.getText().isEmpty() ||
+                sleeveTextfield.getText().isEmpty() ||
+                inseamTextfield.getText().isEmpty() ||
+                hipTextfield.getText().isEmpty() ||
+                legLengthTextfield.getText().isEmpty() ||
+                waistTextfield.getText().isEmpty()){
+            return true;
+        }
+        return false;
+    }
     @FXML
     private void handleSaveInfo() {
-        currentUser.setFirstName(nameTextfield.getText());
-        currentUser.setLastName(surnameTextField.getText());
-        currentUser.setLogin(loginTextfield.getText());
-        currentUser.setContactMail(emailTextfield.getText());
-        if(currentUser instanceof Customer customer){
-            customer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
-            customer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
-            customer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
-            customer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
-            customer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
-            customer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
-            customer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
-            customer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
+        if(!checkIfPersonalFieldsAreEmpty()){
+            boolean measurementsFieldsFlag = false;
+            if(currentUser instanceof Customer customer){
+                measurementsFieldsFlag = checkIfMeasurementsFieldsAreEmpty();
+            }
+            if(!measurementsFieldsFlag){
+                currentUser.setFirstName(nameTextfield.getText());
+                currentUser.setLastName(surnameTextField.getText());
+                currentUser.setLogin(loginTextfield.getText());
+                currentUser.setContactMail(emailTextfield.getText());
+                if(currentUser instanceof Customer customer){
+                    customer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
+                    customer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
+                    customer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
+                    customer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
+                    customer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
+                    customer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
+                    customer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
+                    customer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
+                }
+                try{
+                    genericHib.update(currentUser);
+                    loadUserInfo();
+                    makeFieldsViewOnly();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else{
+                JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Update Error", "Missing Fields", "Please fill out all the measurement information fields.");
+
+            }
+        }else{
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Update Error", "Missing Fields", "Please fill out all the personal information fields.");
         }
-        try{
-            genericHib.update(currentUser);
-            loadUserInfo();
-            makeFieldsViewOnly();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
     }
 
     private void loadManagerInfo() {

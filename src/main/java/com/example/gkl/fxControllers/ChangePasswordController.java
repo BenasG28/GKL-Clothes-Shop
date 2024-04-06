@@ -43,7 +43,6 @@ public class ChangePasswordController {
     @FXML
     private void saveNewPassword(){
         if(BCrypt.checkpw(currentPasswordTextfield.getText(), currentUser.getPassword())){
-            System.out.println("AUTHED");
             if(newPasswordTextfield.getText().equals(confNewPasswordTextfield.getText())){
                 currentUser.setPasswordHashed(newPasswordTextfield.getText());
                 genericHib.update(currentUser);
