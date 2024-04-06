@@ -74,7 +74,7 @@ public class UserHib {
             Query q;
             q = em.createQuery(query);
             User user = (User) q.getSingleResult();
-            if(user!=null /*&& BCrypt.checkpw(password, user.getPassword())*/){
+            if(user!=null && BCrypt.checkpw(password, user.getPassword())){
                 return user;
             }
             else{

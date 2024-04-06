@@ -48,8 +48,6 @@ public class RegistrationController implements Initializable {
     private EntityManagerFactory entityManagerFactory;
     private UserHib userHib;
     private User user;
-
-
     public void setData(EntityManagerFactory entityManagerFactory, User user) {
         this.user = user;
         this.entityManagerFactory = entityManagerFactory;
@@ -60,7 +58,7 @@ public class RegistrationController implements Initializable {
     private boolean isPasswordMatch(PasswordField passwordField, PasswordField repeatPasswordField){
         return passwordField.getText().equals(repeatPasswordField.getText());
     }
-    public void createUser(){
+   public void createUser(){
         userHib = new UserHib(entityManagerFactory);
         User user = Customer.builder()
                 .login(loginField.getText())
@@ -86,6 +84,7 @@ public class RegistrationController implements Initializable {
         createUserButton.setOnAction(event -> {
             try {
                 userHib = new UserHib(entityManagerFactory);
+                String password = passwordField.getText();
                 boolean isEmpty = checkIfFieldsEmpty(loginField, passwordField,contactMailField,nameField,lastNameField,phoneNumberField,addressField);
                 if(isEmpty){
                     JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration Error", "Missing fields", "Please fill all the fields and check all the checks.");
@@ -95,6 +94,9 @@ public class RegistrationController implements Initializable {
                 }
                 else if(!isPasswordMatch(passwordField, repeatPasswordField)){
                     JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration error", "Passwords do not match", "Please match passwords");
+                }
+                else if (!password.matches(".*\\d.*") || !password.matches(".*[A-Z].*") || !password.matches(".*[!@#$%^&*()_+?~`<>,.±§'/|:;].*")) {
+                    JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Password Error", "Password needs to be stronger" ,"Password must contain at least one number, one capital letter, and one special symbol like '@'.");
                 }
                 else{
                     createUser();

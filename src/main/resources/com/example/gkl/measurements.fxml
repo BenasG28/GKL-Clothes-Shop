@@ -17,6 +17,7 @@
       </Text>
       <ImageView fitHeight="384.0" fitWidth="325.0" layoutX="138.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
          <image>
+            <Image url="/Pictures/foto_1.png" />
          </image></ImageView>
       <TextField fx:id="chestmeasure" layoutX="80.0" layoutY="182.0" prefHeight="26.0" prefWidth="92.0" />
       <TextField fx:id="shouldermeasure" layoutX="79.0" layoutY="124.0" prefHeight="26.0" prefWidth="92.0" />
@@ -77,7 +78,8 @@
          </font>
       </Text>
       <Button fx:id="saveButton" layoutX="442.0" layoutY="347.0" mnemonicParsing="false" onAction="#editUserMeasurements" text="Save" />
-      <Button fx:id="backButton" layoutX="104.0" layoutY="347.0" mnemonicParsing="false" text="Back" />
+      <!--Button fx:id="backButton" layoutX="104.0" layoutY="347.0" mnemonicParsing="false" text="Back" /-->
       <ComboBox fx:id="regionSelect" layoutX="443.0" layoutY="15.0" onAction="#enableRegionSelect" prefWidth="150.0" promptText="Region" />
+
    </children>
 </AnchorPane>

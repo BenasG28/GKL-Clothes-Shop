@@ -5,6 +5,7 @@ import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
 import com.example.gkl.model.Regions;
 import com.example.gkl.model.User;
+import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import javafx.event.ActionEvent;
@@ -62,14 +63,34 @@ public class MeasuramentsController implements Initializable {
         this.currentCustomer = currentCustomer;
         this.entityManagerFactory = entityManagerFactory;
     }
+    private boolean checkIfFieldsEmpty(TextField chestmeasure, TextField shouldermeasure, TextField backmeasure, TextField sleevemeasure,
+                                       TextField hipmeasure, TextField outseammeasure, TextField inseammeasure, TextField waistmeasure){
+        return chestmeasure.getText().isEmpty() || shouldermeasure.getText().isEmpty()
+                || backmeasure.getText().isEmpty() || sleevemeasure.getText().isEmpty()
+                || hipmeasure.getText().isEmpty() || outseammeasure.getText().isEmpty()
+                || inseammeasure.getText().isEmpty() || waistmeasure.getText().isEmpty();
+    }
 
-    public void goBack() throws IOException {
+   /* public void goBack() throws IOException { Pati grįžimo funkcija
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration.fxml"));
         Parent parent = fxmlLoader.load();
         Scene scene = new Scene(parent);
         Stage stage = (Stage) shouldermeasure.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }*/
+
+    public void saveButtonFunc() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));
+        Parent parent = fxmlLoader.load();
+        MainShopController mainShopController = fxmlLoader.getController();
+        mainShopController.setData(entityManagerFactory, currentCustomer);
+        Scene scene = new Scene(parent);
+        Stage stage = (Stage) shouldermeasure.getScene().getWindow();
+        stage.setTitle("GKL");
+        stage.setScene(scene);
+        stage.show();
+
     }
 
     public void editUserMeasurements() {
@@ -88,14 +109,32 @@ public class MeasuramentsController implements Initializable {
         userHib.updateCustomer(existingCustomer);
     }
 
-    @Override
+    @
     public void initialize(URL location, ResourceBundle resources) {
+
         regionSelect.getItems().addAll(Regions.values());
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kursinis-parduotuve");
-        backButton.setOnAction(event -> {
+       
+        /*backButton.setOnAction(event -> { Jeigu kada nors reikės back mygtuko funkcijos čia galite rasti gaspadoriai.
             try {
                 goBack();
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });*/
+        saveButton.setOnAction(event -> {
+            try {
+                userHib = new UserHib(entityManagerFactory);
+                boolean isEmpty = checkIfFieldsEmpty(chestmeasure, shouldermeasure,backmeasure,sleevemeasure,hipmeasure,outseammeasure,inseammeasure,waistmeasure);
+                if(isEmpty){
+                    JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "User alert", "Missing fields", "Please fill all the fields.");
+                }
+                else{
+                    editUserMeasurements();
+                    saveButtonFunc();
+                    JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "User information", "Measurements", "The user measurements has been filled successfully.");
+                }
+            }catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });

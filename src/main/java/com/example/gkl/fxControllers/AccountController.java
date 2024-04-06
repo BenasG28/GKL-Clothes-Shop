@@ -254,30 +254,66 @@ public class AccountController implements PasswordChangedCallback{
     private void handleEditInfo(){
         makeFieldsEditable();
     }
+    private boolean checkIfPersonalFieldsAreEmpty(){
+        if(nameTextfield.getText().isEmpty() ||
+                surnameTextField.getText().isEmpty() ||
+                loginTextfield.getText().isEmpty() ||
+                emailTextfield.getText().isEmpty()){
+            return true;
+        }
+
+        return false;
+    }
+    private boolean checkIfMeasurementsFieldsAreEmpty(){
+        if(backTextfield.getText().isEmpty() ||
+                chestTextfield.getText().isEmpty() ||
+                shoulderTextfield.getText().isEmpty() ||
+                sleeveTextfield.getText().isEmpty() ||
+                inseamTextfield.getText().isEmpty() ||
+                hipTextfield.getText().isEmpty() ||
+                legLengthTextfield.getText().isEmpty() ||
+                waistTextfield.getText().isEmpty()){
+            return true;
+        }
+        return false;
+    }
     @FXML
     private void handleSaveInfo() {
-        currentUser.setFirstName(nameTextfield.getText());
-        currentUser.setLastName(surnameTextField.getText());
-        currentUser.setLogin(loginTextfield.getText());
-        currentUser.setContactMail(emailTextfield.getText());
-        if(currentUser.getClass() == Customer.class){
-            Customer editedCustomer = (Customer) currentUser;
-            editedCustomer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
-            editedCustomer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
-            editedCustomer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
-            editedCustomer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
-            editedCustomer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
-            editedCustomer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
-            editedCustomer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
-            editedCustomer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
+        if(!checkIfPersonalFieldsAreEmpty()){
+            boolean measurementsFieldsFlag = false;
+            if(currentUser instanceof Customer customer){
+                measurementsFieldsFlag = checkIfMeasurementsFieldsAreEmpty();
+            }
+            if(!measurementsFieldsFlag){
+                currentUser.setFirstName(nameTextfield.getText());
+                currentUser.setLastName(surnameTextField.getText());
+                currentUser.setLogin(loginTextfield.getText());
+                currentUser.setContactMail(emailTextfield.getText());
+                if(currentUser instanceof Customer customer){
+                    customer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
+                    customer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
+                    customer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
+                    customer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
+                    customer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
+                    customer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
+                    customer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
+                    customer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
+                }
+                try{
+                    genericHib.update(currentUser);
+                    loadUserInfo();
+                    makeFieldsViewOnly();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else{
+                JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Update Error", "Missing Fields", "Please fill out all the measurement information fields.");
+
+            }
+        }else{
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Update Error", "Missing Fields", "Please fill out all the personal information fields.");
         }
-        try{
-            genericHib.update(currentUser);
-            loadUserInfo();
-            makeFieldsViewOnly();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
     }
 
     private void loadManagerInfo() {
@@ -296,7 +332,7 @@ public class AccountController implements PasswordChangedCallback{
         loginTextfield.setText(currentCustomer.getLogin());
         emailTextfield.setText(currentCustomer.getContactMail());
         passwordField.setText(currentCustomer.getPassword());
-        chestTextfield.setText(currentCustomer.getCustomerWaistMeas().toString());
+        chestTextfield.setText(currentCustomer.getCustomerChestMeas().toString());
         shoulderTextfield.setText(currentCustomer.getCustomerShoulderMeas().toString());
         backTextfield.setText(currentCustomer.getCustomerBackMeas().toString());
         sleeveTextfield.setText(currentCustomer.getCustomerSleeveMeas().toString());
