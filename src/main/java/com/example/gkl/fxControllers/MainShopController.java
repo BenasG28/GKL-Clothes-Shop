@@ -1,25 +1,20 @@
 package com.example.gkl.fxControllers;
 
 import com.example.gkl.StartGui;
-import com.example.gkl.hibernateControllers.*;
+import com.example.gkl.hibernateControllers.CartHib;
+import com.example.gkl.hibernateControllers.GenericHib;
+import com.example.gkl.hibernateControllers.ProductHib;
+import com.example.gkl.hibernateControllers.PurchaseHib;
 import com.example.gkl.model.*;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -27,7 +22,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class MainShopController implements Initializable {
     @FXML
@@ -57,6 +55,7 @@ public class MainShopController implements Initializable {
     public Button rateProductButton;
     public MenuItem replyContext;
     public Tab accountTab;
+    public AnchorPane productContainer;
     private EntityManagerFactory entityManagerFactory;
     private User currentUser;
     private GenericHib genericHib;
@@ -74,19 +73,19 @@ public class MainShopController implements Initializable {
         purchaseHib = new PurchaseHib(entityManagerFactory);
         createOrGetCart();
         limitAccess();
-        loadCatalogue();
+        displayProductCards();
         loadCartItems();
     }
 
-    private void loadCatalogue() {
-        productList.getItems().clear();
-        productList.getItems().addAll(productHib.getAllProductWithNoCart());
-    }
+//    private void loadCatalogue() {
+//        productList.getItems().clear();
+//        productList.getItems().addAll(productHib.getAllProductWithNoCart());
+//    }
 
     public void loadTabValues() {
         if (primaryTab.isSelected()) {
             loadCartItems();
-            loadCatalogue();
+            displayProductCards();
         } else if (productsTab.isSelected()) {
 
 
@@ -131,6 +130,28 @@ public class MainShopController implements Initializable {
             e.printStackTrace();
         }
     }
+    private void displayProductCards() {
+        List<Product> products = productHib.getAllProductWithNoCart(); // Retrieve products from database
+
+        // Clear existing children from the product container
+        productContainer.getChildren().clear();
+
+        // Create a VBox to hold the product cards vertically
+        VBox vbox = new VBox();
+        vbox.setSpacing(10); // Set spacing between product cards
+
+        // Dynamically create product cards for each product
+        for (Product product : products) {
+            ProductCard productCard = new ProductCard();
+            productCard.setProductData(product); // Set product data
+            vbox.getChildren().add(productCard.getNode()); // Add product card to VBox
+        }
+
+        // Set the VBox as the content of the product container
+        productContainer.getChildren().add(vbox);
+    }
+
+
     @FXML
     private void loadUserTab(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/userTab.fxml"));
@@ -233,7 +254,7 @@ public class MainShopController implements Initializable {
             genericHib.update(userCart);
             System.out.println("LISTAAAAAAAAAAAAAAS CARTE: " + userCart.getItemsInCart());
             loadCartItems();
-            loadCatalogue();
+            displayProductCards();
 
         } else
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid product", "No product selected", "Choose a product");
@@ -249,7 +270,7 @@ public class MainShopController implements Initializable {
             genericHib.update(selectedProduct);
             genericHib.update(userCart);
             loadCartItems();
-            loadCatalogue();
+            displayProductCards();
         } else
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid product", "No product selected", "Choose a product");
     }
@@ -285,7 +306,7 @@ public class MainShopController implements Initializable {
         purchaseHib.createPurchase(userCart);
         clearCart();
         loadCartItems();
-        loadCatalogue();
+        displayProductCards();
     }
 
 
@@ -329,5 +350,4 @@ public class MainShopController implements Initializable {
         comment.getReplies().forEach(sub -> addTreeItem(sub, treeItem));
     }
 }
-
 
