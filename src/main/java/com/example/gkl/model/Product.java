@@ -8,10 +8,9 @@ import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,6 +24,7 @@ public class Product implements Serializable {
     double price;
     String title;
     String description;
+    String imageUrl;
     private String sizeEn;
     private String sizeUk;
     private String sizeUs;
@@ -47,10 +47,9 @@ public class Product implements Serializable {
     List<Comment> commentList = new ArrayList<>();
 
 
-    public Product(String title, String description) {
+    public Product(String title, String description, String imageUrl) {
         this.title = title;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
-
-
 }
