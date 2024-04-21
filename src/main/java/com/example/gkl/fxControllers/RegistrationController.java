@@ -62,8 +62,7 @@ public class RegistrationController implements Initializable {
         userHib = new UserHib(entityManagerFactory);
         User user = Customer.builder()
                 .login(loginField.getText())
-                //.password(BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt()))
-                .password(passwordField.getText())
+                .password(BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt()))
                 .phoneNumber(phoneNumberField.getText())
                 .firstName(nameField.getText())
                 .lastName(lastNameField.getText())

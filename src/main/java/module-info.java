@@ -10,8 +10,9 @@ module com.example.gkl {
 
     opens com.example.gkl to javafx.fxml;
     exports com.example.gkl;
+    exports com.example.gkl.fxControllers;
     opens com.example.gkl.fxControllers to javafx.fxml, javafx.base;
-    exports com.example.gkl.fxControllers to javafx.fxml;
+
     opens com.example.gkl.model to org.hibernate.orm.core;
 
 

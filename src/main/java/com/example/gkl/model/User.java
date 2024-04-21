@@ -32,6 +32,8 @@ public abstract class User implements Serializable {
     String phoneNumber;
     String address;
     private Regions selectedRegion;
+    String upperBodyUniversalSize;
+    String lowerBodyUniversalSize;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Purchase> purchaseList;
