@@ -4,11 +4,9 @@ import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
 import com.example.gkl.model.Regions;
-import com.example.gkl.model.User;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,7 +22,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.SocketHandler;
 
 public class MeasuramentsController implements Initializable {
     @FXML
@@ -107,9 +104,10 @@ public class MeasuramentsController implements Initializable {
         existingCustomer.setCustomerSleeveMeas(Double.parseDouble(sleevemeasure.getText()));
 
         userHib.updateCustomer(existingCustomer);
+
     }
 
-    @
+
     public void initialize(URL location, ResourceBundle resources) {
 
         regionSelect.getItems().addAll(Regions.values());
