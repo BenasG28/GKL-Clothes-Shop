@@ -210,30 +210,5 @@
 
         </plugins>
     </build>
-<!--    <reporting>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <links>-->
-<!--                        <link>http://maven.apache.org/ref/3.9.6/maven-plugin-api/apidocs/</link>-->
-<!--                        <link>http://maven.apache.org/ref/3.9.6/maven-core/apidocs/</link>-->
-<!--                    </links>-->
-<!--                    <linksource>true</linksource>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-plugin-report-plugin</artifactId>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-pmd-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <targetJdk>20</targetJdk>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </reporting>-->
 </project>
+

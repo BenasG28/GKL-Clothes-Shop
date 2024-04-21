@@ -104,6 +104,7 @@ public class MeasuramentsController implements Initializable {
         existingCustomer.setCustomerSleeveMeas(Double.parseDouble(sleevemeasure.getText()));
 
         userHib.updateCustomer(existingCustomer);
+
     }
 
 
