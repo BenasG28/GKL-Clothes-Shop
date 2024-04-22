@@ -13,6 +13,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.2</junit.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <!--        &lt;!&ndash; Skip generated code from Checkstyle analysis... &ndash;&gt;-->
 <!--        <checkstyle.excludes>**/HelpMojo.java</checkstyle.excludes>-->
 <!--        &lt;!&ndash; Properties for Site documentation (may not use period). &ndash;&gt;-->
