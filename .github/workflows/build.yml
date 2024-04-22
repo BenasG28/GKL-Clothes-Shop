@@ -1,0 +1,30 @@
+name: Maven Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    name: "Maven Build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Sources"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: "Set up JDK"
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: 20
+          cache: "maven"
+      - name: "Setup Xvfb"
+        run: |
+          sudo apt-get install -y xvfb
+          Xvfb :99 &
+          echo "DISPLAY=:99.0" >> $GITHUB_ENV
+      - name: "Build with Maven"
+        run: mvn verify

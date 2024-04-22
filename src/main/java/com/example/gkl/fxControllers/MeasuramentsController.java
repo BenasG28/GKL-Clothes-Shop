@@ -9,7 +9,6 @@ import com.example.gkl.utils.CustomerMeasurementProcessor;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,7 +24,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.SocketHandler;
 
 public class MeasuramentsController implements Initializable {
     @FXML
@@ -66,8 +64,8 @@ public class MeasuramentsController implements Initializable {
         this.entityManagerFactory = entityManagerFactory;
         this.measurementProcessor = new CustomerMeasurementProcessor(currentCustomer);
     }
-    private boolean checkIfFieldsEmpty(TextField chestmeasure, TextField shouldermeasure, TextField backmeasure, TextField sleevemeasure,
-                                       TextField hipmeasure, TextField outseammeasure, TextField inseammeasure, TextField waistmeasure){
+    public boolean checkIfFieldsEmpty(TextField chestmeasure, TextField shouldermeasure, TextField backmeasure, TextField sleevemeasure,
+                                      TextField hipmeasure, TextField outseammeasure, TextField inseammeasure, TextField waistmeasure){
         return chestmeasure.getText().isEmpty() || shouldermeasure.getText().isEmpty()
                 || backmeasure.getText().isEmpty() || sleevemeasure.getText().isEmpty()
                 || hipmeasure.getText().isEmpty() || outseammeasure.getText().isEmpty()

@@ -1,10 +1,8 @@
 package com.example.gkl.fxControllers;
 
 import com.example.gkl.StartGui;
-import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
-import com.example.gkl.model.Manager;
 import com.example.gkl.model.User;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
@@ -13,7 +11,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -45,21 +46,25 @@ public class RegistrationController implements Initializable {
     @FXML
     public TextField phoneNumberField;
     public Button measurementsButton;
-    private EntityManagerFactory entityManagerFactory;
-    private UserHib userHib;
+    EntityManagerFactory entityManagerFactory;
+    public UserHib userHib;
     private User user;
     public void setData(EntityManagerFactory entityManagerFactory, User user) {
         this.user = user;
         this.entityManagerFactory = entityManagerFactory;
     }
-    private boolean checkIfFieldsEmpty(TextField loginField, TextField passwordField, TextField contactMailField, TextField nameField, TextField lastNameField, TextField phoneNumberField, TextField addressField){
+    public boolean checkIfFieldsEmpty(TextField loginField, TextField passwordField, TextField contactMailField, TextField nameField, TextField lastNameField, TextField phoneNumberField, TextField addressField){
         return loginField.getText().isEmpty() || passwordField.getText().isEmpty() || contactMailField.getText().isEmpty() || nameField.getText().isEmpty() || lastNameField.getText().isEmpty() || phoneNumberField.getText().isEmpty() || addressField.getText().isEmpty();
     }
-    private boolean isPasswordMatch(PasswordField passwordField, PasswordField repeatPasswordField){
+    public boolean isPasswordMatch(PasswordField passwordField, PasswordField repeatPasswordField){
         return passwordField.getText().equals(repeatPasswordField.getText());
     }
    public void createUser(){
+
         userHib = new UserHib(entityManagerFactory);
+       if (userHib == null) {
+           throw new IllegalStateException("UserHib is not initialized. Call setData() first.");
+       }
         User user = Customer.builder()
                 .login(loginField.getText())
                 .password(BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt()))
@@ -114,6 +119,7 @@ public class RegistrationController implements Initializable {
           Parent parent = fxmlLoader.load();
           Scene scene = new Scene(parent);
           Stage stage = (Stage) loginField.getScene().getWindow();
+        stage.setTitle("GKL");
           if(user != null){
               MainShopController mainShopController = fxmlLoader.getController();
               mainShopController.setData(entityManagerFactory, user);
