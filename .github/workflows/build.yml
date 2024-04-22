@@ -23,4 +23,4 @@ jobs:
         run: mvn dependency:tree
         
       - name: Build with Maven
-        run: mvn clean install -U
+        run: mvn clean install -e
