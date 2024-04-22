@@ -2,10 +2,7 @@ package com.example.gkl.fxControllers;
 
 import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.GenericHib;
-import com.example.gkl.model.CommentType;
-import com.example.gkl.model.Customer;
-import com.example.gkl.model.Manager;
-import com.example.gkl.model.User;
+import com.example.gkl.model.*;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.application.Platform;
@@ -155,6 +152,16 @@ public class AccountController implements PasswordChangedCallback{
     }
     public void loadUserInfo(){
         if(currentUser.getClass() == Customer.class){
+            if(currentUser.getSelectedRegion() == Regions.UK || currentUser.getSelectedRegion() == Regions.US){
+                backText.setText("Back(inch)");
+                chestText.setText("Chest(inch)");
+                shoulderText.setText("Shoulder(inch)");
+                sleeveText.setText("Sleeve(inch)");
+                hipText.setText("Hip(inch)");
+                legLengthText.setText("Leg Length(inch)");
+                inseamText.setText("Inseam(inch)");
+                waistText.setText("Waist(inch)");
+            }
             loadCustomerInfo();
         }
         else if(currentUser.getClass() == Manager.class){
@@ -261,14 +268,26 @@ public class AccountController implements PasswordChangedCallback{
                 currentUser.setLogin(loginTextfield.getText());
                 currentUser.setContactMail(emailTextfield.getText());
                 if(currentUser instanceof Customer customer){
-                    customer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
-                    customer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
-                    customer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
-                    customer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
-                    customer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
-                    customer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
-                    customer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
-                    customer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
+                    if(currentUser.getSelectedRegion() == Regions.UK || currentUser.getSelectedRegion() == Regions.US){
+                        customer.setCustomerBackMeas(convertToCm(Double.valueOf(backTextfield.getText())));
+                        customer.setCustomerChestMeas(convertToCm(Double.valueOf(chestTextfield.getText())));
+                        customer.setCustomerShoulderMeas(convertToCm(Double.valueOf(shoulderTextfield.getText())));
+                        customer.setCustomerSleeveMeas(convertToCm(Double.valueOf(sleeveTextfield.getText())));
+                        customer.setCustomerInseamMeas(convertToCm(Double.valueOf(inseamTextfield.getText())));
+                        customer.setCustomerHipMeas(convertToCm(Double.valueOf(hipTextfield.getText())));
+                        customer.setCustomerLegLengthMeas(convertToCm(Double.valueOf(legLengthTextfield.getText())));
+                        customer.setCustomerWaistMeas(convertToCm(Double.valueOf(waistTextfield.getText())));
+                    }
+                    else{
+                        customer.setCustomerBackMeas(Double.valueOf(backTextfield.getText()));
+                        customer.setCustomerChestMeas(Double.valueOf(chestTextfield.getText()));
+                        customer.setCustomerShoulderMeas(Double.valueOf(shoulderTextfield.getText()));
+                        customer.setCustomerSleeveMeas(Double.valueOf(sleeveTextfield.getText()));
+                        customer.setCustomerInseamMeas(Double.valueOf(inseamTextfield.getText()));
+                        customer.setCustomerHipMeas(Double.valueOf(hipTextfield.getText()));
+                        customer.setCustomerLegLengthMeas(Double.valueOf(legLengthTextfield.getText()));
+                        customer.setCustomerWaistMeas(Double.valueOf(waistTextfield.getText()));
+                    }
                 }
                 try{
                     genericHib.update(currentUser);
@@ -296,6 +315,13 @@ public class AccountController implements PasswordChangedCallback{
         passwordField.setText(currentManager.getPassword());
     }
 
+    private Double convertToCm(double meas){
+        return meas*2.54;
+    }
+    private Double convertToInch(double meas){
+        return meas/2.54;
+    }
+
     private void loadCustomerInfo() {
         Customer currentCustomer = (Customer) currentUser;
         nameTextfield.setText(currentCustomer.getFirstName());
@@ -303,14 +329,27 @@ public class AccountController implements PasswordChangedCallback{
         loginTextfield.setText(currentCustomer.getLogin());
         emailTextfield.setText(currentCustomer.getContactMail());
         passwordField.setText(currentCustomer.getPassword());
-        chestTextfield.setText(currentCustomer.getCustomerChestMeas().toString());
-        shoulderTextfield.setText(currentCustomer.getCustomerShoulderMeas().toString());
-        backTextfield.setText(currentCustomer.getCustomerBackMeas().toString());
-        sleeveTextfield.setText(currentCustomer.getCustomerSleeveMeas().toString());
-        hipTextfield.setText(currentCustomer.getCustomerHipMeas().toString());
-        legLengthTextfield.setText(currentCustomer.getCustomerLegLengthMeas().toString());
-        inseamTextfield.setText(currentCustomer.getCustomerInseamMeas().toString());
-        waistTextfield.setText(currentCustomer.getCustomerWaistMeas().toString());
+        if(currentCustomer.getSelectedRegion() == Regions.UK || currentCustomer.getSelectedRegion() == Regions.US){
+            chestTextfield.setText(convertToInch(currentCustomer.getCustomerChestMeas()).toString());
+            shoulderTextfield.setText(convertToInch(currentCustomer.getCustomerShoulderMeas()).toString());
+            backTextfield.setText(convertToInch(currentCustomer.getCustomerBackMeas()).toString());
+            sleeveTextfield.setText(convertToInch(currentCustomer.getCustomerSleeveMeas()).toString());
+            hipTextfield.setText(convertToInch(currentCustomer.getCustomerHipMeas()).toString());
+            legLengthTextfield.setText(convertToInch(currentCustomer.getCustomerLegLengthMeas()).toString());
+            inseamTextfield.setText(convertToInch(currentCustomer.getCustomerInseamMeas()).toString());
+            waistTextfield.setText(convertToInch(currentCustomer.getCustomerWaistMeas()).toString());
+        }
+        else{
+            chestTextfield.setText(currentCustomer.getCustomerChestMeas().toString());
+            shoulderTextfield.setText(currentCustomer.getCustomerShoulderMeas().toString());
+            backTextfield.setText(currentCustomer.getCustomerBackMeas().toString());
+            sleeveTextfield.setText(currentCustomer.getCustomerSleeveMeas().toString());
+            hipTextfield.setText(currentCustomer.getCustomerHipMeas().toString());
+            legLengthTextfield.setText(currentCustomer.getCustomerLegLengthMeas().toString());
+            inseamTextfield.setText(currentCustomer.getCustomerInseamMeas().toString());
+            waistTextfield.setText(currentCustomer.getCustomerWaistMeas().toString());
+        }
+
     }
 
     @Override
