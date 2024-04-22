@@ -37,7 +37,6 @@ public class Purchase {
                 "id=" + id +
                 ", dateCreated=" + dateCreated +
                 ", purchaseAmount=" + purchaseAmount +
-                ", user=" + user +
                 '}';
     }
 
