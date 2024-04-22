@@ -22,7 +22,7 @@ public class ProductCard {
         }
     }
 
-    public void setProductData(Product product) {
-        controller.setProductData(product);
+    public void setProductData(Product product, MainShopController mainShopController) {
+        controller.setProductData(product, mainShopController);
     }
 }

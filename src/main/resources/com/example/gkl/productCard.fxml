@@ -15,7 +15,7 @@
         </ImageView>
         <Label fx:id="productNameLabel" layoutX="171.0" layoutY="25.0" text="Product Name" />
         <Label fx:id="productPriceLabel" layoutX="171.0" layoutY="54.0" text="Price: $" />
-        <Button layoutX="171.0" layoutY="80.0" mnemonicParsing="false" text="Add to Cart" />
+        <Button layoutX="171.0" layoutY="80.0" mnemonicParsing="false" text="Add to Cart" onAction="#addToCart" />
     </children>
 </AnchorPane>
 </VBox>
