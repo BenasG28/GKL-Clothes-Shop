@@ -1,4 +1,4 @@
-name: Maven Build
+name: Maven Test
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Build with Maven
+      - name: Test with Maven
         run: |
           mvn -B test --file pom.xml
         env:
