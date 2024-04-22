@@ -39,23 +39,44 @@ public class ChangePasswordController {
         genericHib = new GenericHib(entityManagerFactory);
 
     }
-
-    @FXML
-    private void saveNewPassword(){
-        if(BCrypt.checkpw(currentPasswordTextfield.getText(), currentUser.getPassword())){
-            if(newPasswordTextfield.getText().equals(confNewPasswordTextfield.getText())){
-                currentUser.setPasswordHashed(newPasswordTextfield.getText());
-                genericHib.update(currentUser);
-                if(callback !=null){
-                    callback.onPasswordChanged();
-                }
-                passwordStage.close();
-
-            }else{
-                JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING,"Password Error", "Passwords Do Not Match", "Please enter matching passwords.");
-            }
-        }else{
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Password Error", "Wrong Current Password", "Please enter current password correctly.");
+    public boolean isCurrentPasswordValid(){
+        return BCrypt.checkpw(currentPasswordTextfield.getText(), currentUser.getPassword());
+    }
+    public boolean areNewPasswordMatch(){
+        return newPasswordTextfield.getText().equals(confNewPasswordTextfield.getText());
+    }
+    public void updatePassword(){
+        currentUser.setPasswordHashed(newPasswordTextfield.getText());
+        genericHib.update(currentUser);
+    }
+    private void notifyPasswordChangedCallback() {
+        if (callback != null) {
+            callback.onPasswordChanged();
         }
     }
+    private void closePasswordStage() {
+        passwordStage.close();
+    }
+    private void displayPasswordErrorAlert(){
+        if(!isCurrentPasswordValid()){
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Password Error", "Wrong Current Password", "Please enter current password correctly.");
+        }
+        else{
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING,"Password Error", "Passwords Do Not Match", "Please enter matching passwords.");
+        }
+    }
+    @FXML
+    public void saveNewPassword(){
+        if(isCurrentPasswordValid() && areNewPasswordMatch()){
+                updatePassword();
+                notifyPasswordChangedCallback();
+                closePasswordStage();
+
+            }else{
+                displayPasswordErrorAlert();
+            }
+        }
 }
+
+
+

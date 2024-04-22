@@ -4,6 +4,8 @@ import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
 import com.example.gkl.model.Regions;
+import com.example.gkl.model.User;
+import com.example.gkl.utils.CustomerMeasurementProcessor;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -51,14 +53,16 @@ public class MeasuramentsController implements Initializable {
     public Text outseamText;
     public Text inseamText;
     public Text waistText;
-    EntityManagerFactory entityManagerFactory;
-    Customer currentCustomer;
-    UserHib userHib;
+    private EntityManagerFactory entityManagerFactory;
+    private Customer currentCustomer;
+    private UserHib userHib;
+    private CustomerMeasurementProcessor measurementProcessor;
 
 
     public void setData(EntityManagerFactory entityManagerFactory, Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
         this.entityManagerFactory = entityManagerFactory;
+        this.measurementProcessor = new CustomerMeasurementProcessor(currentCustomer);
     }
     public boolean checkIfFieldsEmpty(TextField chestmeasure, TextField shouldermeasure, TextField backmeasure, TextField sleevemeasure,
                                       TextField hipmeasure, TextField outseammeasure, TextField inseammeasure, TextField waistmeasure){
@@ -90,23 +94,45 @@ public class MeasuramentsController implements Initializable {
 
     }
 
-    public void editUserMeasurements() {
-        userHib = new UserHib(entityManagerFactory);
-        Customer existingCustomer = currentCustomer;
-
-        existingCustomer.setCustomerWaistMeas(Double.parseDouble(waistmeasure.getText()));
-        existingCustomer.setCustomerHipMeas(Double.parseDouble(hipmeasure.getText()));
-        existingCustomer.setCustomerInseamMeas(Double.parseDouble(inseammeasure.getText()));
-        existingCustomer.setCustomerLegLengthMeas(Double.parseDouble(outseammeasure.getText()));
-        existingCustomer.setCustomerShoulderMeas(Double.parseDouble(shouldermeasure.getText()));
-        existingCustomer.setCustomerChestMeas(Double.parseDouble(chestmeasure.getText()));
-        existingCustomer.setCustomerBackMeas(Double.parseDouble(backmeasure.getText()));
-        existingCustomer.setCustomerSleeveMeas(Double.parseDouble(sleevemeasure.getText()));
-
-        userHib.updateCustomer(existingCustomer);
-
+    private double convertSizeToStandardUnit(double size, Regions selectedRegion) {
+        return switch (selectedRegion) {
+            case US, UK ->
+                    size * 2.54;
+            case EU ->
+                    size;
+            default -> throw new IllegalArgumentException("Unknown region: " + selectedRegion);
+        };
     }
 
+    public void editUserMeasurements() {
+
+        double waistMeasCm = convertSizeToStandardUnit(Double.parseDouble(waistmeasure.getText()), currentCustomer.getSelectedRegion());
+        double hipMeasCm = convertSizeToStandardUnit(Double.parseDouble(hipmeasure.getText()), currentCustomer.getSelectedRegion());
+        double inseamMeasCm = convertSizeToStandardUnit(Double.parseDouble(inseammeasure.getText()), currentCustomer.getSelectedRegion());
+        double legLengthMeasCm = convertSizeToStandardUnit(Double.parseDouble(outseammeasure.getText()), currentCustomer.getSelectedRegion());
+        double shoulderMeasCm = convertSizeToStandardUnit(Double.parseDouble(shouldermeasure.getText()), currentCustomer.getSelectedRegion());
+        double chestMeasCm = convertSizeToStandardUnit(Double.parseDouble(chestmeasure.getText()), currentCustomer.getSelectedRegion());
+        double backMeasCm = convertSizeToStandardUnit(Double.parseDouble(backmeasure.getText()), currentCustomer.getSelectedRegion());
+        double sleeveMeasCm = convertSizeToStandardUnit(Double.parseDouble(sleevemeasure.getText()), currentCustomer.getSelectedRegion());
+
+        currentCustomer.setCustomerWaistMeas(waistMeasCm);
+        currentCustomer.setCustomerHipMeas(hipMeasCm);
+        currentCustomer.setCustomerInseamMeas(inseamMeasCm);
+        currentCustomer.setCustomerLegLengthMeas(legLengthMeasCm);
+        currentCustomer.setCustomerShoulderMeas(shoulderMeasCm);
+        currentCustomer.setCustomerChestMeas(chestMeasCm);
+        currentCustomer.setCustomerBackMeas(backMeasCm);
+        currentCustomer.setCustomerSleeveMeas(sleeveMeasCm);
+
+        // Generate upper body universal size
+        String upperBodySize = measurementProcessor.generateUpperBodyUniversalSize();
+        System.out.println("STAI ATS: " + upperBodySize);
+        currentCustomer.setUpperBodyUniversalSize(upperBodySize);
+
+        // Generate lower body universal size
+        String lowerBodySize = measurementProcessor.generateLowerBodyUniversalSize();
+        currentCustomer.setLowerBodyUniversalSize(lowerBodySize);
+    }
 
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -129,6 +155,7 @@ public class MeasuramentsController implements Initializable {
                 }
                 else{
                     editUserMeasurements();
+                    userHib.updateCustomer(currentCustomer);
                     saveButtonFunc();
                     JavaFxCustomUtils.generateAlert(Alert.AlertType.INFORMATION, "User information", "Measurements", "The user measurements has been filled successfully.");
                 }
@@ -137,6 +164,15 @@ public class MeasuramentsController implements Initializable {
             }
         });
     }
+
+    private void setUserSelectedRegion(ComboBox regionSelect) {
+        Regions selectedRegion = (Regions) regionSelect.getSelectionModel().getSelectedItem();
+
+        if (selectedRegion != null) {
+            currentCustomer.setSelectedRegion(selectedRegion);
+        }
+    }
+
 
 
     public void enableRegionSelect() {
@@ -162,5 +198,6 @@ public class MeasuramentsController implements Initializable {
             inseamText.setText("Inseam (cm)");
             waistText.setText("Waist (cm)");
         }
+        setUserSelectedRegion(regionSelect);
     }
 }

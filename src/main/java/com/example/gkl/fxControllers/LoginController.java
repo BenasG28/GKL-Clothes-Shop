@@ -29,8 +29,8 @@ public class LoginController implements Initializable {
     public PasswordField passwordField;
     public Button loginButton;
     public Button registerButton = new Button();
-    private EntityManagerFactory entityManagerFactory;
-    private UserHib userHib;
+    public EntityManagerFactory entityManagerFactory;
+    public UserHib userHib;
 
 
     public void registerNewUser() throws IOException {

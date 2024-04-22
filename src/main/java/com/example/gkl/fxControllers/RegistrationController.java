@@ -68,7 +68,6 @@ public class RegistrationController implements Initializable {
         User user = Customer.builder()
                 .login(loginField.getText())
                 .password(BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt()))
-                //.password(passwordField.getText())
                 .phoneNumber(phoneNumberField.getText())
                 .firstName(nameField.getText())
                 .lastName(lastNameField.getText())
