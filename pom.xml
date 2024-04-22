@@ -13,6 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.2</junit.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <!--        &lt;!&ndash; Skip generated code from Checkstyle analysis... &ndash;&gt;-->
 <!--        <checkstyle.excludes>**/HelpMojo.java</checkstyle.excludes>-->
 <!--        &lt;!&ndash; Properties for Site documentation (may not use period). &ndash;&gt;-->
@@ -20,7 +21,12 @@
         <LombokVersion>1.18.30</LombokVersion>
     </properties>
 
-
+    <repositories>
+        <repository>
+            <id>forplay-legacy</id>
+            <url>http://forplay.googlecode.com/svn/mavenrepo</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -143,6 +149,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.8.1</version>
                 <executions>
                     <execution>
                         <id>help-goal</id>
@@ -190,7 +197,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>20</source>
                     <target>20</target>
