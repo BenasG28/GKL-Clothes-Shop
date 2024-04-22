@@ -1,32 +1,22 @@
 name: Build JavaFX Application
-
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   build:
+    name: "Maven Build"
     runs-on: ubuntu-latest
-
-   
-
-
     steps:
-    
-      - name: Checkout code
+      - name: "Checkout Sources"
         uses: actions/checkout@v2
-        
-      - name: Set up JDK
-        uses: actions/setup-java@v1
         with:
-          java-version: '21' # or your desired JDK version
-
-        
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
-       
-
+          fetch-depth: 2
+      - name: "Set up JDK"
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: 21
+          cache: "maven"
+      - name: "Build with Maven"
+        run: mvn verify
