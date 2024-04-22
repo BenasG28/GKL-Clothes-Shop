@@ -17,7 +17,10 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: '1.8' # Use Java version 1.8
+          java-version: '20' # Use Java version 20
 
+      - name: Clean and Install with Maven
+        run: mvn clean install -U
+        
       - name: Build with Maven
         run: mvn -B package --file pom.xml
