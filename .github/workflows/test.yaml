@@ -1,3 +1,4 @@
+name: Maven Build
 on:
   push:
     branches:
@@ -18,10 +19,13 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: '20' # Use Java version 11
+          java-version: '20'
 
-      - name: Install xvfb
-        run: sudo apt-get install xvfb
+      - name: Install and Setup Xvfb
+        run: |
+          sudo apt-get install -y xvfb
+          Xvfb :99 &
+          echo "DISPLAY=:99.0" >> $GITHUB_ENV
 
       - name: Cache Maven dependencies
         uses: actions/cache@v2
