@@ -46,6 +46,14 @@ public class Product implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Comment> commentList = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "ProductType=" + productType +
+                ", title=" + title +
+                ", price=" + price +
+                '}';
+    }
 
     public Product(String title, String description, String imageUrl) {
         this.title = title;

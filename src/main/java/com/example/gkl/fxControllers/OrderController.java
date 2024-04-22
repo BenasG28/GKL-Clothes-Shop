@@ -29,6 +29,7 @@ public class OrderController {
     public Button statusFilterButton;
     public TextField customerIdField;
     public Button customerFilterButton;
+    public Button filterButton;
     private EntityManagerFactory entityManagerFactory;
     private GenericHib genericHib;
     private User currentUser;
@@ -89,7 +90,7 @@ public class OrderController {
         orderListManager.getItems().clear();
         LocalDate startDate = filterDateStart.getValue();
         LocalDate endDate = filterDateEnd.getValue();
-        orderListManager.getItems().addAll(purchaseHib.filterByDate(startDate,endDate));
+        orderListManager.getItems().addAll(purchaseHib.filterByDateAndUser(startDate,endDate,currentUser));
     }
     public void filterByStatus(){
         orderListManager.getItems().clear();
