@@ -30,6 +30,6 @@ jobs:
           echo "DISPLAY=:99.0" >> $GITHUB_ENV
 
       - name: Build and test
-        run: |
-          ./mvnw clean compile
-          ./mvnw test
+        run:  |
+          mvn verify
+          mvn -B test --file pom.xml
