@@ -60,8 +60,8 @@ public class MeasuramentsController implements Initializable {
         this.currentCustomer = currentCustomer;
         this.entityManagerFactory = entityManagerFactory;
     }
-    boolean checkIfFieldsEmpty(TextField chestmeasure, TextField shouldermeasure, TextField backmeasure, TextField sleevemeasure,
-                               TextField hipmeasure, TextField outseammeasure, TextField inseammeasure, TextField waistmeasure){
+    public boolean checkIfFieldsEmpty(TextField chestmeasure, TextField shouldermeasure, TextField backmeasure, TextField sleevemeasure,
+                                      TextField hipmeasure, TextField outseammeasure, TextField inseammeasure, TextField waistmeasure){
         return chestmeasure.getText().isEmpty() || shouldermeasure.getText().isEmpty()
                 || backmeasure.getText().isEmpty() || sleevemeasure.getText().isEmpty()
                 || hipmeasure.getText().isEmpty() || outseammeasure.getText().isEmpty()
