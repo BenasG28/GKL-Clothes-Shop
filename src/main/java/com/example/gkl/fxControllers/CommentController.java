@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class CommentController {
     public ListView<Comment> commentList;
@@ -38,8 +39,17 @@ public class CommentController {
     }
     public void selectProduct() {
         Product selectedProduct = productListForComments.getSelectionModel().getSelectedItem();
-        if (selectedProduct != null) commentProductTitleField.setText(selectedProduct.getTitle());
+        if (selectedProduct != null) {
+            commentProductTitleField.setText(selectedProduct.getTitle());
+            List<Comment> commentsForProduct = commentHib.getAllCommentsForProduct(selectedProduct);
+            commentList.getItems().clear();
+            commentList.getItems().addAll(commentsForProduct);
+        } else {
+            commentProductTitleField.clear();
+            commentList.getItems().clear(); // Clear commentList when no product is selected
+        }
     }
+
 
     public void addComment() {
         Comment comment = new Comment(commentTitleField.getText(), commentBodyField.getText(), commentDateField.getValue(), currentUser);

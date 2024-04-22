@@ -1,6 +1,7 @@
 package com.example.gkl.hibernateControllers;
 
 import com.example.gkl.model.Comment;
+import com.example.gkl.model.Product;
 import com.example.gkl.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -31,6 +32,24 @@ public class CommentHib {
             CriteriaQuery query = em.getCriteriaBuilder().createQuery();
             Root<Comment> root = query.from(Comment.class);
             query.select(root).where(cb.equal(root.get("user"), user));
+            Query q = em.createQuery(query);
+            result = q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+        return result;
+    }
+    public List<Comment> getAllCommentsForProduct(Product product) {
+        EntityManager em = null;
+        List<Comment> result = new ArrayList<>();
+        try {
+            em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Comment> query = cb.createQuery(Comment.class);
+            Root<Comment> root = query.from(Comment.class);
+            query.select(root).where(cb.equal(root.get("product"), product));
             Query q = em.createQuery(query);
             result = q.getResultList();
         } catch (Exception e) {
