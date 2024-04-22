@@ -3,7 +3,10 @@ name: Feature Branch CI
 on:
   push:
     branches:
-      - feature/*
+      - feature/all
+  pull_request:
+    branches:
+      - feature/all
 
 jobs:
   build:
