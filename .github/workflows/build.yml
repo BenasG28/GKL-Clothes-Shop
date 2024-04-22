@@ -1,29 +1,22 @@
-name: Build JavaFX Application
-
+name: Maven Build
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
     name: "Maven Build"
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
+      - name: "Checkout Sources"
         uses: actions/checkout@v2
-
-      - name: Install xvfb
-        run: sudo apt-get install xvfb
-
-      - name: Set up JDK
-        uses: actions/setup-java@v1
         with:
-          java-version: '20' # Use Java version 20
-
-      # - name: Tree
-      #   run: mvn dependency:tree
-        
-      - name: Build with Maven
-        run: mvn -U test --file pom.xml  
+          fetch-depth: 2
+      - name: "Set up JDK"
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: 20
+          cache: "maven"
+      - name: "Build with Maven"
+        run: mvn verify
