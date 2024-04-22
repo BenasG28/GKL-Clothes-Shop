@@ -1,22 +1,23 @@
 name: Build JavaFX Application
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: "Maven Build"
     runs-on: ubuntu-latest
+    
     steps:
-      - name: "Checkout Sources"
+      - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v1
         with:
-          fetch-depth: 2
-      - name: "Set up JDK"
-        uses: actions/setup-java@v2
-        with:
-          distribution: "temurin"
-          java-version: 11
-          cache: "maven"
-      - name: "Build with Maven"
-        run: mvn verify
+          java-version: '1.8' # Use Java version 1.8
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
