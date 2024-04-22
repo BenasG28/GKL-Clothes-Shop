@@ -77,11 +77,6 @@ public class MainShopController implements Initializable {
         loadCartItems();
     }
 
-//    private void loadCatalogue() {
-//        productList.getItems().clear();
-//        productList.getItems().addAll(productHib.getAllProductWithNoCart());
-//    }
-
     public void loadTabValues() {
         if (primaryTab.isSelected()) {
             loadCartItems();
@@ -131,23 +126,18 @@ public class MainShopController implements Initializable {
         }
     }
     private void displayProductCards() {
-        List<Product> products = productHib.getAllProductWithNoCart(); // Retrieve products from database
-
-        // Clear existing children from the product container
+        List<Product> products = productHib.getAllProductWithNoCart();
         productContainer.getChildren().clear();
 
-        // Create a VBox to hold the product cards vertically
         VBox vbox = new VBox();
-        vbox.setSpacing(10); // Set spacing between product cards
+        vbox.setSpacing(10);
 
-        // Dynamically create product cards for each product
         for (Product product : products) {
             ProductCard productCard = new ProductCard();
-            productCard.setProductData(product); // Set product data
-            vbox.getChildren().add(productCard.getNode()); // Add product card to VBox
+            productCard.setProductData(product, this);
+            vbox.getChildren().add(productCard.getNode());
         }
 
-        // Set the VBox as the content of the product container
         productContainer.getChildren().add(vbox);
     }
 
@@ -246,11 +236,10 @@ public class MainShopController implements Initializable {
         }
     }
 
-    public void addToCart() {
-        Product selectedProduct = productList.getSelectionModel().getSelectedItem();
-        if (selectedProduct != null && !userCart.getItemsInCart().contains(selectedProduct)) {
-            selectedProduct.setCart(userCart);
-            userCart.getItemsInCart().add(selectedProduct);
+    public void addToCart(Product product) {
+        if (product != null && !userCart.getItemsInCart().contains(product)) {
+            product.setCart(userCart);
+            userCart.getItemsInCart().add(product);
             genericHib.update(userCart);
             System.out.println("LISTAAAAAAAAAAAAAAS CARTE: " + userCart.getItemsInCart());
             loadCartItems();
@@ -258,7 +247,6 @@ public class MainShopController implements Initializable {
 
         } else
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid product", "No product selected", "Choose a product");
-
     }
 
     public void removeFromCart() {
