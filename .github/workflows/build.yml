@@ -19,9 +19,8 @@ jobs:
         with:
           java-version: '20' # Use Java version 20
 
-      # - name: Clean and Install with Maven
-      #   run: mvn clean install -U
+      - name: Tree
+        run: mvn dependency:tree
         
       - name: Build with Maven
-        run:  mvn clean install -U
-
+        run: mvn clean install -U
