@@ -3,6 +3,7 @@ package com.example.gkl.fxControllers;
 import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.model.*;
+import com.example.gkl.utils.CustomerMeasurementProcessor;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.application.Platform;
@@ -12,10 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -70,6 +68,10 @@ public class AccountController implements PasswordChangedCallback{
     public Button sizeHelpButton;
     public Button editInfoButton;
     public PasswordField passwordField;
+    public ComboBox regionSelectionAccountCombobox;
+    public StringProperty regionSelection = new SimpleStringProperty();
+    public TextField upperSizeTextfield;
+    public TextField lowerSizeTextfield;
     private StringProperty password = new SimpleStringProperty();
     public Button saveInfoButton;
     private EntityManagerFactory entityManagerFactory;
@@ -82,6 +84,11 @@ public class AccountController implements PasswordChangedCallback{
         public void initialize(){
             bindProperties();
             addListeners();
+            regionSelectionAccountCombobox.getItems().addAll(Regions.values());
+        // Add listener to update regionSelection when ComboBox selection changes
+            regionSelectionAccountCombobox.valueProperty().addListener((obs, oldValue, newValue) -> {
+                regionSelection.set(newValue.toString());
+            });
     }
     private void bindProperties(){
         nameTextfield.textProperty().bindBidirectional(firstName);
@@ -111,6 +118,7 @@ public class AccountController implements PasswordChangedCallback{
         addListenerToProperty(chestMeas);
         addListenerToProperty(backMeas);
         addListenerToProperty(sleeveMeas);
+        addListenerToProperty(regionSelection);
         saveOriginalValues();
     }
 
@@ -128,20 +136,35 @@ public class AccountController implements PasswordChangedCallback{
         originalValues.put(chestMeas, chestMeas.getValue());
         originalValues.put(backMeas, backMeas.getValue());
         originalValues.put(sleeveMeas, sleeveMeas.getValue());
+        originalValues.put(regionSelection, regionSelection.getValue());
     }
 
     private void addListenerToProperty(Property<?> property) {
-        modifiedValues.put(property, property.getValue());  // Initial value
+        if (property instanceof StringProperty && property.equals(regionSelection)) {
+            // Add listener to regionSelection separately
+            StringProperty stringProperty = (StringProperty) property;
+            stringProperty.addListener((obs, oldValue, newValue) -> {
+                modifiedValues.put(stringProperty, newValue);  // Update current value
 
-        property.addListener((obs, oldValue, newValue) -> {
-            modifiedValues.put(property, newValue);  // Update current value
-
-            Platform.runLater(() -> {
-                boolean isModified = !Objects.equals(originalValues.get(property), newValue);
-                saveInfoButton.setDisable(!isModified);
+                Platform.runLater(() -> {
+                    boolean isModified = !Objects.equals(originalValues.get(stringProperty), newValue);
+                    saveInfoButton.setDisable(!isModified);
+                });
             });
-        });
+        } else {
+            // Add listener to other properties as before
+            modifiedValues.put(property, property.getValue());  // Initial value
+            property.addListener((obs, oldValue, newValue) -> {
+                modifiedValues.put(property, newValue);  // Update current value
+
+                Platform.runLater(() -> {
+                    boolean isModified = !Objects.equals(originalValues.get(property), newValue);
+                    saveInfoButton.setDisable(!isModified);
+                });
+            });
+        }
     }
+
 
 
     public void setData(EntityManagerFactory entityManagerFactory, User currentUser){
@@ -161,6 +184,16 @@ public class AccountController implements PasswordChangedCallback{
                 legLengthText.setText("Leg Length(inch)");
                 inseamText.setText("Inseam(inch)");
                 waistText.setText("Waist(inch)");
+            }
+            else{
+                backText.setText("Back(cm)");
+                chestText.setText("Chest(cm)");
+                shoulderText.setText("Shoulder(cm)");
+                sleeveText.setText("Sleeve(cm)");
+                hipText.setText("Hip(cm)");
+                legLengthText.setText("Leg Length(cm)");
+                inseamText.setText("Inseam(cm)");
+                waistText.setText("Waist(cm)");
             }
             loadCustomerInfo();
         }
@@ -187,6 +220,7 @@ public class AccountController implements PasswordChangedCallback{
         }
     }
     private void makeFieldsViewOnly() {
+        regionSelectionAccountCombobox.setDisable(true);
         nameTextfield.setDisable(true);
         surnameTextField.setDisable(true);
         loginTextfield.setDisable(true);
@@ -206,6 +240,7 @@ public class AccountController implements PasswordChangedCallback{
         }
     }
     private void makeFieldsEditable(){
+            regionSelectionAccountCombobox.setDisable(false);
             nameTextfield.setDisable(false);
             surnameTextField.setDisable(false);
             loginTextfield.setDisable(false);
@@ -255,6 +290,13 @@ public class AccountController implements PasswordChangedCallback{
         }
         return false;
     }
+    private void updateUniversalSizes(){
+        Customer currentCustomer = (Customer) currentUser;
+        CustomerMeasurementProcessor customerMeasurementProcessor = new CustomerMeasurementProcessor(currentCustomer);
+        currentCustomer.setUpperBodyUniversalSize(customerMeasurementProcessor.generateUpperBodyUniversalSize());
+        currentCustomer.setLowerBodyUniversalSize(customerMeasurementProcessor.generateLowerBodyUniversalSize());
+        genericHib.update(currentCustomer);
+    }
     @FXML
     private void handleSaveInfo() {
         if(!checkIfPersonalFieldsAreEmpty()){
@@ -267,6 +309,7 @@ public class AccountController implements PasswordChangedCallback{
                 currentUser.setLastName(surnameTextField.getText());
                 currentUser.setLogin(loginTextfield.getText());
                 currentUser.setContactMail(emailTextfield.getText());
+                currentUser.setSelectedRegion((Regions) regionSelectionAccountCombobox.getValue());
                 if(currentUser instanceof Customer customer){
                     if(currentUser.getSelectedRegion() == Regions.UK || currentUser.getSelectedRegion() == Regions.US){
                         customer.setCustomerBackMeas(convertToCm(Double.valueOf(backTextfield.getText())));
@@ -291,8 +334,11 @@ public class AccountController implements PasswordChangedCallback{
                 }
                 try{
                     genericHib.update(currentUser);
+                    updateUniversalSizes();
                     loadUserInfo();
                     makeFieldsViewOnly();
+
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -329,6 +375,9 @@ public class AccountController implements PasswordChangedCallback{
         loginTextfield.setText(currentCustomer.getLogin());
         emailTextfield.setText(currentCustomer.getContactMail());
         passwordField.setText(currentCustomer.getPassword());
+        regionSelectionAccountCombobox.setValue(currentCustomer.getSelectedRegion());
+        upperSizeTextfield.setText(currentCustomer.getUpperBodyUniversalSize());
+        lowerSizeTextfield.setText(currentCustomer.getLowerBodyUniversalSize());
         if(currentCustomer.getSelectedRegion() == Regions.UK || currentCustomer.getSelectedRegion() == Regions.US){
             chestTextfield.setText(convertToInch(currentCustomer.getCustomerChestMeas()).toString());
             shoulderTextfield.setText(convertToInch(currentCustomer.getCustomerShoulderMeas()).toString());

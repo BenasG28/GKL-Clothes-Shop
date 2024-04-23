@@ -11,6 +11,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -25,14 +26,11 @@ public class Product implements Serializable {
     String title;
     String description;
     String imageUrl;
-    private String sizeEn;
-    private String sizeUk;
-    private String sizeUs;
-    private String sizeSML;
-    private String productCode;
     private String color;
-    private String productType;
+    private ProductType productType;
     private String productSex;
+//    private Map<String, Integer> inventory;
+
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     Warehouse warehouse;
@@ -46,10 +44,19 @@ public class Product implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Comment> commentList = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "ProductType=" + productType +
+                ", title=" + title +
+                ", price=" + price +
+                '}';
+    }
 
     public Product(String title, String description, String imageUrl) {
         this.title = title;
         this.description = description;
         this.imageUrl = imageUrl;
     }
+
 }
