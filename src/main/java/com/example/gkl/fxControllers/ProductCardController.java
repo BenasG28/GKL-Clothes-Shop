@@ -2,7 +2,10 @@ package com.example.gkl.fxControllers;
 
 import com.example.gkl.model.Product;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -15,12 +18,20 @@ public class ProductCardController {
     private Label productPriceLabel;
     @FXML
     private ImageView productImageView;
-
+    @FXML
+    private ComboBox<String> sizeComboBox = new ComboBox<>();
+    @FXML
+    private Spinner<Integer> quantitySpinner = new Spinner<>();
     private MainShopController mainShopController; // Add this line
     private Product product;
 
     public void initialize() {
         // Initialize controller
+        sizeComboBox.getItems().addAll("S", "M", "L", "XL");
+
+        // Initialize quantity Spinner
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
+        quantitySpinner.setValueFactory(valueFactory);
     }
 
     public void setProductData(Product product, MainShopController mainShopController) {
@@ -33,6 +44,11 @@ public class ProductCardController {
 
     @FXML
     public void addToCart() {
-        mainShopController.addToCart(product);
+        // Retrieve selected size and quantity
+        String selectedSize = sizeComboBox.getValue();
+        int selectedQuantity = quantitySpinner.getValue();
+
+        // Pass the selected product, size, and quantity to the main shop controller for adding to the cart
+        mainShopController.addToCart(product, selectedSize, selectedQuantity);
     }
 }
