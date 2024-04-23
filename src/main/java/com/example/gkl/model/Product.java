@@ -28,8 +28,8 @@ public class Product implements Serializable {
     String imageUrl;
     private String color;
     private ProductType productType;
-    private String productSex;
-//    private Map<String, Integer> inventory;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<InventoryItem> inventory = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
