@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 import java.time.LocalDate;
@@ -87,23 +88,30 @@ public class PurchaseHib extends GenericHib {
             if (em != null) em.close();
         }
     }
-    public List<Purchase> filterByDate(LocalDate start, LocalDate end){
+    public List<Purchase> filterByDateAndUser(LocalDate start, LocalDate end, User user) {
         EntityManager em = null;
-        try{
+        List<Purchase> result = new ArrayList<>();
+        try {
             em = getEntityManager();
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Purchase> query = cb.createQuery(Purchase.class);
             Root<Purchase> root = query.from(Purchase.class);
-            query.select(root).where(cb.between(root.get("dateCreated"), start, end));
+
+            // Add predicates to filter by date and user
+            Predicate datePredicate = cb.between(root.get("dateCreated"), start, end);
+            Predicate userPredicate = cb.equal(root.get("user"), user);
+            query.select(root).where(cb.and(datePredicate, userPredicate));
+
             Query q = em.createQuery(query);
-            return q.getResultList();
-        }catch (Exception e){
+            result = q.getResultList();
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(em!=null) em.close();
+        } finally {
+            if (em != null) em.close();
         }
-        return new ArrayList<>();
+        return result;
     }
+
     public List<Purchase> filterByStatus(PurchaseStatus status){
         EntityManager em = null;
         try{
