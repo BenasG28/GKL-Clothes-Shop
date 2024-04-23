@@ -236,19 +236,47 @@ public class MainShopController implements Initializable {
         }
     }
 
-    public void addToCart(Product product) {
+    public void addToCart(Product product, String size, Integer quantity) {
         if (product != null && !userCart.getItemsInCart().contains(product)) {
-            product.setCart(userCart);
-            userCart.getItemsInCart().add(product);
-            genericHib.update(userCart);
-            System.out.println("LISTAAAAAAAAAAAAAAS CARTE: " + userCart.getItemsInCart());
-            loadCartItems();
-            displayProductCards();
+            // Check if the selected size and quantity are available in the product's inventory
+//            if (isInventoryAvailable(product, size, quantity)) {
+                // Add the product to the user's cart along with the selected size and quantity
+                product.setCart(userCart);
+                userCart.getItemsInCart().add(product);
 
-        } else
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid product", "No product selected", "Choose a product");
+                // Update the cart in the database
+                genericHib.update(userCart);
+
+                System.out.println("LISTAAAAAAAAAAAAAAS CARTE: " + userCart.getItemsInCart());
+
+                // Reload cart items and display product cards
+                loadCartItems();
+                displayProductCards();
+//            } else {
+//                // Show alert if the selected size or quantity is not available in inventory
+//                JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid selection", "Selected size or quantity not available", "Please select a different size or quantity.");
+//            }
+        } else {
+            // Show alert if the product is invalid or already in the cart
+            JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid product", "No product selected or already in the cart", "Choose a valid product to add to the cart.");
+        }
     }
-
+//    private boolean isInventoryAvailable(Product product, String size, Integer quantity) {
+//        // Get the inventory items for the product
+//        List<InventoryItem> inventory = product.getInventory();
+//
+//        // Iterate through the inventory items
+//        for (InventoryItem item : inventory) {
+//            // Check if the size and quantity match the desired ones
+//            if (item.getSize().equals(size) && item.getQuantity() >= quantity) {
+//                // If the desired size and quantity are available, return true
+//                return true;
+//            }
+//        }
+//
+//        // If no matching inventory item is found, return false
+//        return false;
+//    }
     public void removeFromCart() {
         Product selectedProduct = currentOrderList.getSelectionModel().getSelectedItem();
         if (selectedProduct != null) {

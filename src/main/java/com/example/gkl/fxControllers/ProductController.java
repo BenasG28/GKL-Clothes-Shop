@@ -2,28 +2,38 @@ package com.example.gkl.fxControllers;
 
 import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.model.Product;
+import com.example.gkl.model.ProductType;
 import com.example.gkl.model.Warehouse;
 import com.example.gkl.utils.JavaFxCustomUtils;
+import com.example.gkl.model.InventoryItem;
 import jakarta.persistence.EntityManagerFactory;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-public class ProductController {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class ProductController implements Initializable {
     public ListView<Product> productListManager;
     public TextField productTitleField;
     public TextField productDescriptionField;
     public TextField productLabelField;
     public ComboBox<Warehouse> warehouseComboBox;
-    public ComboBox productType;
+    public ComboBox<ProductType> productType;
     public DatePicker productReleaseDateField;
     public Button addNewProductButton;
     public Button updateProductButton;
     public Button deleteProductButton;
     public TextField productPriceField;
-    public TextField productLengthField;
-    public ListView productTrackListManager;
-    public TextField productUniqueAttributeField;
-    public ComboBox productGenreComboBox;
     public Button clearButton;
+    public TextField productImageUrlField;
+    public TextField productColorField;
+    public Spinner<Integer> quantitySpinner;
+    public Spinner<Integer> quantityMSpinner;
+    public Spinner<Integer> quantityLSpinner;
+    public Spinner<Integer> quantityXLSpinner;
     private EntityManagerFactory entityManagerFactory;
     private GenericHib genericHib;
 
@@ -32,10 +42,13 @@ public class ProductController {
         genericHib = new GenericHib(entityManagerFactory);
 
     }
+
+
     public void setupWarehouseComboBox(){
         warehouseComboBox.getItems().clear();
         warehouseComboBox.getItems().addAll(genericHib.getAllRecords(Warehouse.class));
     }
+
 
    /* public void changeProductField() {
         if (productType.getSelectionModel().getSelectedItem() == ProductType.VINYL) {
@@ -53,104 +66,85 @@ public class ProductController {
     }
 
 
-    /*public void addTrack() {
-        Track track = new Track(trackTitleField.getText(), Integer.parseInt(trackLengthField.getText()));
-        tempTrackList.add(track);
-        loadTrackList();
+
+   public void addNewProduct() {
+       Warehouse selectedWarehouse = warehouseComboBox.getValue(); // Use getValue() instead of getSelectionModel().getSelectedItem()
+
+       // You can add more conditions based on your product types
+       if (selectedWarehouse != null) {
+           Product newProduct = new Product();
+           newProduct.setTitle(productTitleField.getText());
+           newProduct.setDescription(productDescriptionField.getText());
+           newProduct.setPrice(Double.parseDouble(productPriceField.getText()));
+           newProduct.setColor(productColorField.getText());
+           newProduct.setImageUrl(productImageUrlField.getText());
+           newProduct.setWarehouse(selectedWarehouse);
+           newProduct.setProductType(productType.getValue());
+           // Set quantities for each size based on spinner values
+           List<InventoryItem> inventoryItems = new ArrayList<>();
+           inventoryItems.add(createInventoryItem("S", (Integer) quantitySpinner.getValue(), newProduct));
+           inventoryItems.add(createInventoryItem("M", (Integer) quantityMSpinner.getValue(), newProduct));
+           inventoryItems.add(createInventoryItem("L", (Integer) quantityLSpinner.getValue(), newProduct));
+           inventoryItems.add(createInventoryItem("XL", (Integer) quantityXLSpinner.getValue(), newProduct));
+
+           newProduct.setInventory(inventoryItems);
+
+           // Add the new product to the database or perform any other necessary actions
+           genericHib.create(newProduct);
+
+           // Clear the fields and reload the product list
+           clearFields();
+           loadProductListManager();
+    }
+       else {
+           JavaFxCustomUtils.generateAlert(Alert.AlertType.ERROR, "Product error", "Error during create", "Please select a warehouse");
+       }
+   }
+    private InventoryItem createInventoryItem(String size, int quantity, Product product) {
+        InventoryItem inventoryItem = new InventoryItem();
+        inventoryItem.setSize(size);
+        inventoryItem.setQuantity(quantity);
+        inventoryItem.setProduct(product); // Set the product reference
+        return inventoryItem;
     }
 
-    public void removeTrack() {
-        Track track = productTrackListManager.getSelectionModel().getSelectedItem();
-        tempTrackList.remove(track);
-        loadTrackList();
-    }
-
-    public void updateTrack() {
-        Track track = productTrackListManager.getSelectionModel().getSelectedItem();
-        track.setName(trackTitleField.getText());
-        track.setLengthBySeconds(Integer.parseInt(trackLengthField.getText()));
-        loadTrackList();
-    }
-
-    public void loadTrackData() {
-        Track track = productTrackListManager.getSelectionModel().getSelectedItem();
-        trackTitleField.setText(track.getName());
-        trackLengthField.setText(String.valueOf(track.getLengthBySeconds()));
-    }
-
-    private void loadTrackList() {
-        productTrackListManager.getItems().clear();
-        for (Track t : tempTrackList) {
-            productTrackListManager.getItems().add(t);
-        }
-    }
-*/
-   /* public void addNewProduct() {
-        //  try {
-        Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
-        ProductGenre selectedProductGenre = productGenreComboBox.getSelectionModel().getSelectedItem();
-        Warehouse warehouse = genericHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
-        if (productType.getSelectionModel().getSelectedItem() == ProductType.VINYL) {
-            Vinyl vinyl = new Vinyl(Double.parseDouble(productPriceField.getText()), productTitleField.getText(), productReleaseDateField.getValue(), selectedProductGenre, productDescriptionField.getText(), Integer.parseInt(productLengthField.getText()), productLabelField.getText(), warehouse, productUniqueAttributeField.getText());
-            for (Track t : tempTrackList) {
-                vinyl.addTrack(t);
-            }
-            tempTrackList.clear();
-            genericHib.create(vinyl);
-        } else if (productType.getSelectionModel().getSelectedItem() == ProductType.COMPACT_DISC) {
-            CompactDisc compactDisc = new CompactDisc(Double.parseDouble(productPriceField.getText()), productTitleField.getText(), productReleaseDateField.getValue(), selectedProductGenre, productDescriptionField.getText(), Integer.parseInt(productLengthField.getText()), productLabelField.getText(), warehouse, productUniqueAttributeField.getText());
-            for (Track t : tempTrackList) {
-                compactDisc.addTrack(t);
-            }
-            tempTrackList.clear();
-            genericHib.create(compactDisc);
-        } else if (productType.getSelectionModel().getSelectedItem() == ProductType.CASSETTE) {
-            Cassette cassette = new Cassette(Double.parseDouble(productPriceField.getText()), productTitleField.getText(), productReleaseDateField.getValue(), selectedProductGenre, productDescriptionField.getText(), Integer.parseInt(productLengthField.getText()), productLabelField.getText(), warehouse, productUniqueAttributeField.getText());
-            for (Track t : tempTrackList) {
-                cassette.addTrack(t);
-            }
-            tempTrackList.clear();
-            genericHib.create(cassette);
-        } else {
-            JavaFxCustomUtils.generateAlert(Alert.AlertType.ERROR, "Product error", "Error during create", "Wrong product type");
-        }
-        clearFields();
-        loadProductListManager();
-        //}
-//        } catch (Exception e) {
-//            JavaFxCustomUtils.generateAlert(Alert.AlertType.ERROR, "Product creation error", "Error during create", "Product not created, check entered data");
-//        }
-    }*/
-
-    /*public void loadProductData() {
+    public void loadProductData() {
         Product product = productListManager.getSelectionModel().getSelectedItem();
         if (product != null) {
-            if (product.getClass() == Vinyl.class) {
-                productType.setValue(ProductType.VINYL);
-                productUniqueAttributeField.setText(((Vinyl) product).getRpm());
-            } else if (product.getClass() == CompactDisc.class) {
-                productType.setValue(ProductType.COMPACT_DISC);
-                productUniqueAttributeField.setText(((CompactDisc) product).getAudioFormat());
-            } else if (product.getClass() == Cassette.class) {
-                productType.setValue(ProductType.CASSETTE);
-                productUniqueAttributeField.setText(((Cassette) product).getType());
-            }
             productTitleField.setText(product.getTitle());
-            productLabelField.setText(product.getLabel());
-            productGenreComboBox.setValue(product.getGenre());
-            productLengthField.setText(String.valueOf(product.getLength()));
             productDescriptionField.setText(product.getDescription());
-            productPriceField.setText(String.valueOf(product.getPrice()));
-            productReleaseDateField.setValue(product.getReleaseDate());
             warehouseComboBox.setValue(product.getWarehouse());
-            productTrackListManager.getItems().clear();
-            productTrackListManager.getItems().addAll(product.getTrackList());
-            tempTrackList = product.getTrackList();
+            productPriceField.setText(String.valueOf(product.getPrice()));
+            productColorField.setText(product.getColor());
+            productImageUrlField.setText(product.getImageUrl());
+            productType.setValue(product.getProductType());
+            
+            for (InventoryItem item : product.getInventory()) {
+                String size = item.getSize();
+                int quantity = item.getQuantity();
+                switch (size) {
+                    case "S":
+                        quantitySpinner.getValueFactory().setValue(quantity);
+                        break;
+                    case "M":
+                        quantityMSpinner.getValueFactory().setValue(quantity);
+                        break;
+                    case "L":
+                        quantityLSpinner.getValueFactory().setValue(quantity);
+                        break;
+                    case "XL":
+                        quantityXLSpinner.getValueFactory().setValue(quantity);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
         } else {
             JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Invalid product", "Product is not chosen", "Choose a product from the list");
         }
 
-    }*/
+    }
 
     /*public void updateProduct() {
         try {
@@ -205,21 +199,35 @@ public class ProductController {
         }
     }
 
-   /* public void clearFields() {
-        productType.getSelectionModel().clearSelection();
-        productTitleField.setText(null);
-        productLabelField.setText(null);
-        productUniqueAttributeField.setText(null);
-        productGenreComboBox.getSelectionModel().clearSelection();
-        productLengthField.setText(null);
-        productPriceField.setText(null);
-        productReleaseDateField.setValue(null);
-        productTrackListManager.getItems().clear();
-        tempTrackList.clear();
-        productDescriptionField.setText(null);
-        warehouseComboBox.getSelectionModel().clearSelection();
-        soldoutCheckBox.setDisable(true);
-        soldoutCheckBox.setSelected(false);
+    private void initializeSpinner(Spinner<Integer> spinner) {
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
+        spinner.setValueFactory(valueFactory);
     }
-*/
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initializeSpinner(quantitySpinner);
+        initializeSpinner(quantityMSpinner);
+        initializeSpinner(quantityLSpinner);
+        initializeSpinner(quantityXLSpinner);
+        productType.getItems().addAll(ProductType.values());
+    }
+
+    public void clearFields() {
+        productTitleField.setText(null);
+        productDescriptionField.setText(null);
+        productPriceField.setText(null);
+        productColorField.setText(null);
+        productImageUrlField.setText(null);
+
+        quantitySpinner.getValueFactory().setValue(0);
+        quantityMSpinner.getValueFactory().setValue(0);
+        quantityLSpinner.getValueFactory().setValue(0);
+        quantityXLSpinner.getValueFactory().setValue(0);
+
+        warehouseComboBox.getSelectionModel().clearSelection();
+        productType.getSelectionModel().clearSelection();
+
+    }
+
+
 }

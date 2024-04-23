@@ -38,48 +38,53 @@ public class CustomerMeasurementProcessor {
             return "L";
         } else if (isWithinRange(chest, 107, 113, chestTolerance) &&
                 isWithinRange(shoulder, 52, 56, shoulderTolerance) &&
-                isWithinRange(waist, 93, 98, waistTolerance) &&
-                isWithinRange(hip, 108, 112, hipTolerance)) { // Updated hip range for size XL
+                isWithinRange(waist, 93, 105, waistTolerance) &&
+                isWithinRange(hip, 108, 115, hipTolerance)) { // Updated hip range for size XL
             return "XL";
         } else {
-            // If no exact match, determine the size based on the closest measurements
-            double closestChest = getClosestBoundary(chest, 88, 113);
-            double closestShoulder = getClosestBoundary(shoulder, 39, 56);
-            double closestWaist = getClosestBoundary(waist, 75, 98);
-            double closestHip = getClosestBoundary(hip, 92, 112); // Updated hip range for closest calculation
-
-            if (closestChest >= 88 && closestChest <= 95 &&
-                    closestShoulder >= 39 && closestShoulder <= 44 &&
-                    closestWaist >= 75 && closestWaist <= 82 &&
-                    closestHip >= 92 && closestHip <= 97) { // Updated hip range for size S
-                return "S";
-            } else if (closestChest >= 95 && closestChest <= 101 &&
-                    closestShoulder >= 44 && closestShoulder <= 48 &&
-                    closestWaist >= 82 && closestWaist <= 88 &&
-                    closestHip >= 97 && closestHip <= 104) { // Updated hip range for size M
-                return "M";
-            } else if (closestChest >= 101 && closestChest <= 107 &&
-                    closestShoulder >= 48 && closestShoulder <= 52 &&
-                    closestWaist >= 88 && closestWaist <= 93 &&
-                    closestHip >= 104 && closestHip <= 107) { // Updated hip range for size L
-                return "L";
-            } else if (closestChest >= 107 && closestChest <= 113 &&
-                    closestShoulder >= 52 && closestShoulder <= 56 &&
-                    closestWaist >= 93 && closestWaist <= 98 &&
-                    closestHip >= 108 && closestHip <= 112) { // Updated hip range for size XL
-                return "XL";
-            } else {
-                return "No size matches";
-            }
+            // If no exact match, determine the closest size based on the measurements that do fall within the predefined ranges
+            String closestSize = getClosestSize(chest, shoulder, waist, hip);
+            return closestSize;
         }
     }
 
-    private boolean isWithinRange(double measurement, double min, double max, double tolerance) {
-        return measurement >= min - tolerance && measurement <= max + tolerance;
+    private String getClosestSize(double chest, double shoulder, double waist, double hip) {
+        // Calculate distances to each size's range
+        double distanceS = calculateDistanceToSize(chest, 88, 95) +
+                calculateDistanceToSize(shoulder, 39, 44) +
+                calculateDistanceToSize(waist, 75, 82) +
+                calculateDistanceToSize(hip, 92, 97);
+        double distanceM = calculateDistanceToSize(chest, 95, 101) +
+                calculateDistanceToSize(shoulder, 44, 48) +
+                calculateDistanceToSize(waist, 82, 88) +
+                calculateDistanceToSize(hip, 97, 104);
+        double distanceL = calculateDistanceToSize(chest, 101, 107) +
+                calculateDistanceToSize(shoulder, 48, 52) +
+                calculateDistanceToSize(waist, 88, 93) +
+                calculateDistanceToSize(hip, 104, 107);
+        double distanceXL = calculateDistanceToSize(chest, 107, 113) +
+                calculateDistanceToSize(shoulder, 52, 56) +
+                calculateDistanceToSize(waist, 93, 105) +
+                calculateDistanceToSize(hip, 108, 115);
+
+        // Find the size with the minimum total distance
+        double minDistance = Math.min(Math.min(distanceS, distanceM), Math.min(distanceL, distanceXL));
+
+        // Return the closest size
+        if (minDistance == distanceS) {
+            return "S";
+        } else if (minDistance == distanceM) {
+            return "M";
+        } else if (minDistance == distanceL) {
+            return "L";
+        } else {
+            return "XL";
+        }
     }
 
-    private double getClosestBoundary(double value, double min, double max) {
-        return Math.abs(value - min) < Math.abs(value - max) ? min : max;
+
+    private boolean isWithinRange(double measurement, double min, double max, double tolerance) {
+        return measurement >= min - tolerance && measurement <= max + tolerance;
     }
 
 
@@ -90,9 +95,9 @@ public class CustomerMeasurementProcessor {
         double inseam = currentCustomer.getCustomerInseamMeas();
 
         // Define tolerance for each measurement
-        double waistTolerance = 2.0;
-        double hipTolerance = 2.0;
-        double inseamTolerance = 2.0;
+        double waistTolerance = 1.0;
+        double hipTolerance = 1.0;
+        double inseamTolerance = 1.0;
 
         // Determine the size based on measurements and tolerance ranges
         if (isWithinRange(waist, 73, 76.5, waistTolerance) &&
@@ -108,36 +113,56 @@ public class CustomerMeasurementProcessor {
                 isWithinRange(inseam, 82.5, 82.8, inseamTolerance)) { // Updated ranges for size L
             return "L";
         } else if (isWithinRange(waist, 90, 95.8, waistTolerance) &&
-                isWithinRange(hip, 101, 107, hipTolerance) &&
+                isWithinRange(hip, 101, 115, hipTolerance) &&
                 isWithinRange(inseam, 83, 83.75, inseamTolerance)) { // Updated ranges for size XL
             return "XL";
         } else {
-            // If no exact match, determine the size based on the closest measurements
-            double closestWaist = getClosestBoundary(waist, 73, 95.8);
-            double closestHip = getClosestBoundary(hip, 91, 107);
-            double closestInseam = getClosestBoundary(inseam, 81, 85);
-
-            if (isWithinRange(closestWaist, 73, 76.5, waistTolerance) &&
-                    isWithinRange(closestHip, 91, 94.5, hipTolerance) &&
-                    isWithinRange(closestInseam, 81, 81.75, inseamTolerance)) { // Updated ranges for size S
-                return "S";
-            } else if (isWithinRange(closestWaist, 76.5, 83, waistTolerance) &&
-                    isWithinRange(closestHip, 95, 98, hipTolerance) &&
-                    isWithinRange(closestInseam, 82, 83, inseamTolerance)) { // Updated ranges for size M
-                return "M";
-            } else if (isWithinRange(closestWaist, 83, 90, waistTolerance) &&
-                    isWithinRange(closestHip, 99, 101, hipTolerance) &&
-                    isWithinRange(closestInseam, 83, 84, inseamTolerance)) { // Updated ranges for size L
-                return "L";
-            } else if (isWithinRange(closestWaist, 90, 95.8, waistTolerance) &&
-                    isWithinRange(closestHip, 101, 107, hipTolerance) &&
-                    isWithinRange(closestInseam, 84, 85, inseamTolerance)) { // Updated ranges for size XL
-                return "XL";
-            } else {
-                return "No size matches";
-            }
+            // If no exact match, determine the closest size based on the measurements that do fall within the predefined ranges
+            String closestSize = getClosestSize(waist, hip, inseam);
+            return closestSize;
         }
     }
+
+    private String getClosestSize(double waist, double hip, double inseam) {
+        // Calculate distances to each size's range
+        double distanceS = calculateDistanceToSize(waist, 73, 76.5) +
+                calculateDistanceToSize(hip, 91, 94.5) +
+                calculateDistanceToSize(inseam, 81, 81.75);
+        double distanceM = calculateDistanceToSize(waist, 76.5, 83) +
+                calculateDistanceToSize(hip, 95, 98) +
+                calculateDistanceToSize(inseam, 81.75, 82.35);
+        double distanceL = calculateDistanceToSize(waist, 83, 90) +
+                calculateDistanceToSize(hip, 99, 101) +
+                calculateDistanceToSize(inseam, 82.5, 82.8);
+        double distanceXL = calculateDistanceToSize(waist, 90, 95.8) +
+                calculateDistanceToSize(hip, 101, 115) +
+                calculateDistanceToSize(inseam, 83, 83.75);
+
+        // Find the size with the minimum total distance
+        double minDistance = Math.min(Math.min(distanceS, distanceM), Math.min(distanceL, distanceXL));
+
+        // Return the closest size
+        if (minDistance == distanceS) {
+            return "S";
+        } else if (minDistance == distanceM) {
+            return "M";
+        } else if (minDistance == distanceL) {
+            return "L";
+        } else {
+            return "XL";
+        }
+    }
+
+    private double calculateDistanceToSize(double measurement, double min, double max) {
+        if (measurement < min) {
+            return min - measurement;
+        } else if (measurement > max) {
+            return measurement - max;
+        } else {
+            return 0;
+        }
+    }
+
 
 
 
