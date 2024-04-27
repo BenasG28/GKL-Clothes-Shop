@@ -1,4 +1,4 @@
-package com.example.gkl;
+package com.example.gkl.fxControllers;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;

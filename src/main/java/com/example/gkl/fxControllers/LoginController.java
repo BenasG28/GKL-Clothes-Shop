@@ -1,5 +1,6 @@
-package com.example.gkl;
+package com.example.gkl.fxControllers;
 
+import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
 import com.example.gkl.model.Manager;
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
     @FXML
-    public TextField loginField;
+    public TextField loginField = new TextField();
     @FXML
     public PasswordField passwordField;
     public Button loginButton;

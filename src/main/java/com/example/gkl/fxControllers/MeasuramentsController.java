@@ -1,5 +1,6 @@
-package com.example.gkl;
+package com.example.gkl.fxControllers;
 
+import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
 import com.example.gkl.model.Regions;

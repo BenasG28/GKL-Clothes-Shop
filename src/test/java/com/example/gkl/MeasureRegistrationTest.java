@@ -1,5 +1,7 @@
 package com.example.gkl;
 
+import com.example.gkl.fxControllers.MeasuramentsController;
+import com.example.gkl.fxControllers.RegistrationController;
 import javafx.application.Platform;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;

@@ -11,7 +11,7 @@ public class JavaFxCustomUtils {
         alert.setContentText(content);
         alert.setOnShown(event -> alertShown =true);
         alert.setOnCloseRequest(event -> alertShown =false);
-        alert.showAndWait();
+        alert.show();
     }
     public static boolean isAlertShown() {
         return alertShown;

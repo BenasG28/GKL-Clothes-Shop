@@ -1,19 +1,12 @@
-package com.example.gkl;
+package com.example.gkl.fxControllers;
 
-import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.CommentHib;
 import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.model.*;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 

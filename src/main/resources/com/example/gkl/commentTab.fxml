@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.gkl.CommentController"
+            fx:controller="com.example.gkl.fxControllers.CommentController"
             minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <children>
             <ListView fx:id="commentList" layoutX="382.0" layoutY="185.0" onMouseClicked="#loadCommentData" prefHeight="178.0" prefWidth="200.0" />

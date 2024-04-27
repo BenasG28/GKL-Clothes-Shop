@@ -1,4 +1,4 @@
-package com.example.gkl;
+package com.example.gkl.fxControllers;
 
 public interface PasswordChangedCallback {
     void onPasswordChanged();

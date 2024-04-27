@@ -1,5 +1,6 @@
-package com.example.gkl;
+package com.example.gkl.fxControllers;
 
+import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.model.*;
 import com.example.gkl.utils.CustomerMeasurementProcessor;
