@@ -1,4 +1,4 @@
-package com.example.gkl.fxControllers;
+package com.example.gkl;
 
 import com.example.gkl.model.Product;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ public class ProductCardController {
     private ComboBox<String> sizeComboBox = new ComboBox<>();
     @FXML
     private Spinner<Integer> quantitySpinner = new Spinner<>();
-    private MainShopController mainShopController; // Add this line
+    private MainShopController mainShopController;
     private Product product;
 
     public void initialize() {

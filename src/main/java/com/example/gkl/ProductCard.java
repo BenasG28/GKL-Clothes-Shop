@@ -1,4 +1,4 @@
-package com.example.gkl.fxControllers;
+package com.example.gkl;
 
 import com.example.gkl.model.Product;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package com.example.gkl.fxControllers;
+package com.example.gkl;
 
 import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.model.Warehouse;

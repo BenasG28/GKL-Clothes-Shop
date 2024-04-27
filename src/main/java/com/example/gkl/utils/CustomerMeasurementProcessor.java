@@ -2,6 +2,7 @@ package com.example.gkl.utils;
 
 import com.example.gkl.model.Customer;
 
+
 public class CustomerMeasurementProcessor {
     private Customer currentCustomer;
 

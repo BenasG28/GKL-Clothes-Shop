@@ -14,10 +14,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.2</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        &lt;!&ndash; Skip generated code from Checkstyle analysis... &ndash;&gt;-->
-<!--        <checkstyle.excludes>**/HelpMojo.java</checkstyle.excludes>-->
-<!--        &lt;!&ndash; Properties for Site documentation (may not use period). &ndash;&gt;-->
-<!--        <MavenLombokPluginVersion>3.11.0</MavenLombokPluginVersion>-->
+        <!--        &lt;!&ndash; Skip generated code from Checkstyle analysis... &ndash;&gt;-->
+        <!--        <checkstyle.excludes>**/HelpMojo.java</checkstyle.excludes>-->
+        <!--        &lt;!&ndash; Properties for Site documentation (may not use period). &ndash;&gt;-->
+        <!--        <MavenLombokPluginVersion>3.11.0</MavenLombokPluginVersion>-->
         <LombokVersion>1.18.30</LombokVersion>
     </properties>
 
@@ -127,12 +127,20 @@
 
 
         <!--mano pridetos pradzia-->
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.14.14</version>
+        </dependency>
+
         <dependency>
             <groupId>org.testfx</groupId>
             <artifactId>testfx-junit5</artifactId>
@@ -140,14 +148,25 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>2.17.0</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--mano pridetos pabaiga-->
-
-
 
 
     </dependencies>
@@ -172,6 +191,25 @@
                     </extractors>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version> <!-- Use the latest version -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -193,14 +231,14 @@
                     </execution>
                 </executions>
             </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M5</version>
-                        <configuration>
-                            <argLine>--add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>
-                        </configuration>
-                    </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <argLine>--add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

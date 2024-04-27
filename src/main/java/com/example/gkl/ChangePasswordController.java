@@ -1,4 +1,4 @@
-package com.example.gkl.fxControllers;
+package com.example.gkl;
 
 import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.model.User;
@@ -11,8 +11,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
-
-import static javafx.event.Event.fireEvent;
 
 public class ChangePasswordController {
 

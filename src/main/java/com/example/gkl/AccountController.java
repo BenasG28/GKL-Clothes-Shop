@@ -1,6 +1,5 @@
-package com.example.gkl.fxControllers;
+package com.example.gkl;
 
-import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.GenericHib;
 import com.example.gkl.model.*;
 import com.example.gkl.utils.CustomerMeasurementProcessor;
@@ -8,7 +7,6 @@ import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.application.Platform;
 import javafx.beans.property.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

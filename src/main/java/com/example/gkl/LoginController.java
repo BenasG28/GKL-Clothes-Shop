@@ -1,6 +1,5 @@
-package com.example.gkl.fxControllers;
+package com.example.gkl;
 
-import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
 import com.example.gkl.model.Manager;
@@ -19,8 +18,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static java.lang.Double.parseDouble;
 
 public class LoginController implements Initializable {
     @FXML

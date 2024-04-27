@@ -1,4 +1,4 @@
-package com.example.gkl.fxControllers;
+package com.example.gkl;
 
 import javafx.application.Platform;
 import javafx.scene.control.PasswordField;

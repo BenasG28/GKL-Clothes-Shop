@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="404.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gkl.fxControllers.ProductController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="404.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gkl.ProductController">
     <children>
         <ListView fx:id="productListManager" layoutX="13.0" layoutY="14.0" onMouseClicked="#loadProductData" prefHeight="140.0" prefWidth="236.0" /> <!--onMouseClicked="#loadProductData"-->
         <TextField fx:id="productTitleField" layoutX="316.0" layoutY="50.0" prefHeight="26.0" prefWidth="276.0" promptText="Title" />
