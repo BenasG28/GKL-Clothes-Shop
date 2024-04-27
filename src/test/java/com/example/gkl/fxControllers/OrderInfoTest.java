@@ -27,15 +27,15 @@ public class OrderInfoTest {
     public void setUp() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kursinis-parduotuve");
 
-        // Create a real user with valid login information
+
         UserHib userHib = new UserHib(entityManagerFactory);
         User currentUser = userHib.getUserByCredentials("Testuotojas2", "Testuotojas2@");
 
-        // Initialize the controller with the real user
+
         controller = new OrderController();
         controller.setData(entityManagerFactory, currentUser);
 
-        // Initialize other required components
+
         controller.orderListManager = new ListView<>();
         controller.filterDateStart = new DatePicker();
         controller.filterDateEnd = new DatePicker();
@@ -43,18 +43,18 @@ public class OrderInfoTest {
 
     @Test
     public void testFilterByDate_NonEmptyOrderList() {
-        controller.filterDateStart.setValue(LocalDate.of(2024, Month.APRIL, 1)); // Set start date to yesterday
-        controller.filterDateEnd.setValue(LocalDate.now()); // Set end date to today
+        controller.filterDateStart.setValue(LocalDate.of(2024, Month.APRIL, 1));
+        controller.filterDateEnd.setValue(LocalDate.now());
         controller.filterByDate();
         assertFalse(controller.orderListManager.getItems().isEmpty(), "Order list should not be empty");
     }
     @Test
     public void testFilterByDate_EmptyOrderList() {
         controller.filterDateStart.setValue(LocalDate.of(2024, Month.JANUARY, 1));
-        controller.filterDateEnd.setValue(LocalDate.of(2024, Month.JANUARY, 31));
+        controller.filterDateEnd.setValue(LocalDate.of(2024, Month.JANUARY, 30));
         controller.filterByDate();
         assertTrue(controller.orderListManager.getItems().isEmpty(), "Order list should be empty");
     }
 
-    // Add more test methods as needed
+
 }
