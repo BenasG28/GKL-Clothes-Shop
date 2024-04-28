@@ -173,4 +173,8 @@ public void testEmptyFieldsHandling() {
         sleep(5000);
     }
 
+    @Test
+    public void testGoBack(){
+
+    }
 }
