@@ -46,7 +46,7 @@ public class RegistrationController implements Initializable {
     @FXML
     public TextField phoneNumberField;
     public Button measurementsButton;
-    EntityManagerFactory entityManagerFactory;
+    public EntityManagerFactory entityManagerFactory;
     public UserHib userHib;
     private User user;
     public void setData(EntityManagerFactory entityManagerFactory, User user) {
@@ -119,7 +119,7 @@ public class RegistrationController implements Initializable {
           Parent parent = fxmlLoader.load();
           Scene scene = new Scene(parent);
           Stage stage = (Stage) loginField.getScene().getWindow();
-        stage.setTitle("GKL");
+          stage.setTitle("GKL");
           if(user != null){
               MainShopController mainShopController = fxmlLoader.getController();
               mainShopController.setData(entityManagerFactory, user);
@@ -127,17 +127,5 @@ public class RegistrationController implements Initializable {
           stage.setScene(scene);
           stage.show();
     }
-
- /*   public void setMeasurementsButton() throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("measurements.fxml"));
-        Parent parent = fxmlLoader.load();
-        Stage stage = (Stage) loginField.getScene().getWindow();
-        Scene scene = new Scene(parent);
-        MeasuramentsController measuramentsController = fxmlLoader.getController();
-        measuramentsController.setData(entityManagerFactory, null);
-        stage.setTitle("Shop");
-        stage.setScene(scene);
-        stage.show();
-    }*/
 
 }
