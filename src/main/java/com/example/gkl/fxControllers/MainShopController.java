@@ -125,7 +125,7 @@ public class MainShopController implements Initializable {
             e.printStackTrace();
         }
     }
-    private void displayProductCards() {
+    void displayProductCards() {
         List<Product> products = productHib.getAllProductWithNoCart();
         productContainer.getChildren().clear();
 
