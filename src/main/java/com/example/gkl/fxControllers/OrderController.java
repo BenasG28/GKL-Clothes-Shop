@@ -30,10 +30,10 @@ public class OrderController {
     public TextField customerIdField;
     public Button customerFilterButton;
     public Button filterButton;
-    private EntityManagerFactory entityManagerFactory;
-    private GenericHib genericHib;
+    EntityManagerFactory entityManagerFactory;
+    GenericHib genericHib;
     private User currentUser;
-    private PurchaseHib purchaseHib;
+    PurchaseHib purchaseHib;
     public void setData(EntityManagerFactory entityManagerFactory, User currentUser){
         this.entityManagerFactory = entityManagerFactory;
         this.currentUser = currentUser;
@@ -92,7 +92,7 @@ public class OrderController {
         LocalDate endDate = filterDateEnd.getValue();
         orderListManager.getItems().addAll(purchaseHib.filterByDateAndUser(startDate,endDate,currentUser));
     }
-    public void filterByStatus(){
+     public void filterByStatus(){
         orderListManager.getItems().clear();
         PurchaseStatus status = statusComboBox.getValue();
         orderListManager.getItems().addAll(purchaseHib.filterByStatus(status));
