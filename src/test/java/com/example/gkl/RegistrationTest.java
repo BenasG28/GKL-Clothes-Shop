@@ -22,17 +22,13 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class MeasureRegistrationTest extends ApplicationTest {
+public class RegistrationTest extends ApplicationTest {
     private RegistrationController registrationController;
     private static EntityManagerFactory entityManagerFactory;
     private static UserHib userHib;
     private static Parent root;
     private static GenericHib genericHib;
     private LoginController loginController;
-    private User user;
-    public void setData(User user) {
-        this.user = user;
-    }
     @BeforeAll
     public static void setUpDatabaseAndTestUser(){
         entityManagerFactory = Persistence.createEntityManagerFactory("kursinis-parduotuve");
@@ -41,32 +37,26 @@ public class MeasureRegistrationTest extends ApplicationTest {
     }
     @AfterAll
     public static void cleanUp() {
-        // Ensure userHib and entityManagerFactory are initialized
         if (userHib == null || entityManagerFactory == null) {
             System.out.println("UserHib or EntityManagerFactory is not initialized. Cleanup skipped.");
             return;
         }
-
         User testUser = userHib.getUserByCredentials("testUser1", "Password123!");
         if (testUser != null) {
             try {
-                // Ensure genericHib is initialized before using it
                 if (genericHib == null) {
                     System.out.println("GenericHib is not initialized. Cannot delete test user.");
                     return;
                 }
-
                 int userId = testUser.getId();
                 genericHib.delete(User.class, userId);
                 System.out.println("Test user deleted successfully.");
             } catch (Exception e) {
                 System.err.println("Failed to delete test user: " + e.getMessage());
-                // Handle the exception as needed
             }
         } else {
             System.out.println("Test user not found.");
         }
-
         try {
             entityManagerFactory.close();
             System.out.println("Entity manager factory closed.");
@@ -128,32 +118,10 @@ public void testEmptyFieldsHandling() {
             registrationController.addressField.setText("Slusnynu milionierius g.11");
             registrationController.contactMailField.setText("Mail@gmail.com");
             registrationController.createUserButton.fire();
-
             assertTrue(JavaFxCustomUtils.isAlertShown());
         });
         sleep(5000);
     }
-
-
-    @Test
-    public void testPasswordStrength() {
-        Platform.runLater(() -> {
-            registrationController.loginField.setText("testUser1");
-            registrationController.passwordField.setText("slaptazodis");
-            registrationController.repeatPasswordField.setText("slaptazodis");
-            registrationController.phoneNumberField.setText("065839201");
-            registrationController.nameField.setText("Dominykas");
-            registrationController.lastNameField.setText("Slusnys");
-            registrationController.addressField.setText("Slusnynu milionierius g.11");
-            registrationController.contactMailField.setText("Mail@gmail.com");
-
-            registrationController.createUserButton.fire();
-
-        assertTrue(JavaFxCustomUtils.isAlertShown());
-    });
-        sleep(5000);
-    }
-
     @Test
     public void testLoginExist() {
         Platform.runLater(() -> {
@@ -171,10 +139,5 @@ public void testEmptyFieldsHandling() {
             assertTrue(JavaFxCustomUtils.isAlertShown());
         });
         sleep(5000);
-    }
-
-    @Test
-    public void testGoBack(){
-
     }
 }

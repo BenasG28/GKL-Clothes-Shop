@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
@@ -23,7 +25,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-
+@Getter
+@Setter
 public class RegistrationController implements Initializable {
     @FXML
     public TextField loginField;
@@ -62,10 +65,7 @@ public class RegistrationController implements Initializable {
    public void createUser(){
 
         userHib = new UserHib(entityManagerFactory);
-       if (userHib == null) {
-           throw new IllegalStateException("UserHib is not initialized. Call setData() first.");
-       }
-        User user = Customer.builder()
+       User user = Customer.builder()
                 .login(loginField.getText())
                 .password(BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt()))
                 .phoneNumber(phoneNumberField.getText())
@@ -74,8 +74,7 @@ public class RegistrationController implements Initializable {
                 .address(addressField.getText())
                 .contactMail(contactMailField.getText())
                 .build();
-        userHib.createUser(user);
-    }
+        userHib.createUser(user);}
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         backButton.setOnAction(event -> {
@@ -90,7 +89,7 @@ public class RegistrationController implements Initializable {
                 userHib = new UserHib(entityManagerFactory);
                 String password = passwordField.getText();
                 boolean isEmpty = checkIfFieldsEmpty(loginField, passwordField,contactMailField,nameField,lastNameField,phoneNumberField,addressField);
-                if(isEmpty){
+                if(isEmpty) {
                     JavaFxCustomUtils.generateAlert(Alert.AlertType.WARNING, "Registration Error", "Missing fields", "Please fill all the fields and check all the checks.");
                 }
                 else if(userHib.checkIfLoginExists(loginField.getText())){
@@ -113,7 +112,6 @@ public class RegistrationController implements Initializable {
             }
         });
     }
-
     public void goBack(User user) throws IOException {
           FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("login.fxml"));
           Parent parent = fxmlLoader.load();
@@ -127,5 +125,4 @@ public class RegistrationController implements Initializable {
           stage.setScene(scene);
           stage.show();
     }
-
 }

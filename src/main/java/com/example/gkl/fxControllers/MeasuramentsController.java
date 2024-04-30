@@ -4,7 +4,6 @@ import com.example.gkl.StartGui;
 import com.example.gkl.hibernateControllers.UserHib;
 import com.example.gkl.model.Customer;
 import com.example.gkl.model.Regions;
-import com.example.gkl.model.User;
 import com.example.gkl.utils.CustomerMeasurementProcessor;
 import com.example.gkl.utils.JavaFxCustomUtils;
 import jakarta.persistence.EntityManagerFactory;
@@ -20,11 +19,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+@Getter
+@Setter
 public class MeasuramentsController implements Initializable {
     @FXML
     public TextField chestmeasure;
@@ -71,16 +73,6 @@ public class MeasuramentsController implements Initializable {
                 || hipmeasure.getText().isEmpty() || outseammeasure.getText().isEmpty()
                 || inseammeasure.getText().isEmpty() || waistmeasure.getText().isEmpty();
     }
-
-   /* public void goBack() throws IOException { Pati grįžimo funkcija
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration.fxml"));
-        Parent parent = fxmlLoader.load();
-        Scene scene = new Scene(parent);
-        Stage stage = (Stage) shouldermeasure.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-    }*/
-
     public void saveButtonFunc() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));
         Parent parent = fxmlLoader.load();
@@ -94,7 +86,7 @@ public class MeasuramentsController implements Initializable {
 
     }
 
-    private double convertSizeToStandardUnit(double size, Regions selectedRegion) {
+    public double convertSizeToStandardUnit(double size, Regions selectedRegion) {
         return switch (selectedRegion) {
             case US, UK ->
                     size * 2.54;
