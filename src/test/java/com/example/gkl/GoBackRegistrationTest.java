@@ -42,4 +42,13 @@ public class GoBackRegistrationTest extends ApplicationTest {
         });
         sleep(5000);
     }
+
+    @Test
+    public void testGoBackFireButton() throws IOException {
+        Platform.runLater(() -> {
+           registrationController.backButton.fire();
+            verifyThat("#loginField", isVisible());
+        });
+        sleep(5000);
+    }
 }
