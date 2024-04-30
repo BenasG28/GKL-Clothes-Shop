@@ -184,7 +184,7 @@ public class MainShopController implements Initializable {
         }
     }
     @FXML
-    private void loadOrderTab(){
+    public void loadOrderTab(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/orderTab.fxml"));
         try{
             Parent orderRoot = loader.load();
