@@ -54,6 +54,7 @@ public class MainShopController implements Initializable {
     public TreeView<Comment> commentsTree;
     public Button rateProductButton;
     public MenuItem replyContext;
+    @FXML
     public Tab accountTab;
     public AnchorPane productContainer;
     private EntityManagerFactory entityManagerFactory;
@@ -198,8 +199,8 @@ public class MainShopController implements Initializable {
         }
     }
     @FXML
-    private void loadAccountTab(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gkl/accountTab.fxml"));
+    public void loadAccountTab(){
+        FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("/com/example/gkl/accountTab.fxml"));
         try{
             Parent accountRoot = loader.load();
             AccountController accountController = loader.getController();

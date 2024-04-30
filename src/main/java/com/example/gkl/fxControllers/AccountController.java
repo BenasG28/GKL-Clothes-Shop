@@ -75,7 +75,7 @@ public class AccountController implements PasswordChangedCallback{
     public Button saveInfoButton;
     private EntityManagerFactory entityManagerFactory;
     private GenericHib genericHib;
-    private User currentUser;
+    public User currentUser;
     private Map<Property<?>, Object> originalValues = new HashMap<>();
     private Map<Property<?>, Object> modifiedValues = new HashMap<>();
 
@@ -297,7 +297,7 @@ public class AccountController implements PasswordChangedCallback{
         genericHib.update(currentCustomer);
     }
     @FXML
-    private void handleSaveInfo() {
+    public void handleSaveInfo() {
         if(!checkIfPersonalFieldsAreEmpty()){
             boolean measurementsFieldsFlag = false;
             if(currentUser instanceof Customer customer){
@@ -336,7 +336,6 @@ public class AccountController implements PasswordChangedCallback{
                     updateUniversalSizes();
                     loadUserInfo();
                     makeFieldsViewOnly();
-
 
                 }catch (Exception e){
                     e.printStackTrace();
