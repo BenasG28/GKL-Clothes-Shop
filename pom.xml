@@ -19,6 +19,9 @@
 <!--        &lt;!&ndash; Properties for Site documentation (may not use period). &ndash;&gt;-->
 <!--        <MavenLombokPluginVersion>3.11.0</MavenLombokPluginVersion>-->
         <LombokVersion>1.18.30</LombokVersion>
+            <sonar.organization>benasg28</sonar.organization>
+            <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
     </properties>
 
     <repositories>
